@@ -1,0 +1,20 @@
+{
+  "name": "proyecto-sistemas-de-info",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r1c4rd0-b43t4/Proyecto-sistemas-de-info.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/r1c4rd0-b43t4/Proyecto-sistemas-de-info/issues"
+  },
+  "homepage": "https://github.com/r1c4rd0-b43t4/Proyecto-sistemas-de-info#readme",
+  "description": ""
+}
