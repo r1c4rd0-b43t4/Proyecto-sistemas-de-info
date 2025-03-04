@@ -5,6 +5,7 @@ import FacebookIcon from '../assets/facebook.svg';
 import UnimetIcon from '../assets/Logo unimet.svg';
 
 export default function Footer() {
+    // Importante definir los links de la parte superior e inferior del footer
     const upperLinks = [
         { text: "Contáctanos", link: "#" },
         { text: "Inicio", link: "#" },
@@ -27,6 +28,7 @@ export default function Footer() {
                             <BotonFooter key={index} text={link.text} link={link.link} />
                         ))}
                     </nav>
+                    {/* Linkear el instagram y el facebook de unimetrail */}
                     <div className="flex space-x-4 mt-4 md:mt-0">
                         <a href="#" className="text-xl hover:underline">
                             <img src={FacebookIcon} alt="Facebook" className="w-6 h-6" />
@@ -39,6 +41,7 @@ export default function Footer() {
                 <hr className="my-4 border-gray-400 w-full" />
                 <div className="flex flex-col md:flex-row justify-between items-center text-xs w-full">
                     <div className="flex items-center space-x-2">
+                        {/* Linkear el logo de la unimet a la pagina de la unimet */}
                     <a href="#" className="text-xl hover:underline"> <img src={UnimetIcon} alt="Unimet" className="w-12 h-12" /> </a>
                         <p>© 2025 UnimeTrail. All rights reserved.</p>
                     </div>
