@@ -1,11 +1,12 @@
 import React from 'react';
-import { Header } from '../components/Prueba';
+import { BotonPrimario } from '../components/BotonPrimario.jsx';
+
 
 export default function Home() {
   return (
-    <>
-      <Header />
-    </>
+    <div className='container'>
+      <BotonPrimario text='Iniciar sesión' />
+    </div>
   );
 }
 
