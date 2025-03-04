@@ -19,7 +19,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-teal-700 text-white py-6 w-screen">
+        <footer className="bg-[#00796B] text-white py-6 w-screen">
             <div className="container mx-auto px-6 w-full">
                 <div className="flex flex-col md:flex-row justify-between items-center w-full">
                     <div className="text-lg font-semibold">UnimeTrail</div>
