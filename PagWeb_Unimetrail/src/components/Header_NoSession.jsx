@@ -1,5 +1,7 @@
 import { LogoResponsive } from "./Logo_Responsive.jsx";
 import React from 'react';
+import BotonPrimario from "./BotonPrimario.jsx";
+import BotonSecundario from "./BotonSecundario.jsx";
 
 export default function Header_NoSession() {
   return (
@@ -10,28 +12,24 @@ export default function Header_NoSession() {
             <div className="flex items-center justify-end gap-4 flex-1">
               <div className="flex w-full items-center gap-4 pl-10 pr-0 py-0 rounded-lg">
                 <LogoResponsive className="!relative !w-[201.72px] !h-[43.62px]" />
-                <button className="btn btn-primary text-[#00796b]">
+                <button className="btn btn-primary text-[#00796b] hover:text-teal-600 active:text-teal-800">
                   Rutas
                 </button>
                 <div className="w-0.5 h-7 bg-[#00796b] rounded" />
-                <button className="btn btn-primary text-[#00796b]">
+                <button className="btn btn-primary text-[#00796b] hover:text-teal-600 active:text-teal-800">
                   Galería
                 </button>
                 <div className="w-0.5 h-7 bg-[#00796b] rounded" />
-                <button className="btn btn-primary text-[#00796b]">
+                <button className="btn btn-primary text-[#00796b] hover:text-teal-600 active:text-teal-800">
                   Reseñas
                 </button>
                 <div className="w-0.5 h-7 bg-[#00796b] rounded" />
-                <button className="btn btn-primary text-[#00796b]">
+                <button className="btn btn-primary text-[#00796b] hover:text-teal-600 active:text-teal-800">
                   Blogs
                 </button>
               </div>
-              <button className="btn btn-primary bg-primary60-base text-grey-10 text-[#00796b]">
-                Iniciar sesión
-              </button>
-              <button className="btn btn-secondary text-primary-40 text-[#00796b]">
-                Registrarse
-              </button>
+              <BotonPrimario text='Iniciar Sesión'/>
+              <BotonSecundario text='Registrarse'/>
             </div>
           </div>
         </div>

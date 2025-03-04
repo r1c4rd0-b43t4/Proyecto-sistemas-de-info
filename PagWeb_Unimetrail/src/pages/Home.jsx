@@ -11,17 +11,3 @@ export default function Home() {
   );
 }
 
-// export default function Home() {
-//   return (
-//     <div className='container'>
-//       <h1 className='text-4xl font-bold text-center'>¡Bienvenido a la tienda!</h1>
-//       <div className='flex justify-center mt-8'>
-//         <BotonPrimario text='Ver productos' />
-//       </div>
-
-      
-//     </div>
-//   );
-// }
-
-
