@@ -6,13 +6,13 @@ import Avilabg from "../assets/avila_bg_f1_h.svg";
 export default function Frame_1_Home() {
     return (
         <div className='relative w-screen h-250'>
-            <div className="justify-start items-center h-full w-full flex">
+            <div className="justify-start items-center h-full w-1/2 flex">
                 <div className="px-20 py-10">
                     <p className='text-[#2A8F84] mb-2'>Descubre nuevas aventuras</p>
-                    <h1 className="text-6xl font-bold mb-4">
+                    <h1 className="text-8xl font-bold mb-4">
                         <span style={{ color: '#00796B' }}>Bienvenido a</span> <span style={{ color: '#D76411' }}>Unimetrail</span>
                     </h1>
-                    <p className="text-sm text-[#2A8F84] mb-5">Para aquellos estudiantes de la Unimet que desean descubrir nuevas formas de reconectar con el senderismo.</p>
+                    <p className="text-xl text-[#2A8F84] mb-5">Para aquellos estudiantes de la Unimet que desean descubrir nuevas formas de reconectar con el senderismo.</p>
                     <BotonPrimario text="Descubre"/>
                 </div>
             </div>
