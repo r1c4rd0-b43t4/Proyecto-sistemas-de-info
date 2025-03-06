@@ -8,15 +8,15 @@ import FourUsers from "../assets/UsersFour_F2_Home.svg";
 
 export default function Frame_2_Home() {
   return (
-    <div className='w-screen bg-[#00796B] text-white'>
-      <div className='p-40 flex flex-col justify-center items-center h-full w-screen gap-5'>
-        <div className='bg-cover rounded-2xl bg-bottom w-full h-auto flex flex-col justify-center items-center p-5' style={{ backgroundImage: `url(${BgTarjeta})`, minHeight: '400px' }}>
+    <div className='w-screen  bg-[#00796B] text-white'>
+      <div className='px-40 py-20 flex flex-col justify-center items-center h-full w-screen gap-2'>
+        <div className='bg-cover rounded-2xl bg-bottom w-full h-auto flex flex-col justify-center items-center p-3' style={{ backgroundImage: `url(${BgTarjeta})`, minHeight: '400px' }}>
           <div className='p-10 '>
-            <p className='mb-5 text-lg'>Descubre nuevas aventuras</p>
-            <h1 className='mb-5 font-bold text-6xl tracking-tight leading-normal pr-50'>
+            <p className='mb-3 text-lg'>Descubre nuevas aventuras</p>
+            <h1 className='mb-2 font-bold text-5xl tracking-tight leading-normal pr-50'>
               <span>Inolvidables rutas del Ávila que recordarás siempre</span> <span className='bg-[#D76411] rounded-2xl px-3'>Unimetano</span>
             </h1>
-            <p className='mb-5 text-lg'>La plataforma se dedica a facilitar a los estudiantes de la Universidad Metropolitana una manera de aventurarse por el Ávila de forma segura con guías preparados.</p>
+            <p className='text-lg'>La plataforma se dedica a facilitar a los estudiantes de la Universidad Metropolitana una manera de aventurarse por el Ávila de forma segura con guías preparados.</p>
             <div className='w-full h-auto flex justify-end'>
               <BotonPrimario text='Descubre' />
             </div>
