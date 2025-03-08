@@ -2,7 +2,7 @@ import React from "react";
 import { TarjetaRuta } from "./TarjetaRuta";
 import BotonSecundario from "./BotonSecundario";
 import BotonPrimario from "./BotonPrimario";
-import Humboldt from "../assets/Humboldt.svg"; // Importa el SVG como URL
+import Humboldt from "../assets/Humboldt.svg";
 import AvilaBg from "../assets/avila_bg_f1_h.svg";
 
 export default function Frame_3_Home() {
@@ -21,7 +21,7 @@ export default function Frame_3_Home() {
                     </div>
                 </div>
               <div className='flex justify-center w-full'>
-                  <div className='grid grid-cols-4 gap-5 w-full'>
+                  <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full'>
                     <div className='p-5 rounded-lg flex flex-col justify-between'>
                     <TarjetaRuta nombreRuta="Ruta 2" precio={200} inicio="Punto B" tiempo={1} distancia={7} dificultad={"Ez"} icono={Humboldt} />
                     </div>
