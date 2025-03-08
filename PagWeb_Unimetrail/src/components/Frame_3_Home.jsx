@@ -43,13 +43,15 @@ export default function Frame_3_Home() {
                     <img src={AvilaBg} alt="Avila Background" className="w-full" />
                 </div>
             </div>
-            <div className="mt-14 p-5 bg-white rounded-lg shadow-md flex flex-col md:flex-row justify-between mx-auto mb-10 border border-solid border-[#ebebeb] h-auto md:h-48 w-3/4 md:w-2/3">
-                <div className="self-start md:self-center">
-                    <h2 className="text-xl font-bold">Visita nuestros blogs</h2>
-                    <p className="mt-2 text-gray-700">La experiencia de nuestra comunidad hará de tu viaje<br /> uno más sorprendente.</p>
-                </div>
-                <div className="self-start md:self-center mt-4 md:mt-0">
-                    <BotonPrimario text="Acción" />
+            <div className="flex justify-center w-full mt-14">
+                <div className="p-5 bg-white rounded-lg shadow-md flex justify-between items-center w-3/4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
+                    <div className="self-start md:self-center">
+                        <h2 className="text-xl font-bold">Visita nuestros blogs</h2>
+                        <p className="mt-2 text-gray-700">La experiencia de nuestra comunidad hará de tu viaje<br /> uno más sorprendente.</p>
+                    </div>
+                    <div className="self-start md:self-center mt-4 md:mt-0">
+                        <BotonPrimario text="Acción" />
+                    </div>
                 </div>
             </div>
         </div>
