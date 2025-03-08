@@ -3,7 +3,7 @@ import { TarjetaRuta } from "./TarjetaRuta";
 import BotonSecundario from "./BotonSecundario";
 import BotonPrimario from "./BotonPrimario";
 import Humboldt from "../assets/Humboldt.svg";
-import AvilaBg from "../assets/avila_bg_f1_h.svg";
+import Caracas from "../assets/Caracas.svg";
 
 export default function Frame_3_Home() {
     return (
@@ -39,17 +39,17 @@ export default function Frame_3_Home() {
                 <div className="flex justify-center w-full mt-6">
                     <BotonSecundario text="Ver más" />
                 </div>
-                <div className="w-full mt-6 h-20 flex justify-center items-center">
-                    <img src={AvilaBg} alt="Avila Background" className="w-full" />
+                <div className="w-full mt-6 flex justify-center items-center relative">
+                    <img src={Caracas} alt="Avila Background" className="w-full h-auto object-contain" />
                 </div>
             </div>
-            <div className="flex justify-center w-full mt-14">
-                <div className="p-5 bg-white rounded-lg shadow-md flex justify-between items-center w-3/4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
-                    <div className="self-start md:self-center">
+            <div className="flex justify-center w-full mt-0">
+                <div className="p-5 bg-white rounded-lg shadow-md flex flex-col md:flex-row justify-between items-center w-full md:w-3/4 h-48 md:h-64">
+                    <div className="self-start md:self-center mb-4 md:mb-0">
                         <h2 className="text-xl font-bold">Visita nuestros blogs</h2>
                         <p className="mt-2 text-gray-700">La experiencia de nuestra comunidad hará de tu viaje<br /> uno más sorprendente.</p>
                     </div>
-                    <div className="self-start md:self-center mt-4 md:mt-0">
+                    <div className="self-start md:self-center z-10">
                         <BotonPrimario text="Acción" />
                     </div>
                 </div>
