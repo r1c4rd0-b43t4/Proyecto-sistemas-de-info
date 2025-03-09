@@ -1,5 +1,5 @@
 import React from "react";
-import { DatosRuta } from "./DatosRuta";
+import DatosRuta from "./DatosRuta";
 import StarRating from "./StarRating";
 import BotonPrimario from "./BotonPrimario";
 
@@ -8,7 +8,7 @@ export function TarjetaRuta({ nombreRuta, precio, inicio, tiempo, distancia, dif
         <article className=" flex relative w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl h-auto p-4 bg-[#F5F5F5] shadow-lg rounded-2xl">
             <div className="relative w-full h-full flex flex-col items-center">
                 <header className="absolute top-0 w-full flex justify-center mt-13 z-10">
-                    <DatosRuta tiempo={tiempo} distancia={distancia} dificultad={dificultad} />
+                    <DatosRuta tiempo={tiempo} distancia={distancia} dificultad={dificultad} fondo={"#F5F5F5"}/>
                 </header>
                 <div className="relative w-full flex justify-center mt-16">
                     <div className="w-full h-48 md:h-56 lg:h-64 xl:h-72">
