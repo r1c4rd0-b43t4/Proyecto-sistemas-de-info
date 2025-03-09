@@ -1,8 +1,8 @@
 
 import BotonFooter from "./BotonFooter";
-import InstagramIcon from '../assets/instagram.svg';
-import FacebookIcon from '../assets/facebook.svg';
-import UnimetIcon from '../assets/Logo unimet.svg';
+import InstagramIcon from '../assets/Instagram.svg';
+import FacebookIcon from '../assets/Facebook.svg';
+import UnimetIcon from '../assets/Logo_unimet.svg';
 
 export default function Footer() {
     // Importante definir los links de la parte superior e inferior del footer
