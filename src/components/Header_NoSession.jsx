@@ -28,8 +28,8 @@ export default function Header_NoSession() {
 
         {/* botones incicio y registro */}
         <div className="hidden md:flex items-center gap-4">
-          <BotonPrimario text="Iniciar Sesión" />
-          <BotonSecundario text="Registrarse" />
+          <BotonPrimario text="Iniciar Sesión" to="/login" />
+          <BotonSecundario text="Registrarse" to="/register"/>
         </div>
 
         {/* icono menu hamburguesa */}
@@ -50,8 +50,8 @@ export default function Header_NoSession() {
         </button>
 
         <NavLinks />
-        <BotonPrimario text="Iniciar Sesión" />
-        <BotonSecundario text="Registrarse" />
+        <BotonPrimario text="Iniciar Sesión" to="/login"/>
+        <BotonSecundario text="Registrarse" to="/register"/>
       </div>
     </div>
   );
