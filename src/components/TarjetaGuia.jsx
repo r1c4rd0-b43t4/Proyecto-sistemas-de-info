@@ -3,7 +3,7 @@ import React from 'react';
 const TarjetaGuia = ({ imagen, nombre, rol }) => {
   return (
     <div
-      className="w-full sm:w-[360px] h-[480px] rounded-[25px] overflow-hidden shadow-lg bg-cover bg-center relative text-white"
+      className="w-full sm:w-[280px] h-[320px] rounded-[25px] overflow-hidden shadow-lg bg-cover bg-center relative text-white"
       style={{ backgroundImage: `url(${imagen})` }}
     >
       <div className="absolute inset-0 bg-black/30"></div>
