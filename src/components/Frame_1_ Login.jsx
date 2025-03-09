@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import BotonPrimario from './BotonPrimario';
 import ImagenAvila from '../assets/Imagen_Avila.svg';
-import Input from "./input_1"; 
-import Underline from "../assets/underline_1.svg";
+import Input from "./Input_V1"; 
+import Underline from "../assets/Underline_1.svg";
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { app } from "../../credentials.js";
 

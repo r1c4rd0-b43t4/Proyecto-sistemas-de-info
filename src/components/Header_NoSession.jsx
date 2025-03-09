@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { LogoResponsive } from "./Logo_Responsive.jsx";
 import BotonPrimario from "./BotonPrimario.jsx";
 import BotonSecundario from "./BotonSecundario.jsx";
-import Menu from "../assets/burgerMenu.svg";
-import CloseIcon from "../assets/close.svg";
+import Menu from "../assets/BurgerMenu.svg";
+import CloseIcon from "../assets/Close.svg";
 
 export default function Header_NoSession() {
   const [menuOpen, setMenuOpen] = useState(false);
