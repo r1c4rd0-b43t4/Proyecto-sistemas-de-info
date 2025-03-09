@@ -1,6 +1,6 @@
 
 import BotonFooter from "./BotonFooter";
-import InstagramIcon from '../assets/instagram.svg';
+import InstagramIcon from '../assets/Instagram.svg';
 import FacebookIcon from '../assets/facebook.svg';
 import UnimetIcon from '../assets/Logo unimet.svg';
 
