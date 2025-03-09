@@ -2,7 +2,7 @@ import BotonPrimario from "./BotonPrimario";
 import Mensaje from '../assets/mensaje.svg';
 import Dolar from '../assets/dolar.svg';
 import Click from '../assets/click.svg';
-import ImagenJe from '../assets/imagen_logo_montana.png'; // Importa la nueva imagen
+import ImagenJe from '../assets/imagen_logo_montana.png';
 
 export default function Frame_5_Home() {
   return (
