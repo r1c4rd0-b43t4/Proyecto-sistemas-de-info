@@ -3,7 +3,10 @@ import React from 'react';
 import BotonPrimario from "./BotonPrimario.jsx";
 import BotonSecundario from "./BotonSecundario.jsx";
 
+
+
 export default function Header_NoSession() {
+
   return (
     <div className="w-full bg-white fixed top-0 left-0 shadow-md z-50">
       <div className="flex flex-col w-full items-center justify-center px-20 py-2">
@@ -28,8 +31,8 @@ export default function Header_NoSession() {
                   Blogs
                 </button>
               </div>
-              <BotonPrimario text='Iniciar Sesión'/>
-              <BotonSecundario text='Registrarse'/>
+              <BotonPrimario text='Iniciar Sesión' to="/login"/>
+              <BotonSecundario text='Registrarse' to="/register"/> 
             </div>
           </div>
         </div>
@@ -38,7 +41,7 @@ export default function Header_NoSession() {
   );
 }
 
-
+ 
 
 
 
