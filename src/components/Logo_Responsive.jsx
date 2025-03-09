@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import property1DefaultLogo from "../assets/Property 1=Default Logo.svg";
-import property1Variant2Logo from "../assets/Property 1=Variant2 Logo.svg";
-import property1Variant3Logo from "../assets/Property 1=Variant3 Logo.svg";
+import property1DefaultLogo from "../assets/Property_1=Default_Logo.svg";
+import property1Variant2Logo from "../assets/Property_1=Variant2_Logo.svg";
+import property1Variant3Logo from "../assets/Property_1=Variant3_Logo.svg";
 
 export const LogoResponsive = ({ property1, className }) => {
     const [currentLogo, setCurrentLogo] = useState(property1DefaultLogo);
