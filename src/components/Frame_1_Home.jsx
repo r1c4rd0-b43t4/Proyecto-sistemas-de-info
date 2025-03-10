@@ -26,7 +26,7 @@ export default function Frame_1_Home() {
                 <img src={ImagenAvila} className="w-full h-full object-cover" alt="Imagen Avila"/>
             </div>
             <img src={Location} className="hidden md:block absolute bottom-0 right-0 p-7" alt="Ubicación"/>
-            <img src={DesignAsset} className="hidden md:block absolute w-1/2 animate-fade-in-out flex justify-center right-0 h-1/2 bottom-60" alt="Diseño"/> 
+            <img src={DesignAsset} className="hidden md:block absolute w-1/2 animate-fade-in-out justify-center right-0 h-1/2 bottom-60" alt="Diseño"/> 
             <img src={Avilabg} className="hidden md:block absolute bottom-0 left-0 w-auto h-auto" alt="Fondo Avila"/>
         </div>
     )
