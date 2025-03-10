@@ -42,16 +42,16 @@ export default function Frame_1_Home() {
         <div className='relative w-screen h-screen flex pt-5'>
             {loading && <div className="">Cargando...</div>}
             {error && <div className="">Error: {error}</div>}
-            <div className="flex justify-center items-center h-full w-1/2">
+            <div className="flex justify-center items-center h-full w-full lg:w-1/2">
                 <div className="flex justify-center items-center flex-col space-y-8">
                     <form onSubmit={handleLogin} className="flex justify-center items-center flex-col space-y-8">
-                        <h1 className="text-4xl font-bold">
+                        <h1 className="md:text-4xl font-bold text-2xl">
                             <span className="text-[#00796B]">Iniciar sesión en </span><span className="text-[#D76411]">Unimetrail</span>
                         </h1>
-                        <div>
+                        <div className='md:w-full w-1/2'>
                             <img src={Underline} alt="Underline" className=""/>
                         </div>
-                        <div className='space-y-3 w-full'>
+                        <div className='space-y-4 md:w-full'>
                             <Input titulo="Correo" placeholder="Ingresa tu correo unimet" type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                             <Input titulo="Contraseña" placeholder="Ingresa tu contraseña" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         </div>
@@ -61,7 +61,7 @@ export default function Frame_1_Home() {
                         <span className="text-[#00796B]">¿No tienes una cuenta? </span><span className="text-[#005147]"><Link to="/register">Registrarse </Link></span>
                     </p>
                 </div>
-                <div>
+                <div className='hidden md:block'>
                 <img src={ImagenAvila} alt="Fondo montaña" className="absolute bottom-0 right-0 w-1/2 h-full object-cover"/>
                 </div>
             </div>
