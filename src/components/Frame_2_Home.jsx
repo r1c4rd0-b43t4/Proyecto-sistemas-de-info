@@ -1,6 +1,6 @@
 import React from 'react';
 import BotonPrimario from './BotonPrimario';
-import './Animations.css';
+import './animations.css';
 
 export default function Frame_2_Home() {
   return (
