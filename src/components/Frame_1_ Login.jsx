@@ -4,7 +4,7 @@ import BotonPrimario from './BotonPrimario';
 import ImagenAvila from '../assets/Imagen_Avila.svg';
 import Input from "./Input_V1"; 
 import Underline from "../assets/Underline_1.svg"
-
+import Caracas from "../assets/Caracas.svg";
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { app } from "../../credentials.js" 
 const auth = getAuth(app);
@@ -63,6 +63,9 @@ export default function Frame_1_Home() {
                 </div>
                 <div className='hidden md:block'>
                 <img src={ImagenAvila} alt="Fondo montaña" className="absolute bottom-0 right-0 w-1/2 h-full object-cover"/>
+                </div>
+                <div className="md:hidden absolute w-full flex justify-center items-center bottom-0 ">
+                    <img src={Caracas} alt="Avila Background" className="w-full h-auto object-contain" />
                 </div>
             </div>
         </div>
