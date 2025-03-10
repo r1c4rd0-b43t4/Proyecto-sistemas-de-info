@@ -1,12 +1,12 @@
 import React from 'react';
 import BotonPrimario from './BotonPrimario';
 import ImagenAvila from '../assets/Imagen_Avila.svg';
-import Input from "./input_1"; 
-import Underline from "../assets/underline_1.svg"
+import Input from "./Input_V1"; 
+import Underline from "../assets/Underline_1.svg"
 
 import { useNavigation } from 'react-router';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { app } from "../../credentials.js" //Puede que de error
+import { app } from "../../credentials.js" 
 const auth = getAuth(app);
 
 

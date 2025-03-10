@@ -1,8 +1,8 @@
 import BotonPrimario from "./BotonPrimario";
-import Mensaje from '../assets/mensaje.svg';
-import Dolar from '../assets/dolar.svg';
-import Click from '../assets/click.svg';
-import ImagenJe from '../assets/imagen_logo_montana.png';
+import Mensaje from '../assets/Mensaje.svg';
+import Dolar from '../assets/Dolar.svg';
+import Click from '../assets/Click.svg';
+import ImagenJe from '../assets/Imagen_logo_montana.png';
 
 export default function Frame_5_Home() {
   return (
