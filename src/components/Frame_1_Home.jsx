@@ -1,9 +1,5 @@
 import React from 'react';
 import BotonPrimario from './BotonPrimario';
-import ImagenAvila from '../assets/Imagen_Avila.svg';
-import Avilabg from "../assets/Avila.svg";
-import Location from "../assets/Location_F1.svg";
-import DesignAsset from "../assets/DesignAsset_F1.svg";
 import './Animations.css';
 
 export default function Frame_1_Home() {
@@ -20,14 +16,14 @@ export default function Frame_1_Home() {
             
             {/* Avila de fondo cuando son dispositivos medianos o pequenos */}
             <div className="absolute inset-0 w-full h-full md:hidden">
-                <img src={ImagenAvila} className="w-full h-full object-cover opacity-30" alt="Fondo Avila" />
+                <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Imagen_Avila.svg" className="w-full h-full object-cover opacity-30" alt="Fondo Avila" />
             </div>
             <div className="hidden md:block md:absolute md:bottom-0 md:right-0 md:w-1/2 md:h-full">
-                <img src={ImagenAvila} className="w-full h-full object-cover" alt="Imagen Avila"/>
+                <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Imagen_Avila.svg" className="w-full h-full object-cover" alt="Imagen Avila"/>
             </div>
-            <img src={Location} className="hidden md:block absolute bottom-0 right-0 p-7" alt="Ubicación"/>
-            <img src={DesignAsset} className="hidden md:block absolute w-1/2 animate-fade-in-out justify-center right-0 h-1/2 bottom-60" alt="Diseño"/> 
-            <img src={Avilabg} className="hidden md:block absolute bottom-0 left-0 w-auto h-auto" alt="Fondo Avila"/>
+            <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Location_F1.svg" className="hidden md:block absolute bottom-0 right-0 p-7" alt="Ubicación"/>
+            <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//DesignAsset_F1.svg" className="hidden md:block absolute w-1/2 animate-fade-in-out justify-center right-0 h-1/2 bottom-60" alt="Diseño"/> 
+            <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Avila.svg" className="hidden md:block absolute bottom-0 left-0 w-auto h-auto" alt="Fondo Avila"/>
         </div>
     )
 }

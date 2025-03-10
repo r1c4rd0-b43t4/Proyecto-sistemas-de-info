@@ -1,11 +1,13 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import property1DefaultLogo from "../assets/Property_1=Default_Logo.svg";
-import property1Variant2Logo from "../assets/Property_1=Variant2_Logo.svg";
-import property1Variant3Logo from "../assets/Property_1=Variant3_Logo.svg";
 import { Link } from "react-router";
 
-// Quite el position absolute porque no se necesita juasjuas
+
+const property1DefaultLogo = "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Property_1=Default_Logo.svg";
+const property1Variant2Logo = "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Property_1=Variant2_Logo.svg";
+const property1Variant3Logo = "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Property_1=Variant3_Logo.svg";
+
+
 export const LogoResponsive = ({ className }) => {
     const [currentLogo, setCurrentLogo] = useState(property1DefaultLogo);
 

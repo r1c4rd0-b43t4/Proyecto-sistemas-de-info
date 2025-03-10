@@ -1,6 +1,5 @@
 import React from 'react';
 import TarjetaRuta from './TarjetaRuta';
-import Humboldt from '../assets/humboldt.svg';
 
 const FrameRutas = () => {
   return (
@@ -19,22 +18,22 @@ const FrameRutas = () => {
       <div className='flex justify-center w-full'>
             <div className='grid gap-5 w-full' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
                 <div className='p-5 rounded-lg flex flex-col justify-between'>
-                    <TarjetaRuta nombreRuta="Ruta 2" precio={200} inicio="Punto B" tiempo={1} distancia={7} dificultad={"Ez"} icono={Humboldt} />
+                    <TarjetaRuta nombreRuta="Ruta 2" precio={200} inicio="Punto B" tiempo={1} distancia={7} dificultad={"Ez"} icono="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg" />
                 </div>
                 <div className='p-5 rounded-lg flex flex-col'>
-                    <TarjetaRuta nombreRuta="Ruta 3" precio={300} inicio="Punto C" tiempo={0.5} distancia={5} dificultad={"zzz"} icono={Humboldt} />
+                    <TarjetaRuta nombreRuta="Ruta 3" precio={300} inicio="Punto C" tiempo={0.5} distancia={5} dificultad={"zzz"} icono="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg" />
                 </div>
                 <div className='p-5 rounded-lg flex flex-col'>
-                    <TarjetaRuta nombreRuta="Ruta 4" precio={400} inicio="Punto D" tiempo={2} distancia={10} dificultad={"gg"} icono={Humboldt} />
+                    <TarjetaRuta nombreRuta="Ruta 4" precio={400} inicio="Punto D" tiempo={2} distancia={10} dificultad={"gg"} icono="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg" />
                 </div>
                 <div className='p-5 rounded-lg flex flex-col'>
-                    <TarjetaRuta nombreRuta="Ruta 5" precio={500} inicio="Punto E" tiempo={3} distancia={15} dificultad={"GG"} icono={Humboldt} />
+                    <TarjetaRuta nombreRuta="Ruta 5" precio={500} inicio="Punto E" tiempo={3} distancia={15} dificultad={"GG"} icono="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg" />
                 </div>
                 <div className='p-5 rounded-lg flex flex-col'>
-                    <TarjetaRuta nombreRuta="Ruta 6" precio={600} inicio="Punto F" tiempo={4} distancia={20} dificultad={"Dios mío"} icono={Humboldt} />
+                    <TarjetaRuta nombreRuta="Ruta 6" precio={600} inicio="Punto F" tiempo={4} distancia={20} dificultad={"Dios mío"} icono="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg" />
                 </div>
                 <div className='p-5 rounded-lg flex flex-col'>
-                    <TarjetaRuta nombreRuta="Ruta 7" precio={600} inicio="Punto G (Quevedo)" tiempo={100} distancia={"∞"} dificultad={"Extreme Demon"} icono={Humboldt} />
+                    <TarjetaRuta nombreRuta="Ruta 7" precio={600} inicio="Punto G (Quevedo)" tiempo={100} distancia={"∞"} dificultad={"Extreme Demon"} icono="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg" />
                 </div>
             </div>
         </div>

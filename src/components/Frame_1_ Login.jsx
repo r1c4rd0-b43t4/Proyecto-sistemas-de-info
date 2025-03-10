@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import BotonPrimario from './BotonPrimario';
-import ImagenAvila from '../assets/Imagen_Avila.svg';
 import Input from "./Input_V1"; 
-import Underline from "../assets/Underline_1.svg"
-import Caracas from "../assets/Caracas.svg";
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { app } from "../../credentials.js" 
+import { app } from "../../credentials.js";
+
 const auth = getAuth(app);
 
 export default function Frame_1_Home() {
@@ -49,7 +47,7 @@ export default function Frame_1_Home() {
                             <span className="text-[#00796B]">Iniciar sesión en </span><span className="text-[#D76411]">Unimetrail</span>
                         </h1>
                         <div className='md:w-full w-1/2'>
-                            <img src={Underline} alt="Underline" className=""/>
+                            <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Underline_1.svg" alt="Underline" className=""/>
                         </div>
                         <div className='space-y-4 md:w-full'>
                             <Input titulo="Correo" placeholder="Ingresa tu correo unimet" type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
@@ -62,12 +60,13 @@ export default function Frame_1_Home() {
                     </p>
                 </div>
                 <div className='hidden md:block'>
-                <img src={ImagenAvila} alt="Fondo montaña" className="absolute bottom-0 right-0 w-1/2 h-full object-cover"/>
+                    <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Imagen_Avila.svg" alt="Fondo montaña" className="absolute bottom-0 right-0 w-1/2 h-full object-cover"/>
                 </div>
                 <div className="md:hidden absolute w-full flex justify-center items-center bottom-0 ">
-                    <img src={Caracas} alt="Avila Background" className="w-full h-auto object-contain" />
+                    <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Caracas.svg" alt="Avila Background" className="w-full h-auto object-contain" />
                 </div>
             </div>
         </div>
     )
 }
+

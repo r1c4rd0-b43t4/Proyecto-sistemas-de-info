@@ -1,12 +1,11 @@
 import React from 'react';
-import Humboldt from '../assets/humboldt.svg';
 import DatosRuta from './DatosRuta';
 import StarRating from './StarRating';
 import BotonPrimario from './BotonPrimario';
 
 const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], nombre, precio, cupos, reviews, startPoint, fecha, descripcion }) => {
   return (
-    <div className="flex relative w-11/12 h-auto p-4 bg-[#F5F5F5] shadow-lg rounded-2xl mx-auto my-4 overflow-hidden my-20">
+    <div className="flex relative w-11/12 h-auto p-4 bg-[#F5F5F5] shadow-lg rounded-2xl mx-auto overflow-hidden my-20">
       <div className="grid gap-5 w-full" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
         <div className="bg-gray-200 flex flex-col items-center justify-center">
           <img src={icono} alt="Producto" className="w-3/4 mb-4" />
@@ -48,11 +47,16 @@ const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], 
 export default VistaDeProducto;
 
 VistaDeProducto.defaultProps = {
-  icono: Humboldt,
+  icono: "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg", 
   dificultad: "Ez",
   distancia: 5,
   duracion: 1,
-  imagenes: [Humboldt, Humboldt, Humboldt, Humboldt],
+  imagenes: [
+    "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg", 
+    "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg", 
+    "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg", 
+    "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg"
+  ],
   nombre: "Ruta Humboldt",
   precio: 100,
   cupos: 10,

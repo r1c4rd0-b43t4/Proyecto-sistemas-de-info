@@ -1,11 +1,6 @@
-
 import BotonFooter from "./BotonFooter";
-import InstagramIcon from '../assets/Instagram.svg';
-import FacebookIcon from '../assets/Facebook.svg';
-import UnimetIcon from '../assets/Logo_unimet.svg';
 
 export default function Footer() {
-    // Importante definir los links de la parte superior e inferior del footer
     const upperLinks = [
         { text: "Contáctanos", link: "#" },
         { text: "Inicio", link: "#" },
@@ -30,17 +25,19 @@ export default function Footer() {
                     </nav>
                     <div className="flex space-x-4 mt-4 md:mt-0">
                         <a href="https://www.facebook.com/ProyectoAvila/" target="_blank" rel="noopener noreferrer" className="text-xl hover:underline">
-                            <img src={FacebookIcon} alt="Facebook" className="w-6 h-6" />
+                            <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Facebook.svg" alt="Facebook" className="w-6 h-6" />
                         </a>
                         <a href="https://www.instagram.com/proyectoavila/" target="_blank" rel="noopener noreferrer" className="text-xl hover:underline">
-                            <img src={InstagramIcon} alt="Instagram" className="w-6 h-6" />
+                            <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Instagram.svg" alt="Instagram" className="w-6 h-6" />
                         </a>
                     </div>
                 </div>
                 <hr className="my-4 border-gray-400 w-full" />
                 <div className="flex flex-col md:flex-row justify-between items-center text-xs w-full">
                     <div className="flex items-center space-x-2">
-                    <a href="https://www.unimet.edu.ve/proyecto-avila/" target="_blank" rel="noopener noreferrer" className="text-xl hover:underline"> <img src={UnimetIcon} alt="Unimet" className="w-12 h-12" /> </a>
+                        <a href="https://www.unimet.edu.ve/proyecto-avila/" target="_blank" rel="noopener noreferrer" className="text-xl hover:underline">
+                            <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Logo_unimet.svg" alt="Unimet" className="w-12 h-12" />
+                        </a>
                         <p>© 2025 UnimeTrail. All rights reserved.</p>
                     </div>
                     <nav className="flex flex-wrap justify-center md:justify-start space-x-6 text-sm mt-4 md:mt-0 mx-auto w-1/2 p-4">

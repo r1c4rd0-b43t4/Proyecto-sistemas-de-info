@@ -2,8 +2,6 @@ import React from "react";
 import { TarjetaRuta } from "./TarjetaRuta";
 import BotonSecundario from "./BotonSecundario";
 import BotonPrimario from "./BotonPrimario";
-import Humboldt from "../assets/Humboldt.svg";
-import Caracas from "../assets/Caracas.svg";
 
 export default function Frame_3_Home() {
     return (
@@ -23,13 +21,13 @@ export default function Frame_3_Home() {
                 <div className='flex justify-center w-full'>
                     <div className='grid gap-10 w-11/12 justify-center' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
                         <div className='p-5 rounded-lg flex flex-col justify-between items-start'>
-                            <TarjetaRuta nombreRuta="Ruta 2" precio={200} inicio="Punto B" tiempo={1} distancia={7} dificultad={"Ez"} icono={Humboldt} />
+                            <TarjetaRuta nombreRuta="Ruta 2" precio={200} inicio="Punto B" tiempo={1} distancia={7} dificultad={"Ez"} icono="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg" />
                         </div>
                         <div className='p-5 rounded-lg flex flex-col items-center'>
-                            <TarjetaRuta nombreRuta="Ruta 3" precio={300} inicio="Punto C" tiempo={0.5} distancia={5} dificultad={"zzz"} icono={Humboldt} />
+                            <TarjetaRuta nombreRuta="Ruta 3" precio={300} inicio="Punto C" tiempo={0.5} distancia={5} dificultad={"zzz"} icono="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg" />
                         </div>
                         <div className='p-5 rounded-lg flex flex-col items-end'>
-                            <TarjetaRuta nombreRuta="Ruta 4" precio={400} inicio="Punto D" tiempo={2} distancia={10} dificultad={"Ez"} icono={Humboldt} />
+                            <TarjetaRuta nombreRuta="Ruta 4" precio={400} inicio="Punto D" tiempo={2} distancia={10} dificultad={"Ez"} icono="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg" />
                         </div>
                     </div>
                 </div>
@@ -37,7 +35,7 @@ export default function Frame_3_Home() {
                     <BotonSecundario text="Ver más" />
                 </div>
                 <div className="w-full mt-6 flex justify-center items-center relative">
-                    <img src={Caracas} alt="Avila Background" className="w-full h-auto object-contain" />
+                    <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Caracas.svg" alt="Avila Background" className="w-full h-auto object-contain" />
                 </div>
             </div>
             <div className="flex justify-center w-full mt-0">

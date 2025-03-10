@@ -1,8 +1,4 @@
 import BotonPrimario from "./BotonPrimario";
-import Mensaje from '../assets/mensaje.svg';
-import Dolar from '../assets/Dolar.svg';
-import Click from '../assets/Click.svg';
-import ImagenJe from '../assets/Imagen_logo_montana.png';
 
 export default function Frame_5_Home() {
   return (
@@ -21,17 +17,17 @@ export default function Frame_5_Home() {
       <div className="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-32 px-8">
         <div className="flex-[1.5] flex flex-col items-center md:items-start gap-12">
           <Feature
-            icon={<img src={Mensaje} alt="Mensaje" className="w-6 h-6" />}
+            icon={<img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Mensaje.svg" alt="Mensaje" className="w-6 h-6" />}
             title="Blogs, Feedbacks y foros"
             description="Junto a nuestra comunidad, comparte tus experiencias con nosotros dentro de los foros de discusión y feedbacks..."
           />
           <Feature
-            icon={<img src={Dolar} alt="Dolar" className="w-6 h-6" />}
+            icon={<img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Dolar.svg" alt="Dolar" className="w-6 h-6" />}
             title="Fácil reserva y Accesibilidad"
             description="Nuestras rutas propuestas fueron diseñadas para hacer de tu viaje estudiante una experiencia accesible..."
           />
           <Feature
-            icon={<img src={Click} alt="Click" className="w-6 h-6" />}
+            icon={<img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Click.svg" alt="Click" className="w-6 h-6" />}
             title="A solo click de una nueva aventura"
             description="¿Qué esperas para hacer una reserva?, inicia sesión en nuestra web y solo con unos pequeños pasos tu reserva estará lista."
           />
@@ -41,7 +37,7 @@ export default function Frame_5_Home() {
         </div>
         <img
           className="hidden md:block flex-1 h-[300px] md:h-[560px] rounded-2xl w-full object-cover"
-          src={ImagenJe} 
+          src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Imagen_logo_montana.png" 
           alt="Unimetrail"
         />
       </div>
