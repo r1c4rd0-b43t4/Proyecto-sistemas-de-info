@@ -21,7 +21,7 @@ export default function Frame_3_Home() {
                     </div>
                 </div>
                 <div className='flex justify-center w-full'>
-                    <div className='grid gap-5 w-full' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+                    <div className='grid gap-30 w-full' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
                         <div className='p-5 rounded-lg flex flex-col justify-between'>
                             <TarjetaRuta nombreRuta="Ruta 2" precio={200} inicio="Punto B" tiempo={1} distancia={7} dificultad={"Ez"} icono={Humboldt} />
                         </div>
@@ -30,9 +30,6 @@ export default function Frame_3_Home() {
                         </div>
                         <div className='p-5 rounded-lg flex flex-col'>
                             <TarjetaRuta nombreRuta="Ruta 4" precio={400} inicio="Punto D" tiempo={2} distancia={10} dificultad={"Ez"} icono={Humboldt} />
-                        </div>
-                        <div className='p-5 rounded-lg flex flex-col'>
-                            <TarjetaRuta nombreRuta="Ruta 5" precio={500} inicio="Punto E" tiempo={3} distancia={15} dificultad={"Ez"} icono={Humboldt} />
                         </div>
                     </div>
                 </div>
