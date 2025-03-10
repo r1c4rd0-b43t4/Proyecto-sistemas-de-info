@@ -1,11 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,use } from "react";
 import { LogoResponsive } from "./Logo_Responsive.jsx";
 import BotonPrimario from "./BotonPrimario.jsx";
 import BotonSecundario from "./BotonSecundario.jsx";
 import Menu from "../assets/Burgermenu.svg";
 import CloseIcon from "../assets/Close.svg";
-
+import { UserContext } from '../Context/UserContext'
+import { getAuth } from "firebase/auth";
+import { app } from "../../credentials";
+const auth = getAuth(app);
 export default function Header_NoSession() {
+
+
+  async function logout() {
+    try {
+      await auth.signOut();
+      console.log("Sesión cerrada");
+    } catch (error) {
+      console.log(error);
+  }}
+
+  const contextuser = use(UserContext)
+
+ const {logged,user} = contextuser
+
+ console.log(user.email)
+
   const [menuOpen, setMenuOpen] = useState(false);
 
   // evitar scroll cuando el menu de hamburguesa estaa abierto
@@ -27,11 +46,15 @@ export default function Header_NoSession() {
         </div>
 
         {/* botones incicio y registro */}
-        <div className="hidden md:flex items-center gap-4">
+    {   !logged && <div className="hidden md:flex items-center gap-4">
           <BotonPrimario text="Iniciar Sesión" to="/login" />
           <BotonSecundario text="Registrarse" to="/register"/>
         </div>
+}
 
+{
+  logged && <>{user.email}   <button onClick={logout}>SignOut</button>  </>
+}
         {/* icono menu hamburguesa */}
         <button className="md:hidden" onClick={() => setMenuOpen(true)}>
           <img src={Menu} alt="Menu" className="w-8 h-8" />

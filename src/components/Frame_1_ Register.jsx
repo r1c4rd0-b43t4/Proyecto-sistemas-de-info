@@ -21,6 +21,7 @@ export default function Frame_1_Home() {
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        console.log("Marico el que lo lea")
 
         try {        
             setLoading(true);
@@ -57,6 +58,8 @@ export default function Frame_1_Home() {
                         <div className="md:w-full w-1/2">
                             <img src={Underline} alt="Underline" className=""/>
                         </div>
+
+                       
                         <div className='space-y-4 md:w-full '>
                             <Input titulo="Nombre" placeholder="Ingresa tu nombre" type="text" name="nombre" value={name} onChange={(e) => setName(e.target.value)}/>
                             <Input titulo="Apellido" placeholder="Ingresa tu apellido" type="text" name="apellido" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
@@ -64,7 +67,9 @@ export default function Frame_1_Home() {
                             <Input titulo="Contraseña" placeholder="Ingresa tu contraseña" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                             <Input titulo="Número celular" placeholder="0412111111" type="tel" name="telefono" value={phone} onChange={(e) => setPhone(e.target.value)}/>
                         </div>
-                        <BotonPrimario text="Registrarse" type="submit" className="mt-4 w-full" /> 
+                        <BotonPrimario text="Registrarse" type="submit" className="mt-4 w-full" to={false}  /> 
+
+                        
                     </form>
                     <p>
                         <span className="text-[#00796B]">¿Ya tienes una cuenta? </span><span className="text-[#005147]"><Link to="/login">Iniciar Sesión</Link></span>
