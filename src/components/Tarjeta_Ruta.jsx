@@ -11,7 +11,6 @@ export const TarjetaRuta = () => {
         <div className="inline-flex flex-col items-start relative">
             <div className="flex flex-col w-[400px] h-[493px] items-start gap-6 p-6 relative bg-grey-20 rounded-[20px] border border-solid border-[#ebebeb]">
                 <div className="relative w-[350px] h-[300px] rounded-[10px] overflow-hidden bg-amber-50 bg-cover bg-[50%_50%]">
-                {/* <div className="relative w-[350px] h-[300px] rounded-[10px] overflow-hidden bg-[url(/activities-image.png)] bg-cover bg-[50%_50%]"> */}
                     <div className="inline-flex items-center gap-2.5 pt-0.5 pb-1 px-2.5 relative top-[260px] left-4 bg-neutral-100 rounded-[40px] backdrop-blur-[50px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(50px)_brightness(100%)]">
                         <div className="relative w-fit mt-[-1.00px] font-text-xs-medium font-[number:var(--text-xs-medium-font-weight)] text-black text-[length:var(--text-xs-medium-font-size)] text-center tracking-[var(--text-xs-medium-letter-spacing)] leading-[var(--text-xs-medium-line-height)] whitespace-nowrap [font-style:var(--text-xs-medium-font-style)]">
                             Fecha:20/04/2025

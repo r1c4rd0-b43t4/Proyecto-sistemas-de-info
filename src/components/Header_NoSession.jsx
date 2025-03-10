@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { LogoResponsive } from "./Logo_Responsive.jsx";
 import BotonPrimario from "./BotonPrimario.jsx";
 import BotonSecundario from "./BotonSecundario.jsx";
-import Menu from "../assets/BurgerMenu.svg";
+import Menu from "../assets/Burgermenu.svg";
 import CloseIcon from "../assets/Close.svg";
 
 export default function Header_NoSession() {
