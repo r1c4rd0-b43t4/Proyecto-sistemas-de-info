@@ -1,7 +1,7 @@
 import React from 'react';
 import BotonPrimario from './BotonPrimario';
 import ImagenAvila from '../assets/Imagen_Avila.svg';
-import Avilabg from "../assets/Avila_bg_f1_h.svg";
+import Avilabg from "../assets/Avila.svg";
 import Location from "../assets/Location_F1.svg";
 import DesignAsset from "../assets/DesignAsset_F1.svg";
 import './Animations.css';
