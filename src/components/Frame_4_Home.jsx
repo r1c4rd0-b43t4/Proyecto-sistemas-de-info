@@ -1,5 +1,5 @@
 import BotonPrimario from "./BotonPrimario";
-import Mensaje from '../assets/Mensaje.svg';
+import Mensaje from '../assets/mensaje.svg';
 import Dolar from '../assets/Dolar.svg';
 import Click from '../assets/Click.svg';
 import ImagenJe from '../assets/Imagen_logo_montana.png';
