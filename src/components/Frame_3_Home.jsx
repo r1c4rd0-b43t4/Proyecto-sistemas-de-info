@@ -12,8 +12,8 @@ export default function Frame_3_Home() {
                 <div className="flex flex-col items-start mb-6 w-full">
                     <div className="flex flex-col">
                         <div className="flex items-center mb-0">
-                            <h1 className="text-5xl font-bold text-green-800 leading-[76px]">Descubre nuestras</h1>
-                            <h1 className="text-5xl font-bold text-orange-500 ml-2 leading-[76px]">rutas</h1>
+                            <h1 className="text-5xl font-bold text-[#00796B] leading-[76px]">Descubre nuestras</h1>
+                            <h1 className="text-5xl font-bold text-[#D76411] ml-2 leading-[76px]">rutas</h1>
                         </div>
                         <div className="mt-4">
                             <p className="text-lg text-gray-700">Explora nuevas aventuras y descubre rutas inolvidables.</p>
