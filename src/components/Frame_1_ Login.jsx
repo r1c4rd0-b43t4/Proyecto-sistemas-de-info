@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import BotonPrimario from './BotonPrimario';
 import Input from "./Input_V1"; 
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { GoogleAuthProvider, getAuth, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { app } from "../../credentials.js";
 import Loader from "../loader/Loader.jsx"
-
+import { getFirestore } from 'firebase/firestore';
 const auth = getAuth(app);
 
 export default function Frame_1_Home() {
@@ -37,6 +37,20 @@ export default function Frame_1_Home() {
         }
     }
 
+    const registerWithGoogle = async () => {
+
+        try {
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            console.log(user)
+            navigate("/")
+            
+        } catch (error) {
+            
+        }
+    }
+
     return (
         <div className='relative w-screen h-screen flex pt-5'>
             {loading && <Loader/>}
@@ -55,7 +69,10 @@ export default function Frame_1_Home() {
                             <Input titulo="Contraseña" placeholder="Ingresa tu contraseña" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         <BotonPrimario text="Iniciar sesión" type="submit" className="mt-4 w-full"/> 
+                        
                     </form>
+
+                    <button onClick={registerWithGoogle} >Iniciar Sesión con google</button>
                     <p>
                         <span className="text-[#00796B]">¿No tienes una cuenta? </span><span className="text-[#005147]"><Link to="/register">Registrarse </Link></span>
                     </p>
