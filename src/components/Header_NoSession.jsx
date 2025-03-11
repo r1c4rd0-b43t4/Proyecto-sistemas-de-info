@@ -5,6 +5,7 @@ import BotonSecundario from "./BotonSecundario.jsx";
 import { UserContext } from '../Context/UserContext';
 import { getAuth } from "firebase/auth";
 import { app } from "../../credentials";
+import { Link } from 'react-router';
 
 const auth = getAuth(app);
 
@@ -81,7 +82,8 @@ export default function Header_NoSession() {
 function NavLinks({ className }) {
   return (
     <div className={`flex items-center gap-2 text-[#00796b] ${className}`}>
-      <button className="hover:text-teal-600 active:text-teal-800 text-lg">Rutas</button>
+
+      <Link to='/rutas' className="hover:text-teal-600 active:text-teal-800 text-lg">Rutas</Link>
       <span className="border-l border-gray-300 h-5 mx-2"></span>
       <button className="hover:text-teal-600 active:text-teal-800 text-lg">Galería</button>
       <span className="border-l border-gray-300 h-5 mx-2"></span>

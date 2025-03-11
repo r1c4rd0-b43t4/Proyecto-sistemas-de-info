@@ -20,7 +20,7 @@ export default function Frame_2_Home() {
               La plataforma se dedica a facilitar a los estudiantes de la Universidad Metropolitana una manera de aventurarse por el Ávila de forma segura con guías preparados.
             </p>
             <div className='w-full h-auto flex justify-center md:justify-end mt-5'>
-              <BotonPrimario text='Descubre' />
+              <BotonPrimario text='Descubre' to="/rutas" />
             </div>
           </div>
         </div>

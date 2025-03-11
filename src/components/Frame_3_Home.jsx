@@ -1,9 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import { TarjetaRuta } from "./TarjetaRuta";
 import BotonSecundario from "./BotonSecundario";
 import BotonPrimario from "./BotonPrimario";
+import { doc, getDocs, getFirestore, collection } from "firebase/firestore";
+import { app } from '../../credentials';
 
 export default function Frame_3_Home() {
+      const [rutas, setRutas] = useState([]);
+      const db = getFirestore(app);
+      const tres_rutas = rutas.slice(0,3)
+    
+      async function getRutas() {
+        const usersCollectionRef = collection(db, 'Rutas');
+        const querySnapshot = await getDocs(usersCollectionRef);
+        const usersList = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setRutas(usersList);
+      }
+    
+      useEffect(() => {
+        getRutas();
+      }, []);
+
+
     return (
         <div className="w-screen h-full bg-white text-black">
             <div className="px-5 py-20 flex flex-col justify-start items-start h-full w-screen gap-2">
@@ -19,20 +40,25 @@ export default function Frame_3_Home() {
                     </div>
                 </div>
                 <div className='flex justify-center w-full'>
-                    <div className='grid gap-10 w-11/12 justify-center' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
-                        <div className='p-5 rounded-lg flex flex-col justify-between items-start'>
-                            <TarjetaRuta nombreRuta="Ruta 2" precio={200} inicio="Punto B" tiempo={1} distancia={7} dificultad={"Ez"} icono="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg" />
-                        </div>
-                        <div className='p-5 rounded-lg flex flex-col items-center'>
-                            <TarjetaRuta nombreRuta="Ruta 3" precio={300} inicio="Punto C" tiempo={0.5} distancia={5} dificultad={"zzz"} icono="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg" />
-                        </div>
-                        <div className='p-5 rounded-lg flex flex-col items-end'>
-                            <TarjetaRuta nombreRuta="Ruta 4" precio={400} inicio="Punto D" tiempo={2} distancia={10} dificultad={"Ez"} icono="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg" />
-                        </div>
-                    </div>
+                    
+                <div className='grid gap-10 w-11/12 justify-center' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
+                    {tres_rutas.map(tres_rutas => (
+                      <div key={tres_rutas.id} className='p-5 rounded-lg flex flex-col justify-between'>
+                        <TarjetaRuta
+                          nombreRuta={tres_rutas.name}
+                          precio={tres_rutas.price}
+                          inicio={tres_rutas.start_point}
+                          tiempo={tres_rutas.duration}
+                          distancia={tres_rutas.distance}
+                          dificultad={tres_rutas.difficulty}
+                          icono={tres_rutas.image}
+                        />
+                      </div>
+                    ))}
+                </div>
                 </div>
                 <div className="flex justify-center w-full mt-6">
-                    <BotonSecundario text="Ver más" />
+                    <BotonSecundario text="Ver más" to="/rutas" />
                 </div>
                 <div className="w-full mt-6 flex justify-center items-center relative">
                     <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Caracas.svg" alt="Avila Background" className="w-full h-auto object-contain" />

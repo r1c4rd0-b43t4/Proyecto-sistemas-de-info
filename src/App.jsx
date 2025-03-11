@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'	
 import NotFound from './pages/NotFound'
+import Rutas from './pages/Rutas'
 
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
         <Route path="/" element={< Home />} />
         <Route path="login" element={< Login />} />
         <Route path="register" element={< Register />} />
+        <Route path="rutas" element={< Rutas />} />
         <Route path="*" element={< NotFound />} />
       </Routes>
     </BrowserRouter>

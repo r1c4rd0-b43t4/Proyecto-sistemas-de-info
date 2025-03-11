@@ -4,6 +4,7 @@ import BotonPrimario from './BotonPrimario';
 import Input from "./Input_V1"; 
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { app } from "../../credentials.js";
+import Loader from "../loader/Loader.jsx"
 
 const auth = getAuth(app);
 
@@ -38,7 +39,7 @@ export default function Frame_1_Home() {
 
     return (
         <div className='relative w-screen h-screen flex pt-5'>
-            {loading && <div className="">Cargando...</div>}
+            {loading && <Loader/>}
             {error && <div className="">Error: {error}</div>}
             <div className="flex justify-center items-center h-full w-full lg:w-1/2">
                 <div className="flex justify-center items-center flex-col space-y-8">

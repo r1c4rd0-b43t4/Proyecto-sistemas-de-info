@@ -32,7 +32,7 @@ export default function Frame_5_Home() {
             description="¿Qué esperas para hacer una reserva?, inicia sesión en nuestra web y solo con unos pequeños pasos tu reserva estará lista."
           />
           <div className="w-full flex justify-center">
-            <BotonPrimario text="Iniciar sesión" />
+            <BotonPrimario text="Iniciar sesión" to="/login"/>
           </div>
         </div>
         <img

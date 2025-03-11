@@ -5,6 +5,13 @@ import BotonPrimario from "./BotonPrimario";
 
 export function TarjetaRuta({ nombreRuta, precio, inicio, tiempo, distancia, dificultad, icono }) {
     return (
+
+
+        <div className='p-5 rounded-lg flex flex-col justify-between'>
+
+
+
+
         <article className=" flex relative w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl h-auto p-4 bg-[#F5F5F5] shadow-lg rounded-2xl">
             <div className="relative w-full h-full flex flex-col items-center">
                 <header className="absolute top-0 w-full flex justify-center mt-13 z-10">
@@ -39,5 +46,6 @@ export function TarjetaRuta({ nombreRuta, precio, inicio, tiempo, distancia, dif
                 </div>
             </div>
         </article>
+        </div>
     );
 }

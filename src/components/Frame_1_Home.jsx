@@ -11,7 +11,7 @@ export default function Frame_1_Home() {
                     <span style={{ color: '#00796B' }}>Bienvenido a</span> <span style={{ color: '#D76411' }}>Unimetrail</span>
                 </h1>
                 <p className="text-lg md:text-xl text-[#2A8F84] mb-5">Para aquellos estudiantes de la Unimet que desean descubrir nuevas formas de reconectar con el senderismo.</p>
-                <BotonPrimario text="Descubre"/>
+                <BotonPrimario text="Descubre" to="/rutas"/>
             </div>
             
             {/* Avila de fondo cuando son dispositivos medianos o pequenos */}
