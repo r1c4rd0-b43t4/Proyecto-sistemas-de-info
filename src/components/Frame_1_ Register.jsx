@@ -60,9 +60,9 @@ export default function Frame_1_Home() {
     return (
         <div className='relative w-screen h-screen flex pt-5' >
             {loading && <Loader/>}
-            {error && <div className="">Error: {error}</div>}
             <div className="flex justify-center items-center h-full w-full lg:w-1/2 ">
                 <div className="flex justify-center items-center flex-col space-y-3  ">
+                {error && <div className="text-black">Error: {error}</div>} 
                     <form onSubmit={handleRegister} className="flex justify-center items-center flex-col space-y-5 pt-6 ">
                         <h1 className="md:text-4xl font-bold text-2xl">
                             <span className="text-[#00796B]">Registrarse en </span><span className="text-[#D76411]">Unimetrail</span>
