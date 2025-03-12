@@ -85,11 +85,11 @@ function NavLinks({ className }) {
 
       <Link to='/rutas' className="hover:text-teal-600 active:text-teal-800 text-lg">Rutas</Link>
       <span className="border-l border-gray-300 h-5 mx-2"></span>
-      <button className="hover:text-teal-600 active:text-teal-800 text-lg">Galería</button>
+      <Link to="*" className="hover:text-teal-600 active:text-teal-800 text-lg">Galería</Link>
       <span className="border-l border-gray-300 h-5 mx-2"></span>
-      <button className="hover:text-teal-600 active:text-teal-800 text-lg">Reseñas</button>
+      <Link to="*" className="hover:text-teal-600 active:text-teal-800 text-lg">Reseñas</Link>
       <span className="border-l border-gray-300 h-5 mx-2"></span>
-      <button className="hover:text-teal-600 active:text-teal-800 text-lg">Blogs</button>
+      <Link to="*" className="hover:text-teal-600 active:text-teal-800 text-lg">Blogs</Link>
     </div>
   );
 }

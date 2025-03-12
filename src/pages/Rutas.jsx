@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 
 
 
-export default function Home() {
+export default function Rutas() {
   return (
     <div className='container'>
       <Header_NoSession/>
