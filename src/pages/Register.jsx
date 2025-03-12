@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import Frame_1_Register from '../components/Frame_1_ Register.jsx';
 
 
-export default function Home() {
+export default function Register() {
   return (
     <div className='container'>
       <Header_NoSession/>
