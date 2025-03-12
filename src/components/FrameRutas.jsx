@@ -5,6 +5,7 @@ import { app } from '../../credentials';
 
 const FrameRutas = () => {
   const [rutas, setRutas] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const db = getFirestore(app);
 
   async function getRutas() {
@@ -21,11 +22,15 @@ const FrameRutas = () => {
     getRutas();
   }, []);
 
+  const filteredRutas = rutas.filter(ruta =>
+    ruta.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className='w-screen h-full'>
-      <div className='md:px-20  pt-0 px-5 flex align-middle items-center bg-[#F7F7F8] w-screen md:h-screen'>
+      <div className='md:px-20 pt-0 px-5 flex align-middle items-center bg-[#F7F7F8] w-screen md:h-screen'>
         <div className='md:w-full md:pt-0 h-fit w-screen justify-left pt-20'>
-          <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Humboldt_rutas.svg" alt="humboldt_rutas" className='object-fill w-full  md:h-120'/>
+          <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Humboldt_rutas.svg" alt="humboldt_rutas" className='object-fill w-full md:h-120' />
           <p className='relative md:bottom-14 bottom-5 left-0 md:text-3xl text-sm text-teal-600'>Explora el Ávila</p>
           <h1 className='md:text-9xl text-5xl font-bold'> <span className='text-teal-600'>Rutas</span> <span className='text-[#D76411]'>Unimetrail</span></h1>
         </div>
@@ -39,11 +44,13 @@ const FrameRutas = () => {
           type="text"
           placeholder="Buscar rutas..."
           className="w-1/2 p-2 border border-gray-300 rounded-lg"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
       <div className='flex justify-center w-full md:px-10 md:py-20'>
         <div className='grid gap-5 w-full' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
-          {rutas.map(ruta => (
+          {filteredRutas.map(ruta => (
             <div key={ruta.id} className='p-5 rounded-lg flex flex-col justify-between'>
               <TarjetaRuta
                 nombreRuta={ruta.name}
