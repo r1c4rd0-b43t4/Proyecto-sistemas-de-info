@@ -50,19 +50,25 @@ const FrameRutas = () => {
       </div>
       <div className='flex justify-center w-full md:px-10 md:py-20'>
         <div className='grid gap-5 w-full' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
-          {filteredRutas.map(ruta => (
-            <div key={ruta.id} className='p-5 rounded-lg flex flex-col justify-between'>
-              <TarjetaRuta
-                nombreRuta={ruta.name}
-                precio={ruta.price}
-                inicio={ruta.start_point}
-                tiempo={ruta.duration}
-                distancia={ruta.distance}
-                dificultad={ruta.difficulty}
-                icono={ruta.image}
-              />
+          {filteredRutas.length > 0 ? (
+            filteredRutas.map(ruta => (
+              <div key={ruta.id} className='p-5 rounded-lg flex flex-col justify-between'>
+                <TarjetaRuta
+                  nombreRuta={ruta.name}
+                  precio={ruta.price}
+                  inicio={ruta.start_point}
+                  tiempo={ruta.duration}
+                  distancia={ruta.distance}
+                  dificultad={ruta.difficulty}
+                  icono={ruta.image}
+                />
+              </div>
+            ))
+          ) : (
+            <div className='text-center col-span-full shadow-lg p-5 rounded-lg mx-70 border-3 border-[#00796B]'>
+              <p className='text-5xl font-bold break-words text-[#D76411]'>Ruta no encontrada</p>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>
