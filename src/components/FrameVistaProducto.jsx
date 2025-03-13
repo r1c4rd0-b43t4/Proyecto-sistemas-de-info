@@ -1,3 +1,4 @@
+//esto NO sirve pero no lo quiero borrar por si acaso
 import React from 'react';
 import StarRating from './StarRating';
 import BotonPrimario from './BotonPrimario';

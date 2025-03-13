@@ -26,3 +26,10 @@ const TarjetaBlog = ({ imagen, titulo, descripcion, perfilImagen, nombreUsuario,
 };
 
 export default TarjetaBlog;
+
+TarjetaBlog.defaultProps = {
+  imagen: "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Blogs//Humboldt.svg",
+  titulo: "Ruta Humboldt",
+  descripcion: "La Ruta Humboldt es una de las más conocidas y visitadas del Ávila. Con una duración de 5 horas, es ideal para aquellos que buscan una experiencia corta pero intensa.",
+  perfilImagen: "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Perfiles//Humboldt.svg",  
+}
