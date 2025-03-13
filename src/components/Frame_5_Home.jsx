@@ -3,7 +3,7 @@ import TarjetaGuia from "./TarjetaGuia";
 
 export default function Frame_5_Home() {
     return (
-        <div className="min-h-screen w-screen flex flex-col justify-start items-center bg-[#f3f3f3] overflow-hidden pb-15">
+        <div className="min-h-screen w-screen flex flex-col justify-start items-center bg-[#f3f3f3] overflow-hidden ">
             {/* Título y descripción */}
             <div className="w-full flex flex-col justify-start items-center gap-8 md:gap-16 py-12 md:py-24">
                 <div className="w-full flex justify-center items-start">
@@ -52,6 +52,7 @@ export default function Frame_5_Home() {
                     />
                 </div>
             </div>
+            <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Avila_Vector_BG.svg" alt="Vector_Avila_SVG" className="relative w-screen bottom-0" />
         </div>
     );
 }

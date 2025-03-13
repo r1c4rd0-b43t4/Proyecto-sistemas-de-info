@@ -30,18 +30,21 @@ const FrameRutas = () => {
           <h1 className='md:text-9xl text-5xl font-bold'> <span className='text-teal-600'>Rutas</span> <span className='text-[#D76411]'>Unimetrail</span></h1>
         </div>
       </div>
-      <div className='text-center mb-8 pt-20 space-y-5'>
-        <h1 className='text-5xl font-bold break-words text-teal-600'>Nuevas Aventuras</h1>
-        <h3 className='text-4xl break-words text-teal-600'>Explora nuestras rutas</h3>
+      <div className='bg-[url(https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Avila_Vector_BG.svg)] mt-10 bg-contain bg-no-repeat bg-center '>
+        <div className='text-center mb-8 pt-20 space-y-5'>
+          <h1 className='text-5xl font-bold break-words text-teal-600'>Nuevas Aventuras</h1>
+          <h3 className='text-4xl break-words text-teal-600'>Explora nuestras rutas</h3>
+        </div>
+        <div className='flex justify-center align-middle w-screen h-fill '>
+          <input
+            type="text"
+            placeholder="Buscar rutas..."
+            className="w-1/2 p-2 border border-gray-300 rounded-lg bg-white"
+          />
       </div>
-      <div className='flex justify-center mb-8'>
-        <input
-          type="text"
-          placeholder="Buscar rutas..."
-          className="w-1/2 p-2 border border-gray-300 rounded-lg"
-        />
       </div>
-      <div className='flex justify-center w-full md:px-10 md:py-20'>
+
+      <div className='flex justify-center w-full md:px-10 md:py-10'>
         <div className='grid gap-5 w-full' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
           {rutas.map(ruta => (
             <div key={ruta.id} className='p-5 rounded-lg flex flex-col justify-between'>
