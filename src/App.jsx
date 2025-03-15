@@ -8,10 +8,9 @@ import Rutas from './pages/Rutas'
 import Galeria from './pages/Galeria'
 import EditUser from './pages/EditUser'
 import { AuthProvider } from './context/AuthContext'
-import { AdminRoute, GuiaRoute, ClienteRoute } from './components/ProtectedRoutes'
-import AdminDashboard from './components/AdminDashboard'
-import GuiaDashboard from './components/GuiaDashboard'
-import ClienteDashboard from './components/ClienteDashboard'
+import { AdminRoute, GuiaRoute } from './components/ProtectedRoutes'
+import AdminDashboard from './pages/dashboards/AdminDashboard'
+import GuiaDashboard from './pages/dashboards/GuiaDashboard'
 
 export default function App() {
   return (
@@ -41,15 +40,6 @@ export default function App() {
               <GuiaRoute>
                 <GuiaDashboard />
               </GuiaRoute>
-            } 
-          />
-          
-          <Route 
-            path="/cliente/*" 
-            element={
-              <ClienteRoute>
-                <ClienteDashboard />
-              </ClienteRoute>
             } 
           />
         </Routes>

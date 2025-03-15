@@ -6,6 +6,7 @@ import { GoogleAuthProvider, getAuth, signInWithEmailAndPassword, signInWithPopu
 import { app } from "../../credentials.js";
 import Loader from "../loader/Loader.jsx"
 import { getFirestore } from 'firebase/firestore';
+import BotonGoogle from './BotonGoogle';
 const auth = getAuth(app);
 
 export default function Frame_1_Home() {
@@ -13,7 +14,7 @@ export default function Frame_1_Home() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -69,11 +70,14 @@ export default function Frame_1_Home() {
                             <Input titulo="Correo" placeholder="Ingresa tu correo unimet" type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                             <Input titulo="Contraseña" placeholder="Ingresa tu contraseña" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         </div>
-                        <BotonPrimario text="Iniciar sesión" type="submit" className="mt-4 w-full"/> 
+                        <BotonPrimario text="Iniciar sesión" type="submit" className="mt-4 w-full" /> 
                         
                     </form>
 
-                    <button onClick={registerWithGoogle} >Iniciar Sesión con google</button>
+                    <BotonGoogle
+                        text="Iniciar sesión con Google"
+                        onClick={registerWithGoogle}
+                    />
                     <p>
                         <span className="text-[#00796B]">¿No tienes una cuenta? </span><span className="text-[#005147]"><Link to="/register">Registrarse </Link></span>
                     </p>

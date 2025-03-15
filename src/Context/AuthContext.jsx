@@ -21,11 +21,22 @@ export function AuthProvider({ children }) {
         const userData = userDoc.data();
         
         setUser(user);
-        setRole(userData?.role || 'cliente'); // Por defecto es cliente
+        setRole(userData?.role || 'cliente');
+        
+        // Redirección basada en rol solo en la ruta /login
+        if (window.location.pathname === '/login') {
+          if (userData?.role === 'admin') {
+            navigate('/admin/dashboard');
+          } else if (userData?.role === 'guia') {
+            navigate('/guia/dashboard');
+          } else {
+            // Si es cliente, simplemente navega al home
+            navigate('/');
+          }
+        }
       } else {
         setUser(null);
         setRole(null);
-        navigate('/login');
       }
       setLoading(false);
     });
