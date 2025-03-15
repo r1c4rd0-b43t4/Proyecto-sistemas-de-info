@@ -85,7 +85,7 @@ function NavLinks({ className }) {
 
       <Link to='/rutas' className="hover:text-teal-600 active:text-teal-800 text-lg">Rutas</Link>
       <span className="border-l border-gray-300 h-5 mx-2"></span>
-      <Link to="*" className="hover:text-teal-600 active:text-teal-800 text-lg">Galería</Link>
+      <Link to="/galeria" className="hover:text-teal-600 active:text-teal-800 text-lg">Galería</Link>
       <span className="border-l border-gray-300 h-5 mx-2"></span>
       <Link to="*" className="hover:text-teal-600 active:text-teal-800 text-lg">Reseñas</Link>
       <span className="border-l border-gray-300 h-5 mx-2"></span>
