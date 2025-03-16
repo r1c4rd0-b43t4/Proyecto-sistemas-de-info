@@ -1,14 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { getAuth } from 'firebase/auth';
 import { useNavigate } from 'react-router';
 import BotonPrimario from '../../components/BotonPrimario';
+import { GuiaRutas } from '../components/GuiaRutas';
 
 export default function GuiaDashboard() {
   const [activeTab, setActiveTab] = useState('misRutas');
   const { user } = useAuth();
   const navigate = useNavigate();
   const auth = getAuth();
+  const [rutas, setRutas] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleLogout = async () => {
     try {
@@ -18,6 +21,23 @@ export default function GuiaDashboard() {
       console.error('Error al cerrar sesión:', error);
     }
   };
+
+  useEffect(() => {
+    // Aquí deberías hacer la llamada a tu API para obtener las rutas del guía
+    const obtenerRutas = async () => {
+      try {
+        // Llamada a tu API
+        // const response = await fetchRutasGuia();
+        // setRutas(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error al obtener rutas:', error);
+        setLoading(false);
+      }
+    };
+
+    obtenerRutas();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -77,9 +97,17 @@ export default function GuiaDashboard() {
 
         {/* Contenido basado en el tab activo */}
         <div className="mt-6">
-
           {activeTab === 'galeria' && <GuiaGaleria />}
           {activeTab === 'blogs' && <GuiaBlogs />}
+          {activeTab === 'misRutas' && (
+            loading ? (
+              <div className="text-center">
+                <p>Cargando rutas...</p>
+              </div>
+            ) : (
+              <GuiaRutas rutas={rutas} />
+            )
+          )}
         </div>
       </div>
     </div>
