@@ -1,7 +1,8 @@
 import React from "react";
+import { Link } from "react-router";
 
 export default function BotonFooter({ text , link }) {
   return (
-     <a href = {link}className="px-4 py-2 text-white rounded hover:underline active:underline whitespace-nowrap">{text}</a>
+     <Link to = {link}className="px-4 py-2 text-white rounded hover:underline active:underline whitespace-nowrap">{text}</Link>
   );
 }

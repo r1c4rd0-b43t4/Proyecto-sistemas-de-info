@@ -6,6 +6,7 @@ import Register from './pages/Register'
 import NotFound from './pages/NotFound'
 import Rutas from './pages/Rutas'
 import Galeria from './pages/Galeria'
+import Contacto from './pages/Contacto'
 
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="rutas" element={< Rutas />} />
         <Route path="*" element={< NotFound />} />
         <Route path="galeria" element={< Galeria />} />
+        <Route path="contacto" element={< Contacto />}/>
       </Routes>
     </BrowserRouter>
   )
