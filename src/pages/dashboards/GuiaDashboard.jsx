@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { getAuth } from 'firebase/auth';
 import { useNavigate } from 'react-router';
 import BotonPrimario from '../../components/BotonPrimario';
-import { GuiaRutas } from '../components/GuiaRutas';
+import GuiaRutas  from '../../components/GuiaRutas';
 
 export default function GuiaDashboard() {
   const [activeTab, setActiveTab] = useState('misRutas');
