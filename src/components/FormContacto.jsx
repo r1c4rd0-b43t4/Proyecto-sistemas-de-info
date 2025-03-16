@@ -22,6 +22,7 @@ const ContactForm = () => {
                   Nombre
                 </label>
                 <input
+                  id="nombre"
                   className="w-full px-3 py-3 bg-white rounded-lg text-stone-500 text-base"
                   placeholder="Nombre"
                 />
@@ -31,6 +32,7 @@ const ContactForm = () => {
                   Apellido
                 </label>
                 <input
+                  id="apellido"
                   className="w-full px-3 py-3 bg-white rounded-lg text-stone-500 text-base"
                   placeholder="Apellido"
                 />
@@ -41,6 +43,7 @@ const ContactForm = () => {
                 E-mail
               </label>
               <input
+                id="email"
                 className="w-full px-3 py-3 bg-white rounded-lg text-stone-500 text-base"
                 placeholder="@ejemplo.com"
               />
@@ -50,6 +53,7 @@ const ContactForm = () => {
                 Teléfono
               </label>
               <input
+                id="telefono"
                 className="w-full px-3 py-3 bg-white rounded-lg text-stone-500 text-base"
                 placeholder="+58 412 1234567"
               />
@@ -58,7 +62,10 @@ const ContactForm = () => {
               <label className="text-neutral-700 text-sm font-semibold">
                 Título
               </label>
-              <select className="w-full px-3 py-3 bg-white rounded-lg text-stone-500 text-base">
+              <select
+                id="titulo"
+                className="w-full px-3 py-3 bg-white rounded-lg text-stone-500 text-base"
+              >
                 <option>Titulo del mensaje</option>
               </select>
             </div>
@@ -67,13 +74,28 @@ const ContactForm = () => {
                 Mensaje
               </label>
               <textarea
+                id="mensaje"
                 className="w-full px-3 py-3 bg-white rounded-lg text-stone-500 text-base h-28"
                 placeholder="Dejanos un mensaje..."
               ></textarea>
             </div>
           </div>
 
-          <button className="w-full md:w-auto px-6 py-3 bg-teal-700 text-neutral-50 text-lg md:text-xl font-medium rounded-full shadow-md hover:bg-teal-800 transition-all">
+          <button
+            className="w-full md:w-auto px-6 py-3 bg-teal-700 text-neutral-50 text-lg md:text-xl font-medium rounded-full shadow-md hover:bg-teal-800 transition-all"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = `mailto:support@unimetrail.com?subject=${encodeURIComponent(
+                "Consulta desde el formulario de contacto"
+              )}&body=${encodeURIComponent(
+                `Nombre: ${document.getElementById("nombre").value}\nApellido: ${document.getElementById("apellido").value}\nE-mail: ${document.getElementById("email").value}\nTeléfono: ${document.getElementById(
+                  "telefono"
+                ).value}\nTítulo: ${document.getElementById("titulo").value}\nMensaje: ${document.getElementById(
+                  "mensaje"
+                ).value}`
+              )}`;
+            }}
+          >
             Enviar mensaje
           </button>
         </div>
