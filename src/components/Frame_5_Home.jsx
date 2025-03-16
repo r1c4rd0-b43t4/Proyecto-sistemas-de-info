@@ -25,29 +25,29 @@ export default function Frame_5_Home() {
                     {/* La idea es hacer que estas tarjetas se vinculen despues con los guias que esten disponibles */}
                     {/* Tarjeta 1 */}
                     <TarjetaGuia
-                        imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWyPpYhuEB2_qJxxpj2Mf12AGoJvqy92ta-w&s"
-                        nombre="Aquiles Castro"
+                        imagen="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Miguel_Moreno.png"
+                        nombre="Miguel Moreno"
                         rol="Experto en senderismo"
                     />
 
                     {/* Tarjeta 2 */}
                     <TarjetaGuia
-                        imagen="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Cosplay_of_Filthy_Frank%2C_Anime_Central%2C_2017_%2833992932604%29.jpg/1200px-Cosplay_of_Filthy_Frank%2C_Anime_Central%2C_2017_%2833992932604%29.jpg"
-                        nombre="Jose Perez"
+                        imagen="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Nohemi_Rangel.png"
+                        nombre="Nohemi Rangel"
                         rol="Amante de la naturaleza"
                     />
 
                     {/* Tarjeta 3 */}
                     <TarjetaGuia
-                        imagen="https://media.istockphoto.com/id/536017655/photo/young-woman-showing-her-drivers-license.jpg?s=612x612&w=0&k=20&c=yeFiPCgzKy7asPgottuiq7sY4PVfs_kWsVnpIx2z-Uk="
-                        nombre="Elsa Pato"
+                        imagen="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Javier_Tovar.png"
+                        nombre="Javier Tovar"
                         rol="Experto en supervivencia"
                     />
 
                     {/* Tarjeta 4 */}
                     <TarjetaGuia
-                        imagen="https://cf-st.sc-cdn.net/d/Gkgfoz235J69zIWFXh4cm.256.IRZXSOY?mo=GkcaDRoAGgAyAQRIAlAuYAFaEERmTGFyZ2VUaHVtYm5haWyiARAIgAIiCxIAKgdJUlpYU09ZogEQCJoKIgsSACoHSVJaWFNPWQ%3D%3D&uc=46"
-                        nombre="Elvis Tek"
+                        imagen="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Elena_Sanchez.png"
+                        nombre="Elena Sanchez"
                         rol="Montañista excepcional"
                     />
                 </div>

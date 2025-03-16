@@ -13,6 +13,7 @@ import GuiaDashboard from './pages/dashboards/GuiaDashboard'
 import { AuthProvider } from './context/AuthContext'
 import ClienteRutasAdquiridas from './pages/dashboards/ClienteRutasAdquiridas'
 import Contacto from './pages/Contacto'
+import Blogs from './pages/Blogs'
 
 export default function App() {
   console.log('hola')
@@ -29,7 +30,7 @@ export default function App() {
           <Route path="edit-user" element={< EditUser />} />
           <Route path="VerRutasAd" element={< ClienteRutasAdquiridas />} />
           <Route path="contacto" element={< Contacto />} />
-          
+          <Route path="blogs" element={< Blogs />} />
           <Route 
             path="/admin/*" 
             element={

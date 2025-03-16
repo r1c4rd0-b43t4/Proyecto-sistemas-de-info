@@ -29,7 +29,7 @@ const Loader = ({ message = "Cargando..." }) => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-full h-full bg-gray-700 bg-opacity-50 flex justify-center items-center z-50">
+      <div className="fixed top-0 left-0 w-full h-full bg-white bg-opacity-50 flex justify-center items-center z-50">
         <div className="relative lg:w-48 lg:h-48 w-20 h-20 mx-6 ">
           {" "}
           {/* Ajusta el tamaño según sea necesario */}
@@ -49,10 +49,10 @@ const Loader = ({ message = "Cargando..." }) => {
           ))}
         </div>
         <div className="flex flex-col ">
-          <p className="lg:text-5xl text-3xl text-white font-bold animate-bounce animate-infinite  mt-14">
+          <p className="lg:text-5xl text-3xl text-black font-bold animate-bounce animate-infinite  mt-14">
             {message}
           </p>
-          <p className="mt-5 lg:text-xl font-semibold text-white text-md animate-pulse animate-infinite ">
+          <p className="mt-5 lg:text-xl font-semibold text-black text-md animate-pulse animate-infinite ">
             Porfavor espere un momento...
           </p>
         </div>
