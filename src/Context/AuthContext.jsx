@@ -3,7 +3,9 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router';
 
-export const AuthContext = createContext();
+
+export const AuthContext = createContext(null);
+
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -16,6 +18,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        console.log('esclavo de la qk pero no de quien la porta', user);
         // Obtener datos adicionales del usuario de Firestore
         const userDoc = await getDoc(doc(db, 'usuarios', user.uid));
         const userData = userDoc.data();
@@ -24,6 +27,7 @@ export function AuthProvider({ children }) {
         setRole(userData?.role || 'cliente');
         
         // Redirección basada en rol solo en la ruta /login
+
         if (window.location.pathname === '/login') {
           if (userData?.role === 'admin') {
             navigate('/admin/dashboard');
@@ -51,9 +55,9 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext value={value}>
       {!loading && children}
-    </AuthContext.Provider>
+    </AuthContext>
   );
 }
 

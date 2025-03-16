@@ -7,12 +7,14 @@ import NotFound from './pages/NotFound'
 import Rutas from './pages/Rutas'
 import Galeria from './pages/Galeria'
 import EditUser from './pages/EditUser'
-import { AuthProvider } from './context/AuthContext'
 import { AdminRoute, GuiaRoute } from './components/ProtectedRoutes'
 import AdminDashboard from './pages/dashboards/AdminDashboard'
 import GuiaDashboard from './pages/dashboards/GuiaDashboard'
+import { AuthProvider } from './context/AuthContext'
+import ClienteRutasAdquiridas from './pages/dashboards/ClienteRutasAdquiridas'
 
 export default function App() {
+  console.log('hola')
   return (
     <Router>
       <AuthProvider>
@@ -23,7 +25,8 @@ export default function App() {
           <Route path="rutas" element={< Rutas />} />
           <Route path="*" element={< NotFound />} />
           <Route path="galeria" element={< Galeria />} />
-          <Route path="edit-profile" element={< EditUser />} />
+          <Route path="edit-user" element={< EditUser />} />
+          <Route path="VerRutasAd" element={< ClienteRutasAdquiridas />} />
           
           <Route 
             path="/admin/*" 
@@ -43,7 +46,7 @@ export default function App() {
             } 
           />
         </Routes>
-      </AuthProvider>
+        </AuthProvider>
     </Router>
   )
 }

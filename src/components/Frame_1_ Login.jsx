@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,use } from 'react';
 import { Link, useNavigate } from 'react-router';
 import BotonPrimario from './BotonPrimario';
 import Input from "./Input_V1"; 
@@ -7,10 +7,18 @@ import { app } from "../../credentials.js";
 import Loader from "../loader/Loader.jsx"
 import { getFirestore } from 'firebase/firestore';
 import BotonGoogle from './BotonGoogle';
+import { UserContext } from '../Context/UserContext.jsx';
 const auth = getAuth(app);
-
+const db = getFirestore(app);
 export default function Frame_1_Home() {
     const navigate = useNavigate();
+
+
+
+
+
+
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -24,7 +32,15 @@ export default function Frame_1_Home() {
             const user = await signInWithEmailAndPassword(auth, email, password)
             console.log(user.user.uid)
             console.log(user.user.email)
-            navigate("/")
+            const userDocRef = doc(db, 'usuarios', user.user.uid)
+            const docSnap = await getDoc(userDocRef)
+            if (!docSnap.data().role==="guia"  ) {
+                navigate("/gu🍆🍆🍆🍆🍆🍆🍆🍆🍆🍆🍆🍆🍆🥵🥵🥵🥵🥵🥵")
+
+            }else{
+
+                navigate("/")
+            }
 
         } catch (error) {
             console.log(error)

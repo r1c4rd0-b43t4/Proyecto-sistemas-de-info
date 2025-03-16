@@ -124,7 +124,7 @@ export default function PerfilUsuario() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="w-screen p-50">
       <form onSubmit={guardarCambios} className="bg-white rounded-lg shadow-lg p-6">
         <div className="space-y-8">
           {/* Mensaje de estado */}

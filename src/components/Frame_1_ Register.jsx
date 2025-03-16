@@ -28,12 +28,15 @@ export default function Frame_1_Home() {
         try {        
             setLoading(true);
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
             // Crear documento de usuario en Firestore
-            await setDoc(doc(db, 'usuarios', userCredential.user.uid), {
+            const user = await setDoc(doc(db, 'usuarios', userCredential.user.uid), {
+                
                 email: email,
                 role: 'cliente',
                 createdAt: new Date().toISOString()
             });
+  
             setEmail("");
             setPassword("");    
             setName("");

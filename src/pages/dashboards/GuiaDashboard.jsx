@@ -77,7 +77,7 @@ export default function GuiaDashboard() {
 
         {/* Contenido basado en el tab activo */}
         <div className="mt-6">
-          {activeTab === 'misRutas' && <GuiaRutas />}
+
           {activeTab === 'galeria' && <GuiaGaleria />}
           {activeTab === 'blogs' && <GuiaBlogs />}
         </div>
