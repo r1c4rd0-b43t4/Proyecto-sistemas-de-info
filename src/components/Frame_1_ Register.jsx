@@ -5,7 +5,11 @@ import Input from "./Input_V1";
 import { GoogleAuthProvider, getAuth, createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { app } from "../../credentials.js";
 import Loader from "../loader/Loader.jsx"
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import BotonGoogle from './BotonGoogle';
+
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 export default function Frame_1_Home() {
     const navigate = useNavigate();
@@ -15,7 +19,7 @@ export default function Frame_1_Home() {
     const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -23,8 +27,16 @@ export default function Frame_1_Home() {
 
         try {        
             setLoading(true);
-            const nombreRegistrado = await createUserWithEmailAndPassword(auth, email, password)
-            console.log(nombreRegistrado.user.email)
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+            // Crear documento de usuario en Firestore
+            const user = await setDoc(doc(db, 'usuarios', userCredential.user.uid), {
+                
+                email: email,
+                role: 'cliente',
+                createdAt: new Date().toISOString()
+            });
+  
             setEmail("");
             setPassword("");    
             setName("");
@@ -44,12 +56,15 @@ export default function Frame_1_Home() {
     }
 
     const registerWithGoogle = async () => {
-
         try {
             const provider = new GoogleAuthProvider();
             const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-            console.log(user)
+            // Crear documento de usuario en Firestore
+            await setDoc(doc(db, 'usuarios', result.user.uid), {
+                email: result.user.email,
+                role: 'cliente',
+                createdAt: new Date().toISOString()
+            });
             navigate("/")
             
         } catch (error) {
@@ -71,7 +86,7 @@ export default function Frame_1_Home() {
                             <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Underline_1.svg" alt="Underline" className=""/>
                         </div>
 
-                        <div className='space-y-4 md:w-full '>
+                        <div className='space-y-2 md:w-full '>
                             <Input titulo="Nombre" placeholder="Ingresa tu nombre" type="text" name="nombre" value={name} onChange={(e) => setName(e.target.value)}/>
                             <Input titulo="Apellido" placeholder="Ingresa tu apellido" type="text" name="apellido" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
                             <Input titulo="Correo" placeholder="Ingresa tu correo unimet" type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
@@ -80,7 +95,10 @@ export default function Frame_1_Home() {
                         </div>
                         <BotonPrimario text="Registrarse" type="submit" className="mt-4 w-full" to={false}/> 
                     </form>
-                    <button onClick={registerWithGoogle} >Registro con google</button>
+                    <BotonGoogle
+                        text="Registrarse con Google"
+                        onClick={registerWithGoogle}
+                    />
                     <p>
                         <span className="text-[#00796B]">¿Ya tienes una cuenta? </span><span className="text-[#005147]"><Link to="/login">Iniciar Sesión</Link></span>
                     </p>
