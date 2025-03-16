@@ -3,7 +3,7 @@ import DatosRuta from './DatosRuta';
 import StarRating from './StarRating';
 import BotonPrimario from './BotonPrimario';
 
-const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], nombre, precio, cupos, reviews, startPoint, fecha, descripcion }) => {
+const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], nombreRuta, precio, cupos, reviews, inicio, fecha, descripcion }) => {
   return (
     <div className="flex relative w-11/12 h-auto p-4 bg-[#F5F5F5] shadow-lg rounded-2xl mx-auto overflow-hidden my-20">
       <div className="grid gap-5 w-full" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
@@ -16,7 +16,7 @@ const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], 
           </div>
         </div>
         <div className="bg-white p-4 flex flex-col justify-start">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-0 break-words">{nombre}</h1>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-0 break-words">{nombreRuta}</h1>
           <div className="w-3/4 mb-0 mt-0">
             <DatosRuta tiempo={tiempo} distancia={distancia} dificultad={dificultad} fondo={"#ffffff"} />
           </div>

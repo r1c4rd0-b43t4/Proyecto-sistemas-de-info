@@ -1,59 +1,61 @@
-//esto NO sirve pero no lo quiero borrar por si acaso
-import React from 'react';
-import StarRating from './StarRating';
-import BotonPrimario from './BotonPrimario';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router'; 
+import { getDocs, getFirestore, collection, query, where } from "firebase/firestore";
+import { app } from '../../credentials';
+import VistaDeProducto from './VistaDeProducto';
 
-const FrameVistaProducto = ({ icono, datosRuta }) => {
-    return (
-        <div className="max-w-2xl mx-auto flex bg-white rounded-lg shadow-md overflow-hidden">
-            {/* Sección izquierda: Imágenes */}
-            <div className="w-1/3">
-                <div className="h-full grid grid-cols-1 gap-2">
-                    <img
-                        src={icono}
-                        alt="Producto"
-                        className="w-full h-24 object-cover rounded-lg"
-                    />
-                </div>
-            </div>
+const FrameVistaProducto = () => {
+  const { nombreRuta } = useParams();
+  const [producto, setProducto] = useState(null);
+  const [loading, setLoading] = useState(true); 
+  const db = getFirestore(app);
 
-            {/* Sección derecha: Contenido principal */}
-            <div className="w-2/3 p-4">
-                <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold">Ruta “Naiguatá”</h2>
-                    <div className="text-right">
-                        {datosRuta}
-                    </div>
-                </div>
+  async function getProducto() {
+    try {
+      setLoading(true);
+      const productosCollectionRef = collection(db, 'Rutas');
+      const q = query(productosCollectionRef, where("name", "==", nombreRuta));
+      const querySnapshot = await getDocs(q);
+      const productoData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }))[0];
+      setProducto(productoData);
+    } catch (error) {
+      console.error("Error al obtener el producto:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-                <div className="mt-4">
-                    <p className="text-2xl font-bold">
-                        $40 <span className="text-sm text-gray-600">/reserva</span>
-                    </p>
-                    <div className="flex items-center mt-2">
-                        <span className="text-yellow-500">★★★★☆</span>
-                        <p className="ml-2 text-gray-600">(500+ Review)</p>
-                    </div>
-                    <p className="mt-2 text-gray-600">Fecha: 20/04/2025</p>
-                </div>
+  useEffect(() => {
+    getProducto();
+  }, [nombreRuta]);
 
-                <div className="mt-4">
-                    <p className="text-gray-700 text-sm">
-                        La Ruta “Naiguatá” fue diseñada para aquellos que desean tener un
-                        verdadero reto, siendo su gran distancia y tiempo digno de renombre,
-                        pero por un esfuerzo que lo va a valer. Dicha ruta incluye acampado
-                        y apoyo de los guías para distribuir el peso del equipamiento. Se
-                        recomienda únicamente a personas experimentadas...
-                    </p>
-                </div>
-
-                <div className="mt-4 flex items-center justify-between">
-                    <p className="text-green-600">8 cupos disponibles</p>
-                    <BotonPrimario text="Reservar" />
-                </div>
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      {loading ? (
+        <p>Cargando...</p> 
+      ) : producto ? ( 
+        <VistaDeProducto
+          icono={producto.icono}
+          dificultad={producto.dificultad}
+          distancia={producto.distancia}
+          tiempo={producto.duracion}
+          imagenes={producto.imagenes}
+          nombreRuta={producto.name}
+          precio={producto.precio}
+          cupos={producto.cupos}
+          reviews={producto.reviews}
+          inicio={producto.startPoint}
+          fecha={producto.fecha}
+          descripcion={producto.descripcion}
+        />
+      ) : (
+        <p>No se encontró la ruta.</p>
+      )}
+    </div>
+  );
 };
 
 export default FrameVistaProducto;
