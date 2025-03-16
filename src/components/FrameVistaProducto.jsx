@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router'; 
+import { useParams } from 'react-router';
 import { getDocs, getFirestore, collection, query, where } from "firebase/firestore";
 import { app } from '../../credentials';
 import VistaDeProducto from './VistaDeProducto';
@@ -14,12 +14,27 @@ const FrameVistaProducto = () => {
     try {
       setLoading(true);
       const productosCollectionRef = collection(db, 'Rutas');
-      const q = query(productosCollectionRef, where("name", "==", nombreRuta));
+      const q = query(productosCollectionRef, where("name", "==", decodeURIComponent(nombreRuta)));
       const querySnapshot = await getDocs(q);
-      const productoData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }))[0];
+      const productoData = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+
+        // Convertir timestamp a fecha si existe
+        const formattedDate = data.date && data.date.seconds
+          ? new Date(data.date.seconds * 1000).toLocaleDateString("es-ES", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          : "Fecha no disponible";
+
+        return {
+          id: doc.id,
+          ...data,
+          date: formattedDate, // Reemplazamos el timestamp con la fecha formateada
+        };
+      })[0];
+
       setProducto(productoData);
     } catch (error) {
       console.error("Error al obtener el producto:", error);
@@ -33,23 +48,23 @@ const FrameVistaProducto = () => {
   }, [nombreRuta]);
 
   return (
-    <div>
+    <div className='flex justify-center w-screen'>
       {loading ? (
         <p>Cargando...</p> 
       ) : producto ? ( 
         <VistaDeProducto
-          icono={producto.icono}
-          dificultad={producto.dificultad}
-          distancia={producto.distancia}
-          tiempo={producto.duracion}
-          imagenes={producto.imagenes}
+          icono={producto.image}
+          dificultad={producto.difficulty}
+          distancia={producto.distance}
+          tiempo={producto.duration}
+          imagenes={producto.images}
           nombreRuta={producto.name}
-          precio={producto.precio}
-          cupos={producto.cupos}
+          precio={producto.price}
+          cupos={producto.quotas}
           reviews={producto.reviews}
           inicio={producto.startPoint}
-          fecha={producto.fecha}
-          descripcion={producto.descripcion}
+          fecha={producto.date} 
+          descripcion={producto.description}
         />
       ) : (
         <p>No se encontró la ruta.</p>
