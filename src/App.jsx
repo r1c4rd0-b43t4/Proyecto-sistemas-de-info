@@ -12,6 +12,7 @@ import AdminDashboard from './pages/dashboards/AdminDashboard'
 import GuiaDashboard from './pages/dashboards/GuiaDashboard'
 import { AuthProvider } from './context/AuthContext'
 import ClienteRutasAdquiridas from './pages/dashboards/ClienteRutasAdquiridas'
+import Contacto from './pages/Contacto'
 
 export default function App() {
   console.log('hola')
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="galeria" element={< Galeria />} />
           <Route path="edit-user" element={< EditUser />} />
           <Route path="VerRutasAd" element={< ClienteRutasAdquiridas />} />
+          <Route path="contacto" element={< Contacto />} />
           
           <Route 
             path="/admin/*" 
