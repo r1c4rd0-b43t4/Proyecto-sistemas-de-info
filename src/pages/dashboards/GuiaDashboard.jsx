@@ -3,14 +3,41 @@ import { useAuth } from '../../context/AuthContext';
 import { getAuth } from 'firebase/auth';
 import { useNavigate } from 'react-router';
 import BotonPrimario from '../../components/BotonPrimario';
-import { GuiaRutas } from '../components/GuiaRutas';
+import RutasAsignadas from '../../components/RutasAsignadas';
+import Galeria from '../../pages/Galeria';
+import Blog from '../../pages/Blog';
 
 export default function GuiaDashboard() {
   const [activeTab, setActiveTab] = useState('misRutas');
   const { user } = useAuth();
   const navigate = useNavigate();
   const auth = getAuth();
-  const [rutas, setRutas] = useState([]);
+  const [rutas, setRutas] = useState([
+    {
+      nombre: 'Ruta "Naiguatá"',
+      horaEncuentro: "8:00 AM",
+      lugarEncuentro: "Altamira",
+      fecha: "20/04/2025",
+      asistencia: false,
+      grupoWhatsapp: "https://whatsapp.com/group/example"
+    },
+    {
+      nombre: 'Ruta "Naiguatá"',
+      horaEncuentro: "8:00 AM",
+      lugarEncuentro: "Altamira",
+      fecha: "20/04/2025",
+      asistencia: false,
+      grupoWhatsapp: "https://whatsapp.com/group/example"
+    },
+    {
+      nombre: 'Ruta "Naiguatá"',
+      horaEncuentro: "8:00 AM",
+      lugarEncuentro: "Altamira",
+      fecha: "20/04/2025",
+      asistencia: false,
+      grupoWhatsapp: "https://whatsapp.com/group/example"
+    }
+  ]);
   const [loading, setLoading] = useState(true);
 
   const handleLogout = async () => {
@@ -97,15 +124,15 @@ export default function GuiaDashboard() {
 
         {/* Contenido basado en el tab activo */}
         <div className="mt-6">
-          {activeTab === 'galeria' && <GuiaGaleria />}
-          {activeTab === 'blogs' && <GuiaBlogs />}
+          {activeTab === 'galeria' && <Galeria />}
+          {activeTab === 'blogs' && <Blog />}
           {activeTab === 'misRutas' && (
             loading ? (
               <div className="text-center">
                 <p>Cargando rutas...</p>
               </div>
             ) : (
-              <GuiaRutas rutas={rutas} />
+              <RutasAsignadas rutas={rutas} />
             )
           )}
         </div>
