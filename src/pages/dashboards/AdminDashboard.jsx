@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useState, useEffect, useContext } from 'react';
 import { getAuth } from 'firebase/auth';
 import { useNavigate } from 'react-router';
 import { getFirestore, collection, query, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
@@ -7,11 +6,12 @@ import { supabase } from '../../../supabaseClient';
 import BotonPrimario from '../../components/BotonPrimario';
 import BotonSecundario from '../../components/BotonSecundario';
 import AddImageButton from '../../components/AddImageButton';
+import { UserContext } from '../../Context/UserContext';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('usuarios');
   const [rutas, setRutas] = useState([]);
-  const { user } = useAuth();
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const auth = getAuth();
   const db = getFirestore();
@@ -145,7 +145,7 @@ function AdminUsuarios() {
   const [busqueda, setBusqueda] = useState('');
   const [filtroRol, setFiltroRol] = useState('todos');
   const db = getFirestore();
-  const { user } = useAuth();
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     cargarUsuarios();

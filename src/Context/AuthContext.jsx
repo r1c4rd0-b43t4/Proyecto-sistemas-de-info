@@ -18,7 +18,6 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        console.log('esclavo de la qk pero no de quien la porta', user);
         // Obtener datos adicionales del usuario de Firestore
         const userDoc = await getDoc(doc(db, 'usuarios', user.uid));
         const userData = userDoc.data();
@@ -26,17 +25,17 @@ export function AuthProvider({ children }) {
         setUser(user);
         setRole(userData?.role || 'cliente');
         
-        // Redirección basada en rol solo en la ruta /login
-
-        if (window.location.pathname === '/login') {
+        // Redirección basada en rol
+        if (window.location.pathname === '/login' || window.location.pathname === '/register') {
           if (userData?.role === 'admin') {
             navigate('/admin/dashboard');
           } else if (userData?.role === 'guia') {
             navigate('/guia/dashboard');
           } else {
-            // Si es cliente, simplemente navega al home
             navigate('/');
           }
+        } else if (window.location.pathname === '/' && userData?.role === 'admin') {
+          navigate('/admin/dashboard');
         }
       } else {
         setUser(null);
@@ -46,7 +45,7 @@ export function AuthProvider({ children }) {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [auth, navigate, db]);
 
   const value = {
     user,
@@ -55,9 +54,9 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext value={value}>
+    <AuthContext.Provider value={value}>
       {!loading && children}
-    </AuthContext>
+    </AuthContext.Provider>
   );
 }
 

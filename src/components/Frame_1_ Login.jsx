@@ -1,4 +1,4 @@
-import React, { useState,use } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import BotonPrimario from './BotonPrimario';
 import Input from "./Input_V1"; 
@@ -7,18 +7,13 @@ import { app } from "../../credentials.js";
 import Loader from "../loader/Loader.jsx"
 import { getFirestore } from 'firebase/firestore';
 import BotonGoogle from './BotonGoogle';
-import { UserContext } from '../Context/UserContext.jsx';
+import { doc, getDoc } from 'firebase/firestore';
+
 const auth = getAuth(app);
 const db = getFirestore(app);
+
 export default function Frame_1_Home() {
     const navigate = useNavigate();
-
-
-
-
-
-
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -29,21 +24,24 @@ export default function Frame_1_Home() {
 
         try {        
             setLoading(true);
-            const user = await signInWithEmailAndPassword(auth, email, password)
-            console.log(user.user.uid)
-            console.log(user.user.email)
-            const userDocRef = doc(db, 'usuarios', user.user.uid)
-            const docSnap = await getDoc(userDocRef)
-            if (!docSnap.data().role==="guia"  ) {
-                navigate("/gu🍆🍆🍆🍆🍆🍆🍆🍆🍆🍆🍆🍆🍆🥵🥵🥵🥵🥵🥵")
-
-            }else{
-
-                navigate("/")
+            const user = await signInWithEmailAndPassword(auth, email, password);
+            const userDocRef = doc(db, 'usuarios', user.user.uid);
+            const docSnap = await getDoc(userDocRef);
+            
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
+                if (userData.role === "guia") {
+                    navigate("/guia/dashboard");
+                } else if (userData.role === "admin") {
+                    navigate("/admin/dashboard");
+                } else {
+                    navigate("/");
+                }
+            } else {
+                navigate("/");
             }
-
         } catch (error) {
-            console.log(error)
+            console.log(error);
             if (error.code === "Firebase: Error (auth/invalid-credential).") {
                 setError("Credenciales inválidas");
             } else {
@@ -55,16 +53,29 @@ export default function Frame_1_Home() {
     }
 
     const registerWithGoogle = async () => {
-
         try {
+            setLoading(true);
             const provider = new GoogleAuthProvider();
             const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-            console.log(user)
-            navigate("/")
+            const userDocRef = doc(db, 'usuarios', result.user.uid);
+            const docSnap = await getDoc(userDocRef);
             
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
+                if (userData.role === "guia") {
+                    navigate("/guia/dashboard");
+                } else if (userData.role === "admin") {
+                    navigate("/admin/dashboard");
+                } else {
+                    navigate("/");
+                }
+            } else {
+                navigate("/");
+            }
         } catch (error) {
-            
+            setError("Error al iniciar sesión con Google");
+        } finally {
+            setLoading(false);
         }
     }
 
