@@ -55,7 +55,7 @@ const AddImageButton = ({ onImageAdded }) => {
   return (
     <>
       <div 
-        className="w-full h-120 bg-white rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+        className="w-full h-full bg-white rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
         style={{ 
           backgroundImage: `url(https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Add.svg)`,
           backgroundSize: 'contain',

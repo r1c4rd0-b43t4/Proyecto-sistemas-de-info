@@ -28,11 +28,11 @@ export default function Frame_3_Home() {
     return (
         <div className="w-screen h-full bg-white text-black">
             <div className="px-5 py-20 flex flex-col justify-start items-start h-full w-screen gap-2">
-                <div className="flex flex-col items-start mb-6 w-full">
+                <div className="flex flex-col items-start w-full md:px-25 px-10">
                     <div className="flex flex-col">
                         <div className="flex items-center mb-0">
-                            <h1 className="text-5xl font-bold text-[#00796B] leading-[76px]">Descubre nuestras</h1>
-                            <h1 className="text-5xl font-bold text-[#D76411] ml-2 leading-[76px]">rutas</h1>
+                            <h1 className="md:text-5xl text-3xl font-bold text-[#00796B] leading-[76px]">Descubre nuestras</h1>
+                            <h1 className="md:text-5xl text-3xl font-bold text-[#D76411] ml-2 leading-[76px]">rutas</h1>
                         </div>
                         <div className="mt-4">
                             <p className="text-lg text-gray-700">Explora nuevas aventuras y descubre rutas inolvidables.</p>
@@ -66,12 +66,12 @@ export default function Frame_3_Home() {
             </div>
             <div className="flex justify-center w-full mt-0">
                 <div className="p-5 bg-white rounded-lg shadow-md flex flex-col md:flex-row justify-between items-center w-full md:w-3/4 h-48 md:h-64">
-                    <div className="self-start md:self-center mb-4 md:mb-0">
+                    <div className="self-start md:self-center mb-4 md:mb-0 align-center">
                         <h2 className="text-xl font-bold">Visita nuestros blogs</h2>
                         <p className="mt-2 text-gray-700">La experiencia de nuestra comunidad hará de tu viaje<br /> uno más sorprendente.</p>
                     </div>
-                    <div className="self-start md:self-center z-10">
-                        <BotonPrimario text="Acción" />
+                    <div className="self-middle md:self-center z-10">
+                        <BotonPrimario text="Blogs" to="/blogs" />
                     </div>
                 </div>
             </div>

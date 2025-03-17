@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import { app } from "../../credentials";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 
-
+ 
 
 const UserContext = createContext(null);
 

@@ -14,7 +14,6 @@ export default function Frame_1_Home() {
                 <BotonPrimario text="Descubre" to="/rutas"/>
             </div>
             
-            {/* Avila de fondo cuando son dispositivos medianos o pequenos */}
             <div className="absolute inset-0 w-full h-full md:hidden">
                 <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Imagen_Avila.svg" className="w-full h-full object-cover opacity-30" alt="Fondo Avila" />
             </div>

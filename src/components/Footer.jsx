@@ -2,7 +2,7 @@ import BotonFooter from "./BotonFooter";
 
 export default function Footer() {
     const upperLinks = [
-        { text: "Contáctanos", link: "#" },
+        { text: "Contáctanos", link: "/contacto" },
         { text: "Inicio", link: "#" },
         { text: "@UnimeTrail", link: "#" },
         { text: "support@unimetrail.com", link: "mailto:support@unimetrail.com" },

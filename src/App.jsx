@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter , Route, Routes } from 'react-router'
+import { BrowserRouter as Router, Routes, Route } from 'react-router'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'	
@@ -9,20 +9,56 @@ import Galeria from './pages/Galeria'
 import VistaProducto from './pages/VistaProducto'
 import PagoExitoso from './pages/PagoExitoso'
 
+import EditUser from './pages/EditUser'
+import { AdminRoute, GuiaRoute } from './components/ProtectedRoutes'
+import AdminDashboard from './pages/dashboards/AdminDashboard'
+import GuiaDashboard from './pages/dashboards/GuiaDashboard'
+import { AuthProvider } from './context/AuthContext'
+import ClienteRutasAdquiridas from './pages/dashboards/ClienteRutasAdquiridas'
+import Contacto from './pages/Contacto'
+import Blogs from './pages/Blogs'
+import CrearBlog from './components/CrearBlog'
+import DetalleBlog from './components/DetalleBlog'
 
 export default function App() {
+  console.log('hola')
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={< Home />} />
-        <Route path="login" element={< Login />} />
-        <Route path="register" element={< Register />} />
-        <Route path="rutas" element={< Rutas />} />
-        <Route path="*" element={< NotFound />} />
-        <Route path="galeria" element={< Galeria />} />
-        <Route path="producto/:nombreRuta" element={< VistaProducto />} />
-        <Route path="exitosa" element={<PagoExitoso />} />
-      </Routes>
-    </BrowserRouter>
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={< Home />} />
+          <Route path="login" element={< Login />} />
+          <Route path="register" element={< Register />} />
+          <Route path="rutas" element={< Rutas />} />
+          <Route path="*" element={< NotFound />} />
+          <Route path="galeria" element={< Galeria />} />
+          <Route path="edit-user" element={< EditUser />} />
+          <Route path="VerRutasAd" element={< ClienteRutasAdquiridas />} />
+          <Route path="contacto" element={< Contacto />} />
+          <Route path="blogs" element={< Blogs />} />
+          <Route path="agregar-blog" element={< CrearBlog />} />
+          <Route path="/blog/:id" element={<DetalleBlog />} />
+          <Route path="producto/:nombreRuta" element={< VistaProducto />} />
+          <Route path="exitosa" element={<PagoExitoso />} />
+          <Route 
+            path="/admin/*" 
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            } 
+          />
+          
+          <Route 
+            path="/guia/*" 
+            element={
+              <GuiaRoute>
+                <GuiaDashboard />
+              </GuiaRoute>
+            } 
+          />
+        </Routes>
+        </AuthProvider>
+    </Router>
   )
 }
