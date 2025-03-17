@@ -1,11 +1,11 @@
 import React from 'react';
 import DatosRuta from './DatosRuta';
 import StarRating from './StarRating';
-import BotonPrimario from './BotonPrimario';
+import BotonPaypal from './BotonPaypal';
 
-const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], nombre, precio, cupos, reviews, startPoint, fecha, descripcion }) => {
+const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], nombreRuta, precio, cupos, reviews, inicio, fecha, descripcion }) => {
   return (
-    <div className="flex relative w-11/12 h-auto p-4 bg-[#F5F5F5] shadow-lg rounded-2xl mx-auto overflow-hidden my-20">
+    <div className="flex relative w-11/12 p-4 bg-[#F5F5F5] shadow-lg rounded-2xl overflow-hidden h-screen my-30 ">
       <div className="grid gap-5 w-full" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
         <div className="bg-gray-200 flex flex-col items-center justify-center">
           <img src={icono} alt="Producto" className="w-3/4 mb-4" />
@@ -16,7 +16,7 @@ const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], 
           </div>
         </div>
         <div className="bg-white p-4 flex flex-col justify-start">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-0 break-words">{nombre}</h1>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-0 break-words">{nombreRuta}</h1>
           <div className="w-3/4 mb-0 mt-0">
             <DatosRuta tiempo={tiempo} distancia={distancia} dificultad={dificultad} fondo={"#ffffff"} />
           </div>
@@ -35,8 +35,8 @@ const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], 
             <p className="text-base sm:text-lg lg:text-xl break-words">{descripcion}</p>
             <p className="text-base sm:text-lg lg:text-xl text-green-500 break-words"><span className="font-bold text-green-700">{cupos}</span> cupos disponibles</p>
           </div>
-          <div className="mt-4 flex justify-center">
-            <BotonPrimario text="reservar" />
+          <div className="mt-4 flex justify-end">
+            <BotonPaypal precio={precio} />
           </div>
         </div>
       </div>

@@ -1,28 +1,44 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 
-const TarjetaBlog = ({ imagen, titulo, descripcion, perfilImagen, nombreUsuario, fecha }) => {
-  return (
-    <div className="p-5 rounded-lg flex flex-col justify-between bg-white shadow-lg h-full w-full max-w-2xl mx-auto">
-      <div className="flex flex-col h-full">
-        <div className="h-1/2">
-          <img src={imagen} alt="Blog" className="w-full h-full object-cover rounded-t-lg" />
-        </div>
-        <div className="h-1/2 p-2 flex flex-col justify-between">
-          <div>
-            <h3 className="text-xl font-bold break-words">{titulo}</h3>
-            <p className="text-base text-gray-700 break-words mt-2">{descripcion}</p>
-          </div>
-          <div className="flex items-center justify-between mt-4">
-            <div className="flex items-center">
-              <img src={perfilImagen} alt="Perfil" className="w-10 h-10 rounded-full mr-2" />
-              <p className="text-base text-gray-700 break-words">{nombreUsuario}</p>
+const TarjetaBlog = ({ id, imagen, titulo, descripcion, perfilImagen, nombreUsuario, fecha }) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/blog/${id}`);
+    };
+
+    return (
+        <div 
+            className="w-[300px] bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+            onClick={handleClick}
+        >
+            <div className="h-[150px] overflow-hidden">
+                <img 
+                    src={imagen || 'https://via.placeholder.com/300x150'} 
+                    alt={titulo} 
+                    className="w-full h-full object-cover"
+                />
             </div>
-            <p className="text-base text-gray-700 break-words">{fecha}</p>
-          </div>
+            <div className="p-4">
+                <h2 className="text-lg font-bold text-[#00796B] line-clamp-1">{titulo || 'Sin título'}</h2>
+                <p className="text-gray-600 text-sm mt-2 line-clamp-2">
+                    {descripcion || 'Sin descripción'}
+                </p>
+                <div className="flex items-center mt-4 pt-4 border-t border-gray-100">
+                    <img 
+                        src={perfilImagen || 'https://via.placeholder.com/40'} 
+                        alt={nombreUsuario} 
+                        className="w-8 h-8 rounded-full mr-3"
+                    />
+                    <div>
+                        <p className="font-semibold text-sm">{nombreUsuario || 'Usuario'}</p>
+                        <p className="text-xs text-gray-500">{fecha || 'Fecha no disponible'}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 TarjetaBlog.defaultProps = {
