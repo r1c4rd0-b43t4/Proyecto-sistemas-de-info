@@ -99,7 +99,7 @@ export default function Frame_1_Home() {
         <div className='relative w-screen h-screen flex pt-5' >
             {loading && <Loader/>}
             <div className="flex justify-center items-center h-full w-full lg:w-1/2 ">
-                <div className="flex justify-center items-center flex-col pt-10 ">
+                <div className="flex justify-center items-center flex-col pt-10 px-5">
                 {error && <div className="text-black">Error: {error}</div>} 
                     <form onSubmit={handleRegister} className="flex justify-center items-center flex-col space-y-3 ">
                         <h1 className="md:text-4xl font-bold text-2xl">
@@ -109,7 +109,7 @@ export default function Frame_1_Home() {
                             <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Underline_1.svg" alt="Underline" className=""/>
                         </div>
 
-                        <div className='space-y-2 md:w-full '>
+                        <div className='space-y-2 w-full '>
                             <Input titulo="Nombre" placeholder="Ingresa tu nombre" type="text" name="nombre" value={name} onChange={(e) => setName(e.target.value)}/>
                             <Input titulo="Apellido" placeholder="Ingresa tu apellido" type="text" name="apellido" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
                             <Input titulo="Correo" placeholder="Ingresa tu correo unimet" type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
@@ -148,7 +148,7 @@ export default function Frame_1_Home() {
                     />
                     </form>
 
-                    <p>
+                    <p className='mt-4'>
                         <span className="text-[#00796B]">¿Ya tienes una cuenta? </span><span className="text-[#005147]"><Link to="/login">Iniciar Sesión</Link></span>
                     </p>
                 </div>

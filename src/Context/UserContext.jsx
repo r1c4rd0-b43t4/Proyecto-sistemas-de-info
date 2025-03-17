@@ -2,7 +2,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { app } from "../../credentials";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
-
+import Loader from "../loader/Loader";
 const UserContext = createContext(null);
 
 const auth = getAuth(app);
@@ -61,7 +61,7 @@ const UserProvider = ({ children }) => {
     };
 
     if (loading) {
-        return <div>Cargando...</div>;
+        return <Loader/>;
     }
 
     return (

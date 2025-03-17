@@ -15,11 +15,11 @@ import GuiaDashboard from './pages/dashboards/GuiaDashboard'
 import ClienteRutasAdquiridas from './pages/dashboards/ClienteRutasAdquiridas'
 import Contacto from './pages/Contacto'
 import Blogs from './pages/Blogs'
-import CrearBlog from './components/CrearBlog'
+import AgregarBlog from './pages/AgregarBlog'
 import DetalleBlog from './components/DetalleBlog'
 
 export default function App() {
-  console.log('hola')
+
   return (
     <Router>
       <Routes>
@@ -47,7 +47,7 @@ export default function App() {
         <Route path="VerRutasAd" element={< ClienteRutasAdquiridas />} />
         <Route path="contacto" element={< Contacto />} />
         <Route path="blogs" element={< Blogs />} />
-        <Route path="agregar-blog" element={< CrearBlog />} />
+        <Route path="agregar-blog" element={< AgregarBlog />} />
         <Route path="/blog/:id" element={<DetalleBlog />} />
         <Route path="producto/:nombreRuta" element={< VistaProducto />} />
         <Route path="exitosa" element={<PagoExitoso />} />

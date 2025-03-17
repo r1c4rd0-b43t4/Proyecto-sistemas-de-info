@@ -7,6 +7,7 @@ const FrameRutas = () => {
   const [rutas, setRutas] = useState([]);
   const [rutasFiltradas, setRutasFiltradas] = useState([]);
   const [dificultadSeleccionada, setDificultadSeleccionada] = useState('todas');
+  const [terminoBusqueda, setTerminoBusqueda] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const db = getFirestore(app);
@@ -37,22 +38,40 @@ const FrameRutas = () => {
   }, []);
 
   useEffect(() => {
-    if (dificultadSeleccionada === 'todas') {
-      setRutasFiltradas(rutas);
-    } else {
-      const rutasFiltradas = rutas.filter(ruta => ruta.difficulty === dificultadSeleccionada);
-      console.log('Rutas filtradas:', rutasFiltradas);
-      setRutasFiltradas(rutasFiltradas);
+    let rutasFiltradas = [...rutas];
+    
+    // Filtrar por dificultad
+    if (dificultadSeleccionada !== 'todas') {
+      rutasFiltradas = rutasFiltradas.filter(ruta => ruta.difficulty === dificultadSeleccionada);
     }
-  }, [dificultadSeleccionada, rutas]);
+    
+    // Filtrar por término de búsqueda
+    if (terminoBusqueda.trim() !== '') {
+      const busqueda = terminoBusqueda.toLowerCase();
+      rutasFiltradas = rutasFiltradas.filter(ruta => 
+        ruta.name.toLowerCase().includes(busqueda)
+      );
+    }
+    
+    setRutasFiltradas(rutasFiltradas);
+  }, [dificultadSeleccionada, rutas, terminoBusqueda]);
 
   return (
     <div className='w-screen h-full'>
       <div className='md:px-20 px-5 flex align-middle items-center bg-[#F7F7F8] w-screen md:h-screen'>
-        <div className='md:w-full md:pt-0 h-fit w-screen justify-left pt-20'>
-          <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Humboldt_rutas.svg" alt="humboldt_rutas" className='object-fill w-full  md:h-120'/>
-          <p className='relative md:bottom-14 bottom-5 left-0 md:text-3xl text-sm text-teal-600'>Explora el Ávila</p>
-          <h1 className='md:text-9xl text-5xl font-bold'> <span className='text-teal-600'>Rutas</span> <span className='text-[#D76411]'>Unimetrail</span></h1>
+        <div className='md:w-full w-screen relative'>
+          <div className='relative w-full h-full'>
+            <img 
+              src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Humboldt_rutas.svg" 
+              alt="humboldt_rutas" 
+              className='w-full h-full object-cover'
+            />
+
+          </div>
+          <h1 className='md:text-9xl text-5xl font-bold'> 
+                <span className='text-teal-600'>Rutas </span> 
+                <span className='text-[#D76411]'>Unimetrail</span>
+              </h1>
         </div>
       </div>
       <div className='bg-[url(https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Avila_Vector_BG.svg)] mt-10 bg-contain bg-no-repeat bg-center '>
@@ -64,12 +83,14 @@ const FrameRutas = () => {
           <input
             type="text"
             placeholder="Buscar rutas..."
-            className="w-full md:w-1/2 p-2 border border-gray-300 rounded-lg bg-white"
+            value={terminoBusqueda}
+            onChange={(e) => setTerminoBusqueda(e.target.value)}
+            className="w-full md:w-1/2 p-2 border border-teal-600 rounded-lg bg-white"
           />
           <select
             value={dificultadSeleccionada}
             onChange={(e) => setDificultadSeleccionada(e.target.value)}
-            className="w-full md:w-1/4 p-2 border border-gray-300 rounded-lg bg-white text-gray-700"
+            className="w-full md:w-1/4 p-2 border border-teal-600 rounded-lg bg-white text-gray-700"
           >
             <option value="todas">Todas las dificultades</option>
             <option value="Extrema">Extrema</option>
@@ -88,9 +109,13 @@ const FrameRutas = () => {
         ) : rutasFiltradas.length === 0 ? (
           <div className="text-center text-xl text-teal-600">No se encontraron rutas</div>
         ) : (
-          <div className='grid gap-5 w-full' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
+          <div className='grid gap-8 w-full max-w-7xl mx-auto px-4' 
+               style={{ 
+                 gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                 justifyItems: 'center'
+               }}>
             {rutasFiltradas.map(ruta => (
-              <div key={ruta.id} className='p-5 rounded-lg flex flex-col justify-between'>
+              <div key={ruta.id} className='w-full max-w-md p-5 rounded-lg flex flex-col justify-between'>
                 <TarjetaRuta
                   nombreRuta={ruta.name}
                   precio={ruta.price}

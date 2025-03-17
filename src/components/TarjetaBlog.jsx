@@ -8,6 +8,23 @@ const TarjetaBlog = ({ id, imagen, titulo, descripcion, perfilImagen, nombreUsua
         navigate(`/blog/${id}`);
     };
 
+    // Función para formatear la fecha
+    const formatearFecha = (fecha) => {
+        if (fecha && fecha.seconds) {
+            // Si es un timestamp de Firebase
+            return new Date(fecha.seconds * 1000).toLocaleString('es-VE', {
+                timeZone: 'America/Caracas',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        // Si ya es una cadena de texto, la devolvemos tal cual
+        return fecha;
+    };
+
     return (
         <div 
             className="w-[300px] bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
@@ -33,7 +50,9 @@ const TarjetaBlog = ({ id, imagen, titulo, descripcion, perfilImagen, nombreUsua
                     />
                     <div>
                         <p className="font-semibold text-sm">{nombreUsuario || 'Usuario'}</p>
-                        <p className="text-xs text-gray-500">{fecha || 'Fecha no disponible'}</p>
+                        <p className="text-gray-500 text-sm">
+                            {formatearFecha(fecha)}
+                        </p>
                     </div>
                 </div>
             </div>

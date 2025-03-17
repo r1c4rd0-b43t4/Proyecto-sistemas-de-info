@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Input({ titulo, placeholder, type , name, value, onChange}) {
+export default function Input({ titulo, placeholder, type, name = '', value, onChange}) {
   return (
     <div className="flex flex-col w-full">
       <label className="text-sm font-semibold text-[#00796B] mb-1">

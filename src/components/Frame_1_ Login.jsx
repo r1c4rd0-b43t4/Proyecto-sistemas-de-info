@@ -84,16 +84,16 @@ export default function Frame_1_Home() {
             {loading && <Loader/>}
 
             <div className="flex justify-center items-center h-full w-full lg:w-1/2">
-                <div className="flex justify-center items-center flex-col space-y-8">
+                <div className="flex justify-center items-center flex-col space-y-8 px-5">
                     {error && <div className="text-black">Error: {error}</div>}
-                    <form onSubmit={handleLogin} className="flex justify-center items-center flex-col space-y-8">
+                    <form onSubmit={handleLogin} className="flex justify-center items-center flex-col space-y-8 ">
                         <h1 className="md:text-4xl font-bold text-2xl">
                             <span className="text-[#00796B]">Iniciar sesión en </span><span className="text-[#D76411]">Unimetrail</span>
                         </h1>
                         <div className='md:w-full w-1/2'>
                             <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Underline_1.svg" alt="Underline" className=""/>
                         </div>
-                        <div className='space-y-4 md:w-full'>
+                        <div className='space-y-4 w-full'>
                             <Input titulo="Correo" placeholder="Ingresa tu correo unimet" type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                             <Input titulo="Contraseña" placeholder="Ingresa tu contraseña" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         </div>

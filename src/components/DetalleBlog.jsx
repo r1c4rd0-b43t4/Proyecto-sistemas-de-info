@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, collection, getDocs, limit, query } from 'firebase/firestore';
 import { app } from '../../credentials';
 import Loader from '../loader/Loader';
 import Navbar from './Header_NoSession';
@@ -12,17 +12,28 @@ const DetalleBlog = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [blog, setBlog] = useState(null);
+    const [otrosBlogs, setOtrosBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const db = getFirestore(app);
 
     const parseDate = (dateString) => {
-        const [datePart, timePart] = dateString.split(', ');
-        const [day, month, year] = datePart.split('/');
-        const [time, period] = timePart.split(' ');
-        const [hours, minutes, seconds] = time.split(':');
-        const hours24 = period === 'p. m.' ? parseInt(hours, 10) + 12 : parseInt(hours, 10);
-        return new Date(year, month - 1, day, hours24, minutes, seconds);
+        if (!dateString) return '';
+        
+        // Si es un timestamp de Firebase (tiene seconds)
+        if (dateString.seconds) {
+            return new Date(dateString.seconds * 1000).toLocaleString('es-VE', {
+                timeZone: 'America/Caracas',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        // Si ya es una cadena de texto, la devolvemos tal cual
+        return dateString;
     };
 
     useEffect(() => {
@@ -32,20 +43,32 @@ const DetalleBlog = () => {
                 const docSnap = await getDoc(docRef);
                 
                 if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    const formattedDate = data.created
-                        ? parseDate(data.created).toLocaleDateString("es-ES", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                        })
-                        : "Fecha no disponible";
-                    setBlog({ id: docSnap.id, ...data, created: formattedDate });
+                    const blogData = docSnap.data();
+                    setBlog({
+                        ...blogData,
+                        created: parseDate(blogData.created)
+                    });
+
+                    // Obtener otros blogs
+                    const blogsRef = collection(db, 'Blogs');
+                    const q = query(blogsRef, limit(3)); // Pedimos 3 por si uno es el actual
+                    const querySnapshot = await getDocs(q);
+                    
+                    const blogsArray = querySnapshot.docs
+                        .map(doc => ({
+                            id: doc.id,
+                            ...doc.data(),
+                            created: parseDate(doc.data().created)
+                        }))
+                        .filter(b => b.id !== id) // Excluimos el blog actual
+                        .slice(0, 2); // Tomamos solo 2 blogs
+
+                    setOtrosBlogs(blogsArray);
                 } else {
-                    setError('Blog no encontrado');
+                    setError('No se encontró el blog');
                 }
             } catch (error) {
-                console.error("Error al obtener el blog:", error);
+                console.error('Error al obtener el blog:', error);
                 setError('Error al cargar el blog');
             } finally {
                 setLoading(false);
@@ -102,8 +125,18 @@ const DetalleBlog = () => {
 
                     <div className="mt-6 border-t pt-6 w-full">
                         <div className="flex flex-col items-center space-y-4">
-                            <TarjetaBlog />
-                            <TarjetaBlog />
+                            {otrosBlogs.map(blog => (
+                                <TarjetaBlog
+                                    key={blog.id}
+                                    id={blog.id}
+                                    imagen={blog.image}
+                                    titulo={blog.title}
+                                    descripcion={blog.description}
+                                    perfilImagen={blog.user_pp}
+                                    nombreUsuario={blog.user}
+                                    fecha={blog.created}
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>

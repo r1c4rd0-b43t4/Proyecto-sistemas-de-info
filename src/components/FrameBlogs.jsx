@@ -4,6 +4,7 @@ import { app } from '../../credentials';
 import TarjetaBlog from './TarjetaBlog';
 import BotonSecundario from './BotonSecundario';
 
+
 const FrameBlogs = () => {
   const [blogs, setBlogs] = useState([]);
   const db = getFirestore(app);
@@ -23,10 +24,10 @@ const FrameBlogs = () => {
   }, []);
 
   return (
-    <div className="w-screen min-h-screen p-5 bg-gray-50 mt-30">
+    <div className="w-screen min-h-screen p-10  flex flex-col items-center justify-center">
       <div className="text-center mb-12">
         <h1 className="text-5xl font-bold">
-          <span className="text-green-800">Historias únicas</span> <span className="text-orange-500">Unimetrail</span>
+          <span className="text-teal-600">Historias únicas</span> <span className="text-orange-500">Unimetrail</span>
         </h1>
       </div>
       <div className='max-w-7xl mx-auto'>
@@ -48,6 +49,11 @@ const FrameBlogs = () => {
       <div className="flex justify-center mt-12">
         <BotonSecundario text="Agregar blog personal" to="/agregar-blog" />
       </div>
+      <img 
+        src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Avila.svg" 
+        className="hidden md:block absolute bottom-0 left-0 w-auto h-auto -z-10" 
+        alt="Fondo Avila"
+      />
     </div>
   );
 };
