@@ -14,6 +14,8 @@ import { AuthProvider } from './context/AuthContext'
 import ClienteRutasAdquiridas from './pages/dashboards/ClienteRutasAdquiridas'
 import Contacto from './pages/Contacto'
 import Blogs from './pages/Blogs'
+import CrearBlog from './components/CrearBlog'
+import DetalleBlog from './components/DetalleBlog'
 
 export default function App() {
   console.log('hola')
@@ -31,6 +33,8 @@ export default function App() {
           <Route path="VerRutasAd" element={< ClienteRutasAdquiridas />} />
           <Route path="contacto" element={< Contacto />} />
           <Route path="blogs" element={< Blogs />} />
+          <Route path="agregar-blog" element={< CrearBlog />} />
+          <Route path="/blog/:id" element={<DetalleBlog />} />
           <Route 
             path="/admin/*" 
             element={

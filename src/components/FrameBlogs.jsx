@@ -23,29 +23,29 @@ const FrameBlogs = () => {
   }, []);
 
   return (
-    <div className="w-screen h-full p-5">
-      <div className="text-center mb-8">
+    <div className="w-screen min-h-screen p-5 bg-gray-50">
+      <div className="text-center mb-12">
         <h1 className="text-5xl font-bold">
           <span className="text-green-800">Historias únicas</span> <span className="text-orange-500">Unimetrail</span>
         </h1>
       </div>
-      <div className='flex justify-center w-full'>
-        <div className='grid gap-5 w-full' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
+      <div className='max-w-7xl mx-auto'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center'>
           {blogs.map(blog => (
-            <div key={blog.id} className='p-5 rounded-lg flex flex-col justify-between'>
-              <TarjetaBlog
-                imagen={blog.imagen}
-                titulo={blog.titulo}
-                descripcion={blog.descripcion}
-                perfilImagen={blog.perfilImagen}
-                nombreUsuario={blog.nombreUsuario}
-                fecha={blog.fecha}
-              />
-            </div>
+            <TarjetaBlog
+              key={blog.id}
+              id={blog.id}
+              imagen={blog.image}
+              titulo={blog.title}
+              descripcion={blog.description}
+              perfilImagen={blog.user_pp}
+              nombreUsuario={blog.user}
+              fecha={blog.created}
+            />
           ))}
         </div>
       </div>
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center mt-12">
         <BotonSecundario text="Agregar blog personal" to="/agregar-blog" />
       </div>
     </div>
