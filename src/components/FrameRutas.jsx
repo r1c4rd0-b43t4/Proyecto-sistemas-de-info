@@ -5,21 +5,46 @@ import { app } from '../../credentials';
 
 const FrameRutas = () => {
   const [rutas, setRutas] = useState([]);
+  const [rutasFiltradas, setRutasFiltradas] = useState([]);
+  const [dificultadSeleccionada, setDificultadSeleccionada] = useState('todas');
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const db = getFirestore(app);
 
   async function getRutas() {
-    const usersCollectionRef = collection(db, 'Rutas');
-    const querySnapshot = await getDocs(usersCollectionRef);
-    const usersList = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-    setRutas(usersList);
+    try {
+      setLoading(true);
+      setError(null);
+      const usersCollectionRef = collection(db, 'Rutas');
+      const querySnapshot = await getDocs(usersCollectionRef);
+      const usersList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      console.log('Rutas obtenidas:', usersList);
+      setRutas(usersList);
+      setRutasFiltradas(usersList);
+    } catch (error) {
+      console.error('Error al obtener rutas:', error);
+      setError('Error al cargar las rutas. Por favor, intente nuevamente.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     getRutas();
   }, []);
+
+  useEffect(() => {
+    if (dificultadSeleccionada === 'todas') {
+      setRutasFiltradas(rutas);
+    } else {
+      const rutasFiltradas = rutas.filter(ruta => ruta.difficulty === dificultadSeleccionada);
+      console.log('Rutas filtradas:', rutasFiltradas);
+      setRutasFiltradas(rutasFiltradas);
+    }
+  }, [dificultadSeleccionada, rutas]);
 
   return (
     <div className='w-screen h-full'>
@@ -35,31 +60,50 @@ const FrameRutas = () => {
           <h1 className='text-5xl font-bold break-words text-teal-600'>Nuevas Aventuras</h1>
           <h3 className='text-4xl break-words text-teal-600'>Explora nuestras rutas</h3>
         </div>
-        <div className='flex justify-center align-middle w-screen h-fill '>
+        <div className='flex flex-col md:flex-row justify-center items-center gap-4 w-screen h-fill px-4'>
           <input
             type="text"
             placeholder="Buscar rutas..."
-            className="w-1/2 p-2 border border-gray-300 rounded-lg bg-white"
+            className="w-full md:w-1/2 p-2 border border-gray-300 rounded-lg bg-white"
           />
-      </div>
+          <select
+            value={dificultadSeleccionada}
+            onChange={(e) => setDificultadSeleccionada(e.target.value)}
+            className="w-full md:w-1/4 p-2 border border-gray-300 rounded-lg bg-white text-gray-700"
+          >
+            <option value="todas">Todas las dificultades</option>
+            <option value="Extrema">Extrema</option>
+            <option value="Alta">Alta</option>
+            <option value="Media">Media</option>
+            <option value="Baja">Baja</option>
+          </select>
+        </div>
       </div>
 
       <div className='flex justify-center w-full md:px-10 md:py-10'>
-        <div className='grid gap-5 w-full' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
-          {rutas.map(ruta => (
-            <div key={ruta.id} className='p-5 rounded-lg flex flex-col justify-between'>
-              <TarjetaRuta
-                nombreRuta={ruta.name}
-                precio={ruta.price}
-                inicio={ruta.start_point}
-                tiempo={ruta.duration}
-                distancia={ruta.distance}
-                dificultad={ruta.difficulty}
-                icono={ruta.image}
-              />
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center text-xl text-teal-600">Cargando rutas...</div>
+        ) : error ? (
+          <div className="text-center text-xl text-red-600">{error}</div>
+        ) : rutasFiltradas.length === 0 ? (
+          <div className="text-center text-xl text-teal-600">No se encontraron rutas</div>
+        ) : (
+          <div className='grid gap-5 w-full' style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
+            {rutasFiltradas.map(ruta => (
+              <div key={ruta.id} className='p-5 rounded-lg flex flex-col justify-between'>
+                <TarjetaRuta
+                  nombreRuta={ruta.name}
+                  precio={ruta.price}
+                  inicio={ruta.start_point}
+                  tiempo={ruta.duration}
+                  distancia={ruta.distance}
+                  dificultad={ruta.difficulty}
+                  icono={ruta.image}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
