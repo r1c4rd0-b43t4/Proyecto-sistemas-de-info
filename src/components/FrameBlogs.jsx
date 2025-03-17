@@ -23,7 +23,7 @@ const FrameBlogs = () => {
   }, []);
 
   return (
-    <div className="w-screen min-h-screen p-5 bg-gray-50">
+    <div className="w-screen min-h-screen p-5 bg-gray-50 mt-30">
       <div className="text-center mb-12">
         <h1 className="text-5xl font-bold">
           <span className="text-green-800">Historias únicas</span> <span className="text-orange-500">Unimetrail</span>

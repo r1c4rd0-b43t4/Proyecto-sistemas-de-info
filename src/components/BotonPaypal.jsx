@@ -32,6 +32,7 @@ const PaypalButtonComponent = ({ precio }) => {
         return actions.order.capture().then(function (details) {
             const name = details.payer.name.given_name;
             console.log(`Gracias por tu compra, ${name}!`);
+            
             navigate('/exitosa');
         });
     };
