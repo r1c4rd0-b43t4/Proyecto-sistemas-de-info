@@ -78,7 +78,8 @@ export default function VistaProducto() {
           reviews={ruta.reviews || 0}
           fecha={ruta.fecha || new Date().toLocaleDateString()}
           descripcion={ruta.description || "Sin descripción disponible"}
-          imagenes={[ruta.image]} // Por ahora solo usamos la imagen principal
+          imagen={[ruta.image]} // Por ahora solo usamos la imagen principal
+          imagenes={ruta.images || []}
         />
       </div>
     </div>
