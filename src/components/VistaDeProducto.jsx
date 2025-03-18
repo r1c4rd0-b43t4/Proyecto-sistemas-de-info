@@ -1,67 +1,11 @@
-import React, { useState } from 'react';
-import { getFirestore, doc, updateDoc, arrayUnion, getDoc, setDoc } from 'firebase/firestore';
-import { UserContext } from '../Context/UserContext';
+import React from 'react';
 import DatosRuta from './DatosRuta';
 import StarRating from './StarRating';
 import BotonPaypal from './BotonPaypal';
 
-const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = [], nombreRuta, precio, cupos, reviews, inicio, fecha, descripcion }) => {
-  const [loading, setLoading] = useState(false);
-  const { user, logged } = React.useContext(UserContext);
-  const db = getFirestore();
-
-  const handleCompraExitosa = async () => {
-    if (!logged) {
-      alert('Debes iniciar sesión para comprar una ruta');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      
-      // Verificar si el documento del usuario existe
-      const userRef = doc(db, 'usuarios', user.uid);
-      const userDoc = await getDoc(userRef);
-      
-      if (!userDoc.exists()) {
-        // Si el documento no existe, crearlo
-        await setDoc(userRef, {
-          email: user.email,
-          role: 'cliente',
-          createdAt: new Date().toISOString(),
-          rutasCompradas: [{
-            rutaId: id,
-            nombre: nombreRuta,
-            precio: precio,
-            fechaCompra: new Date().toISOString(),
-            imagen: icono
-          }],
-          reseñas: [] // Inicializar el array de reseñas vacío
-        });
-      } else {
-        // Si el documento existe, actualizarlo
-        await updateDoc(userRef, {
-          rutasCompradas: arrayUnion({
-            rutaId: id,
-            nombre: nombreRuta,
-            precio: precio,
-            fechaCompra: new Date().toISOString(),
-            imagen: icono
-          })
-        });
-      }
-
-      alert('¡Compra exitosa! La ruta ha sido agregada a tu cuenta.');
-    } catch (error) {
-      console.error('Error al procesar la compra:', error);
-      alert('Error al procesar la compra. Por favor, intenta nuevamente.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], nombreRuta, precio, cupos, reviews, inicio, fecha, descripcion }) => {
   return (
-    <div className="flex relative w-11/12 p-4 bg-[#F5F5F5] shadow-lg rounded-2xl overflow-hidden h-screen my-30 ">
+    <div className="flex relative w-11/12 p-4 bg-[#F5F5F5] shadow-lg rounded-2xl overflow-hidden h-screen my-30">
       <div className="grid gap-5 w-full" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
         <div className="bg-gray-200 flex flex-col items-center justify-center">
           <img src={icono} alt="Producto" className="w-3/4 mb-4" />
@@ -80,13 +24,6 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold break-words">${precio}</h1>
             <p className="text-xl sm:text-2xl lg:text-3xl ml-2 break-words" style={{ color: '#77878F' }}>/reserva</p>
           </div>
-          <div className="flex items-center mb-4">
-            <StarRating 
-              rutaId={id}
-              rutaNombre={nombreRuta}
-            />
-            <p className="text-sm sm:text-base lg:text-lg ml-2 break-words" style={{ color: '#77878F' }}>{reviews}</p>
-          </div>
           <hr className="w-full border-t-2 border-gray-300 mt-4" />
           <p className="text-center font-semibold mt-4 text-xs sm:text-sm lg:text-base">fecha:{fecha}</p>
           <div className="mt-4 text-left">
@@ -95,11 +32,7 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
             <p className="text-base sm:text-lg lg:text-xl text-green-500 break-words"><span className="font-bold text-green-700">{cupos}</span> cupos disponibles</p>
           </div>
           <div className="mt-4 flex justify-end">
-            {logged ? (
-              <BotonPaypal precio={precio} onSuccess={handleCompraExitosa} />
-            ) : (
-              <p className="text-gray-600">Inicia sesión para comprar esta ruta</p>
-            )}
+            <BotonPaypal precio={precio} />
           </div>
         </div>
       </div>
@@ -109,3 +42,22 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
 
 export default VistaDeProducto;
 
+VistaDeProducto.defaultProps = {
+  icono: "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg", 
+  dificultad: "Ez",
+  distancia: 5,
+  duracion: 1,
+  imagenes: [
+    "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg", 
+    "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg", 
+    "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg", 
+    "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg"
+  ],
+  nombre: "Ruta Humboldt",
+  precio: 100,
+  cupos: 10,
+  reviews: 50,
+  startPoint: "Punto A",
+  fecha: "01/01/2022",
+  descripcion: "La Ruta “Humboldt” fue diseñada para aquellos que desean tener un verdadero reto, siendo su gran distancia y tiempo digno de renombre, pero por un esfuerzo que lo va a valer. Dicha ruta incluye acampado y apoyo de los guías para distribuir el peso del equipamiento. Se recomienda unicamente a personas experimentadas."
+};

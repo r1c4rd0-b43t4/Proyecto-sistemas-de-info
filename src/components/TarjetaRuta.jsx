@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import DatosRuta from "./DatosRuta";
-import StarRating from "./StarRating";
 import BotonPrimario from "./BotonPrimario";
 
 export function TarjetaRuta({ nombreRuta, precio, inicio, tiempo, distancia, dificultad, icono }) {
@@ -37,12 +36,8 @@ export function TarjetaRuta({ nombreRuta, precio, inicio, tiempo, distancia, dif
               <strong className="text-xl md:text-2xl lg:text-3xl font-bold text-orange-500 mr-0">${precio}</strong>
               <p className="ml-0">/Reserva</p>
             </div>
-            <div className="mt-0 flex items-center"> 
-              <StarRating />
-              <p className="ml-2 md:ml-3 lg:ml-4" style={{color: '#77878F'}}>(50)</p>
-            </div>
           </div>
-          <div className="absolute bottom-4 right-1">
+          <div className="w-full flex justify-end mt-auto">
             <BotonPrimario text={"Reservar"} onClick={handleReservarClick} />
           </div>
         </div>
