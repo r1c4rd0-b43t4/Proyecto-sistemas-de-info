@@ -1,7 +1,7 @@
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router";
 
-const PaypalButtonComponent = ({ precio }) => {
+const PaypalButtonComponent = ({ precio, onSuccess }) => {
     const navigate = useNavigate();
 
     const initialOptions = {
@@ -21,7 +21,7 @@ const PaypalButtonComponent = ({ precio }) => {
                 {
                     amount: {
                         currency_code: "USD",
-                        value: parseFloat(precio).toFixed(2), // Asegurar que sea un número con 2 decimales
+                        value: parseFloat(precio).toFixed(2),
                     },
                 },
             ],
@@ -33,22 +33,55 @@ const PaypalButtonComponent = ({ precio }) => {
             const name = details.payer.name.given_name;
             console.log(`Gracias por tu compra, ${name}!`);
             
+            if (onSuccess) {
+                onSuccess();
+            }
+            
             navigate('/exitosa');
         });
     };
 
+    const simularCompraExitosa = () => {
+        console.log("Simulando compra exitosa");
+        if (onSuccess) {
+            onSuccess();
+        }
+        navigate('/exitosa');
+    };
+
     return (
-        <PayPalScriptProvider options={initialOptions}>
-            <PayPalButtons createOrder={createOrder} onApprove={onApprove} />
-        </PayPalScriptProvider>
+        <div className="flex flex-col gap-4">
+            <div className="flex flex-col items-center">
+                <PayPalScriptProvider options={initialOptions}>
+                    <PayPalButtons 
+                        createOrder={createOrder} 
+                        onApprove={onApprove}
+                        style={{ layout: "vertical" }}
+                    />
+                </PayPalScriptProvider>
+            </div>
+            
+            <div className="flex flex-col items-center">
+                <button
+                    onClick={simularCompraExitosa}
+                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                >
+                    Comprar Ruta (Modo Prueba)
+                </button>
+                
+                <p className="text-sm text-gray-500 mt-2">
+                    Usa el botón de prueba si hay problemas con PayPal
+                </p>
+            </div>
+        </div>
     );
 };
 
-export default function BotonPaypal({ precio }) {
+export default function BotonPaypal({ precio, onSuccess }) {
     if (precio === undefined || precio === null || isNaN(precio)) {
         console.error("⚠️ Error: No se pasó un precio válido a BotonPaypal");
         return <p style={{ color: "red" }}>⚠️ Error: Precio inválido</p>;
     }
 
-    return <PaypalButtonComponent precio={precio} />;
+    return <PaypalButtonComponent precio={precio} onSuccess={onSuccess} />;
 }

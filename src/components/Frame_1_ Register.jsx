@@ -47,10 +47,11 @@ export default function Frame_1_Home() {
 
             // Crear documento de usuario en Firestore
             const user = await setDoc(doc(db, 'usuarios', userCredential.user.uid), {
-                
                 email: email,
                 role: 'cliente',
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                rutasCompradas: [],
+                reseñas: []
             });
   
             setEmail("");

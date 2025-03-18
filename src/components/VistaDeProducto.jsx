@@ -1,9 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { getFirestore, doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { UserContext } from '../Context/UserContext';
 import DatosRuta from './DatosRuta';
 import StarRating from './StarRating';
 import BotonPaypal from './BotonPaypal';
 
-const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], nombreRuta, precio, cupos, reviews, inicio, fecha, descripcion }) => {
+const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = [], nombreRuta, precio, cupos, reviews, inicio, fecha, descripcion }) => {
+  const [loading, setLoading] = useState(false);
+  const { user, logged } = React.useContext(UserContext);
+  const db = getFirestore();
+
+  const handleCompraExitosa = async () => {
+    if (!logged) {
+      alert('Debes iniciar sesión para comprar una ruta');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      
+      // Actualizar el documento del usuario con la ruta comprada
+      const userRef = doc(db, 'usuarios', user.uid);
+      await updateDoc(userRef, {
+        rutasCompradas: arrayUnion({
+          rutaId: id,
+          nombre: nombreRuta,
+          precio: precio,
+          fechaCompra: new Date().toISOString(),
+          imagen: icono
+        })
+      });
+
+      alert('¡Compra exitosa! La ruta ha sido agregada a tu cuenta.');
+    } catch (error) {
+      console.error('Error al procesar la compra:', error);
+      alert('Error al procesar la compra. Por favor, intenta nuevamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex relative w-11/12 p-4 bg-[#F5F5F5] shadow-lg rounded-2xl overflow-hidden h-screen my-30 ">
       <div className="grid gap-5 w-full" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
@@ -36,7 +72,11 @@ const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], 
             <p className="text-base sm:text-lg lg:text-xl text-green-500 break-words"><span className="font-bold text-green-700">{cupos}</span> cupos disponibles</p>
           </div>
           <div className="mt-4 flex justify-end">
-            <BotonPaypal precio={precio} />
+            {logged ? (
+              <BotonPaypal precio={precio} onSuccess={handleCompraExitosa} />
+            ) : (
+              <p className="text-gray-600">Inicia sesión para comprar esta ruta</p>
+            )}
           </div>
         </div>
       </div>
@@ -46,22 +86,3 @@ const VistaDeProducto = ({ icono, dificultad, distancia, tiempo, imagenes = [], 
 
 export default VistaDeProducto;
 
-VistaDeProducto.defaultProps = {
-  icono: "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg", 
-  dificultad: "Ez",
-  distancia: 5,
-  duracion: 1,
-  imagenes: [
-    "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg", 
-    "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg", 
-    "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg", 
-    "https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/Imagenes_Rutas//Humboldt.svg"
-  ],
-  nombre: "Ruta Humboldt",
-  precio: 100,
-  cupos: 10,
-  reviews: 50,
-  startPoint: "Punto A",
-  fecha: "01/01/2022",
-  descripcion: "La Ruta “Humboldt” fue diseñada para aquellos que desean tener un verdadero reto, siendo su gran distancia y tiempo digno de renombre, pero por un esfuerzo que lo va a valer. Dicha ruta incluye acampado y apoyo de los guías para distribuir el peso del equipamiento. Se recomienda unicamente a personas experimentadas."
-};

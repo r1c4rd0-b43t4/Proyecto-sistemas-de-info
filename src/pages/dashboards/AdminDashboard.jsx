@@ -7,6 +7,7 @@ import BotonPrimario from '../../components/BotonPrimario';
 import BotonSecundario from '../../components/BotonSecundario';
 import AddImageButton from '../../components/AddImageButton';
 import { UserContext } from '../../Context/UserContext';
+import CrearRuta from '../../components/CrearRuta';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('usuarios');
@@ -380,68 +381,64 @@ function AdminRutas({ rutas, onRefresh }) {
         />
       </div>
 
-      {/* Grid de Rutas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {rutas.map(ruta => (
-          <div key={ruta.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-            <div className="relative h-48">
-              <img
-                src={ruta.image || '/placeholder-ruta.jpg'}
-                alt={ruta.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="p-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">{ruta.name}</h3>
-              <div className="space-y-2 text-sm text-gray-600">
-                <p className="flex items-center">
-                  <span className="font-medium mr-2">Precio:</span>
-                  ${ruta.price}
-                </p>
-                <p className="flex items-center">
-                  <span className="font-medium mr-2">Inicio:</span>
-                  {ruta.start_point}
-                </p>
-                <p className="flex items-center">
-                  <span className="font-medium mr-2">Duración:</span>
-                  {ruta.duration}
-                </p>
-                <p className="flex items-center">
-                  <span className="font-medium mr-2">Distancia:</span>
-                  {ruta.distance} km
-                </p>
-                <p className="flex items-center">
-                  <span className="font-medium mr-2">Dificultad:</span>
-                  <span className={`px-2 py-1 rounded-full text-xs ${
-                    ruta.difficulty === 'Fácil' ? 'bg-green-100 text-green-800' :
-                    ruta.difficulty === 'Medio' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
-                  }`}>
-                    {ruta.difficulty}
-                  </span>
-                </p>
-              </div>
-              <div className="mt-4 flex justify-end space-x-2">
-                <BotonSecundario
-                  text="Editar"
-                  onClick={() => {/* Implementar edición */}}
+      {mostrarFormulario ? (
+        <CrearRuta onClose={() => setMostrarFormulario(false)} />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {rutas.map(ruta => (
+            <div key={ruta.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="relative h-48">
+                <img
+                  src={ruta.image || '/placeholder-ruta.jpg'}
+                  alt={ruta.name}
+                  className="w-full h-full object-cover"
                 />
-                <button
-                  onClick={() => eliminarRuta(ruta.id)}
-                  className="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
-                >
-                  Eliminar
-                </button>
+              </div>
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{ruta.name}</h3>
+                <div className="space-y-2 text-sm text-gray-600">
+                  <p className="flex items-center">
+                    <span className="font-medium mr-2">Precio:</span>
+                    ${ruta.price}
+                  </p>
+                  <p className="flex items-center">
+                    <span className="font-medium mr-2">Inicio:</span>
+                    {ruta.start_point}
+                  </p>
+                  <p className="flex items-center">
+                    <span className="font-medium mr-2">Duración:</span>
+                    {ruta.duration}
+                  </p>
+                  <p className="flex items-center">
+                    <span className="font-medium mr-2">Distancia:</span>
+                    {ruta.distance} km
+                  </p>
+                  <p className="flex items-center">
+                    <span className="font-medium mr-2">Dificultad:</span>
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      ruta.difficulty === 'Fácil' ? 'bg-green-100 text-green-800' :
+                      ruta.difficulty === 'Medio' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {ruta.difficulty}
+                    </span>
+                  </p>
+                </div>
+                <div className="mt-4 flex justify-end space-x-2">
+                  <BotonSecundario
+                    text="Editar"
+                    onClick={() => {/* Implementar edición */}}
+                  />
+                  <button
+                    onClick={() => eliminarRuta(ruta.id)}
+                    className="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                  >
+                    Eliminar
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Aquí puedes agregar el modal o formulario para agregar/editar rutas */}
-      {mostrarFormulario && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          {/* Implementar formulario de ruta */}
+          ))}
         </div>
       )}
     </div>
