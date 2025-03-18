@@ -51,6 +51,17 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
         });
       }
 
+      const rutaRef = doc(db, 'Rutas', id);
+      const rutaDoc = await getDoc(rutaRef);
+      if (rutaDoc.exists()) {
+        const rutaData = rutaDoc.data();
+        if (rutaData.quotas > 0) {
+          await updateDoc(rutaRef, {
+            cupos: rutaData.quotas - 1
+          });
+        }
+      }
+
       alert('¡Compra exitosa! La ruta ha sido agregada a tu cuenta.');
     } catch (error) {
       console.error('Error al procesar la compra:', error);

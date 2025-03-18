@@ -52,6 +52,7 @@ export default function Frame_3_Home() {
                           distancia={tres_rutas.distance}
                           dificultad={tres_rutas.difficulty}
                           icono={tres_rutas.image}
+                          cupos={tres_rutas.quotas}
                         />
                       </div>
                     ))}

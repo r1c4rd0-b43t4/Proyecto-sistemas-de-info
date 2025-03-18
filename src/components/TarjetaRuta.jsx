@@ -3,12 +3,27 @@ import { useNavigate } from "react-router";
 import DatosRuta from "./DatosRuta";
 import BotonPrimario from "./BotonPrimario";
 
-export function TarjetaRuta({ nombreRuta, precio, inicio, tiempo, distancia, dificultad, icono }) {
+export function TarjetaRuta({ nombreRuta, precio, inicio, tiempo, distancia, dificultad, icono, cupos }) {
   const navigate = useNavigate();
 
   const handleReservarClick = () => {
     navigate(`/producto/${nombreRuta}`);
   };
+
+  if (cupos === 0) {
+    return (
+      <div className='p-5 rounded-lg flex flex-col justify-between'>
+        <article className="flex relative w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl h-auto p-4 bg-[#F5F5F5] shadow-lg rounded-2xl">
+          <div className="relative w-full h-full flex flex-col items-center">
+            <div className="w-full mt-4 flex flex-col items-start">
+              <h1 className="text-xl md:text-2xl lg:text-3xl font-bold">{nombreRuta}</h1>
+              <p className="text-red-500 mt-2">No hay cupos disponibles para esta ruta</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    );
+  }
 
   return (
     <div className='p-5 rounded-lg flex flex-col justify-between'>

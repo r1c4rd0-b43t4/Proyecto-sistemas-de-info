@@ -124,6 +124,7 @@ const FrameRutas = () => {
                   distancia={ruta.distance}
                   dificultad={ruta.difficulty}
                   icono={ruta.image}
+                  cupos={ruta.quotas}
                 />
               </div>
             ))}
