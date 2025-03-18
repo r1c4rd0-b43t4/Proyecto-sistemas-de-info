@@ -8,7 +8,7 @@ const TarjetaBlog = ({ id, imagen, titulo, descripcion, perfilImagen, nombreUsua
         navigate(`/blog/${id}`);
     };
 
-    // Función para formatear la fecha
+    // formatear la fecha
     const formatearFecha = (fecha) => {
         if (fecha && fecha.seconds) {
             // Si es un timestamp de Firebase
@@ -21,36 +21,35 @@ const TarjetaBlog = ({ id, imagen, titulo, descripcion, perfilImagen, nombreUsua
                 minute: '2-digit'
             });
         }
-        // Si ya es una cadena de texto, la devolvemos tal cual
         return fecha;
     };
 
     return (
         <div 
-            className="w-[300px] bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+            className="w-full max-w-sm bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
             onClick={handleClick}
         >
-            <div className="h-[150px] overflow-hidden">
+            <div className="aspect-[16/9] overflow-hidden">
                 <img 
                     src={imagen || 'https://via.placeholder.com/300x150'} 
                     alt={titulo} 
                     className="w-full h-full object-cover"
                 />
             </div>
-            <div className="p-4">
-                <h2 className="text-lg font-bold text-[#00796B] line-clamp-1">{titulo || 'Sin título'}</h2>
-                <p className="text-gray-600 text-sm mt-2 line-clamp-2">
+            <div className="p-4 md:p-5">
+                <h2 className="text-lg md:text-xl font-bold text-[#00796B] line-clamp-1">{titulo || 'Sin título'}</h2>
+                <p className="text-gray-600 text-sm md:text-base mt-2 line-clamp-3">
                     {descripcion || 'Sin descripción'}
                 </p>
                 <div className="flex items-center mt-4 pt-4 border-t border-gray-100">
                     <img 
                         src={perfilImagen || 'https://via.placeholder.com/40'} 
                         alt={nombreUsuario} 
-                        className="w-8 h-8 rounded-full mr-3"
+                        className="w-8 h-8 md:w-10 md:h-10 rounded-full mr-3"
                     />
                     <div>
-                        <p className="font-semibold text-sm">{nombreUsuario || 'Usuario'}</p>
-                        <p className="text-gray-500 text-sm">
+                        <p className="font-semibold text-sm md:text-base">{nombreUsuario || 'Usuario'}</p>
+                        <p className="text-gray-500 text-xs md:text-sm">
                             {formatearFecha(fecha)}
                         </p>
                     </div>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import BotonPrimario from '../../components/BotonPrimario';
 import GuiaRutas from '../../components/GuiaRutas';
 import GuiaGaleria from '../../components/GuiaGaleria';
+import GuiaBlogs from '../../components/GuiaBlogs';
 import { UserContext } from '../../Context/UserContext';
 
 export default function GuiaDashboard() {
@@ -24,7 +25,6 @@ export default function GuiaDashboard() {
   };
 
   useEffect(() => {
-    // Aquí deberías hacer la llamada a tu API para obtener las rutas del guía
     const obtenerRutas = async () => {
       try {
         setLoading(false);
@@ -96,7 +96,7 @@ export default function GuiaDashboard() {
         {/* Contenido basado en el tab activo */}
         <div className="mt-6">
           {activeTab === 'galeria' && <GuiaGaleria />}
-          {activeTab === 'blogs' && <div>Sección de Blogs en construcción</div>}
+          {activeTab === 'blogs' && <GuiaBlogs />}
           {activeTab === 'misRutas' && (
             loading ? (
               <div className="text-center">

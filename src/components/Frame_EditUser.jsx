@@ -78,12 +78,12 @@ export default function Frame_EditUser() {
   const subirImagen = async (archivo) => {
     if (!archivo) return null;
     try {
-      // Generar un nombre único para el archivo
+      // nombre imagen supabase
       const fileExt = archivo.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2)}${Date.now().toString()}.${fileExt}`;
       const filePath = `perfiles/${fileName}`;
 
-      // Subir el archivo a Supabase Storage
+      // subir imagen a supabase
       const { data, error } = await supabase.storage
         .from('imagenes')
         .upload(filePath, archivo, {
@@ -96,7 +96,7 @@ export default function Frame_EditUser() {
         throw error;
       }
 
-      // Obtener la URL pública del archivo
+      // url imagen
       const { data: { publicUrl } } = supabase.storage
         .from('imagenes')
         .getPublicUrl(filePath);
@@ -155,7 +155,7 @@ export default function Frame_EditUser() {
 
     setCargando(true);
     try {
-      // Primero intentamos subir la imagen si hay una nueva
+      // subir imagen
       let nuevaFotoURL = usuario.fotoURL;
       if (archivo) {
         nuevaFotoURL = await subirImagen(archivo);
@@ -163,7 +163,7 @@ export default function Frame_EditUser() {
           throw new Error('No se pudo subir la imagen');
         }
 
-        // Si hay una URL de foto anterior, intentamos eliminarla de Supabase
+        // borrar url imagen anterior 
         if (usuario.fotoURL) {
           try {
             const oldFilePath = usuario.fotoURL.split('/').pop();
@@ -181,7 +181,7 @@ export default function Frame_EditUser() {
         });
       }
 
-      // Actualizamos la información del usuario en Firestore
+      // actualizar info usuario en firebase
       const userRef = doc(db, 'usuarios', auth.currentUser.uid);
       const datosActualizados = {
         nombre: usuario.nombre,
@@ -387,7 +387,7 @@ export default function Frame_EditUser() {
             />
           </div>
 
-          {/* Botones de acción */}
+          {/* Botones */}
           <div className="flex justify-end gap-4">
             <BotonSecundario
               text="Cancelar"
