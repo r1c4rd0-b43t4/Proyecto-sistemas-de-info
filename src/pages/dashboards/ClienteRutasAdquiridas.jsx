@@ -117,10 +117,10 @@ export default function ClienteRutasAdquiridas() {
                   </div>
 
                   {/* Sección de WhatsApp */}
-                  {ruta.whatsappLink && (
+                  {ruta.whatsapp && (
                     <div className="mb-4">
                       <a
-                        href={ruta.whatsappLink}
+                        href={ruta.whatsapp}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center text-green-600 hover:text-green-700"

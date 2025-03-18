@@ -56,7 +56,7 @@ const RutasAsignadas = ({ rutas }) => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   <button 
                     className="text-teal-600 hover:text-teal-800"
-                    onClick={() => window.open(ruta.grupoWhatsapp, '_blank')}
+                    onClick={() => window.open(ruta.whatsapp, '_blank')}
                   >
                     <svg 
                       xmlns="http://www.w3.org/2000/svg" 
