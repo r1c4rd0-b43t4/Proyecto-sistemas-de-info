@@ -4,6 +4,8 @@ import { getFirestore, collection, query, where, getDocs } from 'firebase/firest
 import { UserContext } from '../Context/UserContext';
 import VistaDeProducto from '../components/VistaDeProducto';
 import Loader from '../loader/Loader';
+import Navbar from '../components/Header_NoSession'; // Asegúrate de importar el componente Navbar
+import Footer from '../components/Footer'; // Asegúrate de importar el componente Footer
 
 export default function VistaProducto() {
   const { nombreRuta } = useParams();
@@ -63,8 +65,9 @@ export default function VistaProducto() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="h-screen bg-gray-100 py-12 w-screen relative">
+      <Navbar /> 
+      <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <VistaDeProducto
           id={ruta.id}
           icono={ruta.image}
@@ -78,10 +81,11 @@ export default function VistaProducto() {
           reviews={ruta.reviews || 0}
           fecha={ruta.fecha || new Date().toLocaleDateString()}
           descripcion={ruta.description || "Sin descripción disponible"}
-          imagen={[ruta.image]} // Por ahora solo usamos la imagen principal
+          imagen={[ruta.image]} 
           imagenes={ruta.images || []}
         />
       </div>
+      <Footer />
     </div>
   );
 }
