@@ -55,15 +55,24 @@ const AddImageButton = ({ onImageAdded }) => {
   return (
     <>
       <div 
-        className="w-full h-full bg-white rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+        className="w-full h-full bg-white rounded-lg cursor-pointer hover:opacity-80 transition-opacity flex items-center justify-center relative overflow-hidden"
         style={{ 
-          backgroundImage: `url(https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Add.svg)`,
-          backgroundSize: 'contain',
+          backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          backgroundRepeat: 'no-repeat',
+          border: '2px solid #e5e7eb',
+          boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
         }}
         onClick={() => setShowPopup(true)}
-      />
+      >
+        <div className="absolute inset-0 bg-black/5 flex items-center justify-center">
+          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-gray-600">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </div>
+        </div>
+      </div>
 
       {showPopup && (
         <div 

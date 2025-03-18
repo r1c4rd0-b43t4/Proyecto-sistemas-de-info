@@ -37,17 +37,15 @@ export default function Frame_Galeria() {
     fetchImages();
   }, []);
 
-  // Nuevo método para distribuir los items.
   const createColumns = () => {
     const columnCount = 3;
-    // Agregamos el botón como el primer elemento del conjunto.
-    const items = [{ isButton: true }, ...images];
+    const items = [
+      { type: 'button', key: 'add-button' },
+      ...images.map(img => ({ type: 'image', ...img }))
+    ];
     const rows = Math.ceil(items.length / columnCount);
-    // Creamos un array para cada columna.
     const columns = Array.from({ length: columnCount }, () => []);
 
-    // Distribuimos de forma row-by-row: es decir, recorremos cada fila y
-    // en cada fila, llenamos cada columna en orden.
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < columnCount; col++) {
         const index = row * columnCount + col;
@@ -110,13 +108,12 @@ export default function Frame_Galeria() {
       {/* Versión para pantallas md y superiores */}
       <div className="hidden md:flex justify-center gap-4 p-10 w-full">
         {columns.map((column, colIndex) => (
-          // Usamos flex-1 para que cada columna ocupe el mismo ancho.
           <div key={colIndex} className="flex flex-col gap-4 flex-1">
-            {column.map((item, index) => {
-              if (item.isButton) {
+            {column.map((item) => {
+              if (item.type === 'button') {
                 return (
                   <AddImageButton
-                    key={`add-button-${colIndex}-${index}`}
+                    key={item.key}
                     onImageAdded={fetchImages}
                   />
                 );
