@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
-import { UserContext } from '../../Context/UserContext';
-import Loader from '../../loader/Loader';
+import { UserContext } from '../Context/UserContext';
+import Loader from '../loader/Loader';
 import { useNavigate } from 'react-router';
 
 export default function ClienteRutasAdquiridas() {

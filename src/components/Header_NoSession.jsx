@@ -36,7 +36,7 @@ export default function Header_NoSession() {
     } else if (role === 'guia') {
       navigate('/guia/dashboard');
     } else {
-      navigate('/VerRutasAd');
+      navigate('/rutas-adquiridas');
     }
   };
 
