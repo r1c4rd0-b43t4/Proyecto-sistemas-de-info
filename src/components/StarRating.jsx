@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { getFirestore, doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { UserContext } from '../Context/UserContext';
 
 const Star = ({ filled }) => (
     <div data-svg-wrapper style={{ position: 'relative' }}>
@@ -8,16 +10,71 @@ const Star = ({ filled }) => (
     </div>
 );
 
-const StarRating = ({ totalStars = 5 }) => {
+const StarRating = ({ totalStars = 5, rutaId, rutaNombre }) => {
     const [rating, setRating] = useState(0);
+    const [comentario, setComentario] = useState('');
+    const { user, logged } = React.useContext(UserContext);
+    const db = getFirestore();
+
+    const handleRatingSubmit = async () => {
+        if (!logged) {
+            alert('Debes iniciar sesión para dejar una reseña');
+            return;
+        }
+
+        if (rating === 0) {
+            alert('Por favor, selecciona una calificación');
+            return;
+        }
+
+        try {
+            const userRef = doc(db, 'usuarios', user.uid);
+            await updateDoc(userRef, {
+                reseñas: arrayUnion({
+                    rutaId: rutaId,
+                    rutaNombre: rutaNombre,
+                    calificación: rating,
+                    comentario: comentario,
+                    fecha: new Date().toISOString()
+                })
+            });
+
+            // Limpiar el formulario
+            setRating(0);
+            setComentario('');
+            alert('¡Gracias por tu reseña!');
+        } catch (error) {
+            console.error('Error al guardar la reseña:', error);
+            alert('Error al guardar la reseña. Por favor, intenta nuevamente.');
+        }
+    };
 
     return (
-        <div className="flex">
-            {Array.from({ length: totalStars }, (_, index) => (
-                <div key={index} onClick={() => setRating(index + 1)}>
-                    <Star filled={index < rating} />
+        <div className="flex flex-col items-start">
+            <div className="flex">
+                {Array.from({ length: totalStars }, (_, index) => (
+                    <div key={index} onClick={() => setRating(index + 1)} className="cursor-pointer">
+                        <Star filled={index < rating} />
+                    </div>
+                ))}
+            </div>
+            {rating > 0 && (
+                <div className="mt-2 w-full">
+                    <textarea
+                        value={comentario}
+                        onChange={(e) => setComentario(e.target.value)}
+                        placeholder="Escribe tu comentario (opcional)"
+                        className="w-full p-2 border rounded-md"
+                        rows="3"
+                    />
+                    <button
+                        onClick={handleRatingSubmit}
+                        className="mt-2 px-4 py-2 bg-[#FA8232] text-white rounded-md hover:bg-[#e67a2d] transition-colors"
+                    >
+                        Enviar reseña
+                    </button>
                 </div>
-            ))}
+            )}
         </div>
     );
 };

@@ -5,7 +5,7 @@ import Input from "./Input_V1";
 import { GoogleAuthProvider, getAuth, createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { app } from "../../credentials.js";
 import Loader from "../loader/Loader.jsx"
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import BotonGoogle from './BotonGoogle';
 
 const auth = getAuth(app);
@@ -27,10 +27,16 @@ export default function Frame_1_Home() {
         return email.endsWith('@correo.unimet.edu.ve');
     };
 
+    const checkEmailExists = async (email) => {
+        const usersRef = collection(db, 'usuarios');
+        const q = query(usersRef, where('email', '==', email));
+        const querySnapshot = await getDocs(q);
+        return !querySnapshot.empty;
+    };
+
     const handleRegister = async (e) => {
         e.preventDefault();
         
-        // Mejorar la validación del correo
         if (!email.includes('@')) {
             setError("Por favor ingresa un correo electrónico válido");
             return;
@@ -43,10 +49,18 @@ export default function Frame_1_Home() {
 
         try {        
             setLoading(true);
+            
+            // Verificar si el correo ya existe en Firestore
+            const emailExists = await checkEmailExists(email);
+            if (emailExists) {
+                setError("¡Ups! Parece que ya tienes una cuenta registrada con este correo. ¿Por qué no intentas iniciar sesión? 😊");
+                return;
+            }
+
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
             // Crear documento de usuario en Firestore
-            const user = await setDoc(doc(db, 'usuarios', userCredential.user.uid), {
+            await setDoc(doc(db, 'usuarios', userCredential.user.uid), {
                 email: email,
                 role: 'cliente',
                 createdAt: new Date().toISOString(),
@@ -63,7 +77,7 @@ export default function Frame_1_Home() {
         } catch (error) {
             console.log(error);
             if (error.code === "auth/email-already-in-use") {
-                setError("El correo ya está en uso");
+                setError("¡Ups! Parece que ya tienes una cuenta registrada con este correo. ¿Por qué no intentas iniciar sesión? 😊");
             } else {
                 setError(error.message);
             }
@@ -74,12 +88,29 @@ export default function Frame_1_Home() {
 
     const registerWithGoogle = async () => {
         try {
+            setLoading(true);
             const provider = new GoogleAuthProvider();
+            
+            provider.setCustomParameters({
+                prompt: 'select_account'
+            });
+
             const result = await signInWithPopup(auth, provider);
             
+            // Validar el correo antes de proceder
             if (!isValidUnimetEmail(result.user.email)) {
+                await auth.signOut();
                 await result.user.delete();
                 setError("Solo se permiten correos institucionales (@correo.unimet.edu.ve). Por favor, utiliza tu correo UNIMET.");
+                return;
+            }
+
+            // Verificar si el correo ya existe en Firestore
+            const emailExists = await checkEmailExists(result.user.email);
+            if (emailExists) {
+                await auth.signOut();
+                await result.user.delete();
+                setError("¡Ups! Parece que ya tienes una cuenta registrada con este correo. ¿Por qué no intentas iniciar sesión? 😊");
                 return;
             }
 
@@ -87,12 +118,23 @@ export default function Frame_1_Home() {
             await setDoc(doc(db, 'usuarios', result.user.uid), {
                 email: result.user.email,
                 role: 'cliente',
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                rutasCompradas: [],
+                reseñas: []
             });
-            navigate("/")
             
+            navigate("/");
         } catch (error) {
-            setError("Error al registrarse con Google");
+            console.error("Error en registro con Google:", error);
+            if (error.code === 'auth/popup-closed-by-user') {
+                setError("El registro fue cancelado");
+            } else if (error.code === 'auth/account-exists-with-different-credential') {
+                setError("¡Ups! Parece que ya tienes una cuenta registrada con este correo. ¿Por qué no intentas iniciar sesión? 😊");
+            } else {
+                setError("Error al registrarse con Google. Por favor, intenta de nuevo.");
+            }
+        } finally {
+            setLoading(false);
         }
     }
 

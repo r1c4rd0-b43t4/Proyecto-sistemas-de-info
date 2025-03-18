@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getFirestore, doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, arrayUnion, getDoc, setDoc } from 'firebase/firestore';
 import { UserContext } from '../Context/UserContext';
 import DatosRuta from './DatosRuta';
 import StarRating from './StarRating';
@@ -19,17 +19,37 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
     try {
       setLoading(true);
       
-      // Actualizar el documento del usuario con la ruta comprada
+      // Verificar si el documento del usuario existe
       const userRef = doc(db, 'usuarios', user.uid);
-      await updateDoc(userRef, {
-        rutasCompradas: arrayUnion({
-          rutaId: id,
-          nombre: nombreRuta,
-          precio: precio,
-          fechaCompra: new Date().toISOString(),
-          imagen: icono
-        })
-      });
+      const userDoc = await getDoc(userRef);
+      
+      if (!userDoc.exists()) {
+        // Si el documento no existe, crearlo
+        await setDoc(userRef, {
+          email: user.email,
+          role: 'cliente',
+          createdAt: new Date().toISOString(),
+          rutasCompradas: [{
+            rutaId: id,
+            nombre: nombreRuta,
+            precio: precio,
+            fechaCompra: new Date().toISOString(),
+            imagen: icono
+          }],
+          reseñas: [] // Inicializar el array de reseñas vacío
+        });
+      } else {
+        // Si el documento existe, actualizarlo
+        await updateDoc(userRef, {
+          rutasCompradas: arrayUnion({
+            rutaId: id,
+            nombre: nombreRuta,
+            precio: precio,
+            fechaCompra: new Date().toISOString(),
+            imagen: icono
+          })
+        });
+      }
 
       alert('¡Compra exitosa! La ruta ha sido agregada a tu cuenta.');
     } catch (error) {
@@ -61,7 +81,10 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
             <p className="text-xl sm:text-2xl lg:text-3xl ml-2 break-words" style={{ color: '#77878F' }}>/reserva</p>
           </div>
           <div className="flex items-center mb-4">
-            <StarRating />
+            <StarRating 
+              rutaId={id}
+              rutaNombre={nombreRuta}
+            />
             <p className="text-sm sm:text-base lg:text-lg ml-2 break-words" style={{ color: '#77878F' }}>{reviews}</p>
           </div>
           <hr className="w-full border-t-2 border-gray-300 mt-4" />
