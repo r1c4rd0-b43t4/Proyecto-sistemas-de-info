@@ -51,13 +51,37 @@ export default function Frame_EditUser() {
 
   const cargarDatosUsuario = async () => {
     if (auth.currentUser) {
-      const docRef = doc(db, 'usuarios', auth.currentUser.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUsuario({
-          ...docSnap.data(),
-          email: auth.currentUser.email
-        });
+      try {
+        const docRef = doc(db, 'usuarios', auth.currentUser.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const datos = docSnap.data();
+          setUsuario({
+            nombre: datos.nombre || '',
+            apellido: datos.apellido || '',
+            email: auth.currentUser.email || '',
+            telefono: datos.telefono || '',
+            sobreMi: datos.sobreMi || '',
+            fotoURL: datos.fotoURL || ''
+          });
+        } else {
+          // Si el documento no existe, crear uno nuevo con datos básicos
+          const datosIniciales = {
+            nombre: '',
+            apellido: '',
+            email: auth.currentUser.email || '',
+            telefono: '',
+            sobreMi: '',
+            fotoURL: '',
+            createdAt: new Date().toISOString(),
+            role: 'cliente'
+          };
+          await setDoc(docRef, datosIniciales);
+          setUsuario(datosIniciales);
+        }
+      } catch (error) {
+        console.error('Error al cargar datos:', error);
+        mostrarMensaje('error', 'Error al cargar los datos del usuario');
       }
     }
   };
@@ -71,7 +95,7 @@ export default function Frame_EditUser() {
     const { name, value } = e.target;
     setUsuario(prevState => ({
       ...prevState,
-      [name]: value
+      [name]: value || '' // Asegurar que nunca sea undefined
     }));
   };
 
@@ -184,38 +208,30 @@ export default function Frame_EditUser() {
       // actualizar info usuario en firebase
       const userRef = doc(db, 'usuarios', auth.currentUser.uid);
       const datosActualizados = {
-        nombre: usuario.nombre,
-        apellido: usuario.apellido,
-        telefono: usuario.telefono,
-        sobreMi: usuario.sobreMi,
-        fotoURL: nuevaFotoURL || usuario.fotoURL,
+        nombre: usuario.nombre || '',
+        apellido: usuario.apellido || '',
+        telefono: usuario.telefono || '',
+        sobreMi: usuario.sobreMi || '',
+        fotoURL: nuevaFotoURL || usuario.fotoURL || '',
         ultimaActualizacion: new Date().toISOString()
       };
 
-      // Intentar crear el documento si no existe
-      try {
-        const docSnap = await getDoc(userRef);
-        if (!docSnap.exists()) {
-          await setDoc(userRef, {
-            ...datosActualizados,
-            email: auth.currentUser.email,
-            createdAt: new Date().toISOString(),
-            role: 'cliente'
-          });
-        } else {
-          await updateDoc(userRef, datosActualizados);
+      // Asegurarse de que ningún campo sea undefined
+      Object.keys(datosActualizados).forEach(key => {
+        if (datosActualizados[key] === undefined) {
+          datosActualizados[key] = '';
         }
-      } catch (error) {
-        console.error('Error al actualizar/crear documento:', error);
-        throw error;
-      }
+      });
+
+      await updateDoc(userRef, datosActualizados);
 
       // Si el email ha cambiado, lo actualizamos
       if (usuario.email !== auth.currentUser.email) {
         await actualizarEmail();
       }
 
-      mostrarMensaje('success', 'Perfil actualizado con éxito');
+      // Mostrar mensaje de éxito
+      mostrarMensaje('success', '¡Tu información se ha guardado exitosamente!');
       
       // Recargamos los datos del usuario
       await cargarDatosUsuario();
