@@ -53,7 +53,11 @@ const StarRating = ({ totalStars = 5, rutaId, rutaNombre }) => {
         <div className="flex flex-col items-start">
             <div className="flex">
                 {Array.from({ length: totalStars }, (_, index) => (
-                    <div key={index} onClick={() => setRating(index + 1)} className="cursor-pointer">
+                    <div 
+                        key={`star-${rutaId}-${index}`}
+                        onClick={() => setRating(index + 1)} 
+                        className="cursor-pointer"
+                    >
                         <Star filled={index < rating} />
                     </div>
                 ))}
