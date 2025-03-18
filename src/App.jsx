@@ -17,6 +17,7 @@ import Contacto from './pages/Contacto'
 import Blogs from './pages/Blogs'
 import AgregarBlog from './pages/AgregarBlog'
 import DetalleBlog from './components/DetalleBlog'
+import Resenas from './pages/Resenas'
 
 export default function App() {
 
@@ -47,6 +48,7 @@ export default function App() {
         <Route path="VerRutasAd" element={< ClienteRutasAdquiridas />} />
         <Route path="contacto" element={< Contacto />} />
         <Route path="blogs" element={< Blogs />} />
+        <Route path="resenas" element={< Resenas />} />
         <Route path="agregar-blog" element={< AgregarBlog />} />
         <Route path="/blog/:id" element={<DetalleBlog />} />
         <Route path="producto/:nombreRuta" element={< VistaProducto />} />

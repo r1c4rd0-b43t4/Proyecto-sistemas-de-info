@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import { getAuth, updateEmail, updatePassword, updateProfile } from 'firebase/auth';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { getFirestore, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import BotonPrimario from './BotonPrimario';
 import BotonSecundario from './BotonSecundario';
+import { useNavigate } from 'react-router';
+import { supabase } from '../../supabaseClient';
 
-export default function PerfilUsuario() {
+export default function Frame_EditUser() {
+  const navigate = useNavigate();
   const [usuario, setUsuario] = useState({
     nombre: '',
     apellido: '',
@@ -23,11 +25,18 @@ export default function PerfilUsuario() {
   const [nuevaContraseña, setNuevaContraseña] = useState('');
   
   const auth = getAuth();
-  const storage = getStorage();
   const db = getFirestore();
 
   useEffect(() => {
-    cargarDatosUsuario();
+    const verificarAutenticacion = () => {
+      if (!auth.currentUser) {
+        navigate('/login');
+        return;
+      }
+      cargarDatosUsuario();
+    };
+
+    verificarAutenticacion();
   }, []);
 
   useEffect(() => {
@@ -68,56 +77,156 @@ export default function PerfilUsuario() {
 
   const subirImagen = async (archivo) => {
     if (!archivo) return null;
-    const storageRef = ref(storage, `perfiles/${auth.currentUser.uid}`);
-    await uploadBytes(storageRef, archivo);
-    return await getDownloadURL(storageRef);
+    try {
+      // Generar un nombre único para el archivo
+      const fileExt = archivo.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}${Date.now().toString()}.${fileExt}`;
+      const filePath = `perfiles/${fileName}`;
+
+      // Subir el archivo a Supabase Storage
+      const { data, error } = await supabase.storage
+        .from('imagenes')
+        .upload(filePath, archivo, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (error) {
+        console.error('Error de Supabase:', error);
+        throw error;
+      }
+
+      // Obtener la URL pública del archivo
+      const { data: { publicUrl } } = supabase.storage
+        .from('imagenes')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+      mostrarMensaje('error', 'Error al subir la imagen. Por favor, intenta de nuevo.');
+      return null;
+    }
   };
 
   const actualizarContraseña = async () => {
+    if (!nuevaContraseña || nuevaContraseña.length < 6) {
+      mostrarMensaje('error', 'La contraseña debe tener al menos 6 caracteres');
+      return;
+    }
+
     try {
+      setCargando(true);
       await updatePassword(auth.currentUser, nuevaContraseña);
       mostrarMensaje('success', 'Contraseña actualizada con éxito');
       setNuevaContraseña('');
     } catch (error) {
-      mostrarMensaje('error', 'Error al actualizar la contraseña');
+      console.error('Error al actualizar contraseña:', error);
+      mostrarMensaje('error', 'Error al actualizar la contraseña. Por favor, inicia sesión de nuevo e intenta otra vez.');
+    } finally {
+      setCargando(false);
     }
   };
 
   const actualizarEmail = async () => {
+    if (!usuario.email || !usuario.email.includes('@')) {
+      mostrarMensaje('error', 'Por favor, ingresa un email válido');
+      return;
+    }
+
     try {
       await updateEmail(auth.currentUser, usuario.email);
       mostrarMensaje('success', 'Email actualizado con éxito');
     } catch (error) {
-      mostrarMensaje('error', 'Error al actualizar el email');
+      console.error('Error al actualizar email:', error);
+      mostrarMensaje('error', 'Error al actualizar el email. Por favor, inicia sesión de nuevo e intenta otra vez.');
+      throw error;
     }
   };
 
   const guardarCambios = async (e) => {
     e.preventDefault();
+    
+    if (!auth.currentUser) {
+      mostrarMensaje('error', 'Debes iniciar sesión para guardar los cambios');
+      navigate('/login');
+      return;
+    }
+
     setCargando(true);
     try {
-      let fotoURL = usuario.fotoURL;
+      // Primero intentamos subir la imagen si hay una nueva
+      let nuevaFotoURL = usuario.fotoURL;
       if (archivo) {
-        fotoURL = await subirImagen(archivo);
-        await updateProfile(auth.currentUser, { photoURL: fotoURL });
+        nuevaFotoURL = await subirImagen(archivo);
+        if (!nuevaFotoURL) {
+          throw new Error('No se pudo subir la imagen');
+        }
+
+        // Si hay una URL de foto anterior, intentamos eliminarla de Supabase
+        if (usuario.fotoURL) {
+          try {
+            const oldFilePath = usuario.fotoURL.split('/').pop();
+            await supabase.storage
+              .from('imagenes')
+              .remove([`perfiles/${oldFilePath}`]);
+          } catch (error) {
+            console.error('Error al eliminar la imagen anterior:', error);
+          }
+        }
+
+        await updateProfile(auth.currentUser, { 
+          photoURL: nuevaFotoURL,
+          displayName: `${usuario.nombre} ${usuario.apellido}`
+        });
       }
 
+      // Actualizamos la información del usuario en Firestore
       const userRef = doc(db, 'usuarios', auth.currentUser.uid);
-      await updateDoc(userRef, {
+      const datosActualizados = {
         nombre: usuario.nombre,
         apellido: usuario.apellido,
         telefono: usuario.telefono,
         sobreMi: usuario.sobreMi,
-        fotoURL
-      });
+        fotoURL: nuevaFotoURL || usuario.fotoURL,
+        ultimaActualizacion: new Date().toISOString()
+      };
 
+      // Intentar crear el documento si no existe
+      try {
+        const docSnap = await getDoc(userRef);
+        if (!docSnap.exists()) {
+          await setDoc(userRef, {
+            ...datosActualizados,
+            email: auth.currentUser.email,
+            createdAt: new Date().toISOString(),
+            role: 'cliente'
+          });
+        } else {
+          await updateDoc(userRef, datosActualizados);
+        }
+      } catch (error) {
+        console.error('Error al actualizar/crear documento:', error);
+        throw error;
+      }
+
+      // Si el email ha cambiado, lo actualizamos
       if (usuario.email !== auth.currentUser.email) {
         await actualizarEmail();
       }
 
       mostrarMensaje('success', 'Perfil actualizado con éxito');
+      
+      // Recargamos los datos del usuario
+      await cargarDatosUsuario();
+      
+      // Limpiamos el estado del archivo
+      setArchivo(null);
+      setVistaPrevia(null);
+
     } catch (error) {
-      mostrarMensaje('error', 'Error al actualizar el perfil');
+      console.error('Error al guardar cambios:', error);
+      mostrarMensaje('error', 'Error al actualizar el perfil. Por favor, verifica tu conexión e intenta de nuevo.');
     } finally {
       setCargando(false);
     }

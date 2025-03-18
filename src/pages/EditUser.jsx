@@ -3,8 +3,7 @@ import Header_NoSession from '../components/Header_NoSession';
 import Footer from '../components/Footer';
 import Frame_EditUser from '../components/Frame_EditUser';
 
-
-export default function Galeria() {
+export default function EditUser() {
   return (
     <div className='container'>
       <Header_NoSession/>

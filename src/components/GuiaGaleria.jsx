@@ -1,21 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
-import BotonPrimario from './BotonPrimario';
-import BotonSecundario from './BotonSecundario';
+import AddImageButton from './AddImageButton';
 
 export default function GuiaGaleria() {
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        loadImages();
-    }, []);
-
-    const loadImages = async () => {
+    const fetchImages = async () => {
         try {
-            setLoading(true);
             const { data, error } = await supabase.storage
                 .from('imagenes-galeria')
                 .list('', {
@@ -26,69 +19,30 @@ export default function GuiaGaleria() {
 
             if (error) throw error;
 
-            const imagesData = data.map((file) => ({
-                name: file.name,
-                url: `${supabase.storage.url}/object/public/imagenes-galeria/${file.name}`,
-                path: file.name
+            const publicUrls = data.map((file, index) => ({
+                src: `${supabase.storage.url}/object/public/imagenes-galeria/${file.name}`,
+                alt: file.name,
+                originalIndex: index,
             }));
-            
-            setImages(imagesData);
-        } catch (error) {
-            console.error('Error al cargar imágenes:', error);
-            setError('Error al cargar las imágenes');
-        } finally {
+
+            setImages(publicUrls);
+            setLoading(false);
+        } catch (err) {
+            setError(err.message);
             setLoading(false);
         }
     };
 
-    const handleImageUpload = async (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
+    useEffect(() => {
+        fetchImages();
+    }, []);
 
-        try {
-            setUploading(true);
-            setError(null);
-            
-            const timestamp = Date.now();
-            const uniqueName = `${timestamp}-${file.name}`;
-            
-            const { error: uploadError } = await supabase.storage
-                .from('imagenes-galeria')
-                .upload(uniqueName, file);
-
-            if (uploadError) throw uploadError;
-            
-            await loadImages();
-        } catch (error) {
-            console.error('Error al subir imagen:', error);
-            setError('Error al subir la imagen');
-        } finally {
-            setUploading(false);
-        }
-    };
-
-    const handleDeleteImage = async (imagePath) => {
-        if (window.confirm('¿Estás seguro de que deseas eliminar esta imagen?')) {
-            try {
-                setError(null);
-                const { error: deleteError } = await supabase.storage
-                    .from('imagenes-galeria')
-                    .remove([imagePath]);
-
-                if (deleteError) throw deleteError;
-                
-                await loadImages();
-            } catch (error) {
-                console.error('Error al eliminar imagen:', error);
-                setError('Error al eliminar la imagen');
-            }
-        }
-    };
-
-    // Método para distribuir los items en columnas
     const createColumns = () => {
         const columnCount = 3;
-        const items = [{ isButton: true }, ...images];
+        const items = [
+            { type: 'button', key: 'add-button' },
+            ...images.map(img => ({ type: 'image', ...img }))
+        ];
         const rows = Math.ceil(items.length / columnCount);
         const columns = Array.from({ length: columnCount }, () => []);
 
@@ -105,129 +59,91 @@ export default function GuiaGaleria() {
 
     const columns = createColumns();
 
-    if (loading) {
+    if (loading)
         return <div className="text-center p-8">Cargando imágenes...</div>;
-    }
-
-    if (error) {
+    if (error)
         return (
             <div className="text-red-500 text-center p-8">Error: {error}</div>
         );
-    }
 
     return (
-        <div className="w-screen h-full">
-            <div className="md:px-20 px-5 flex items-center bg-[#F7F7F8] w-screen md:h-screen">
-                <div className="md:w-full h-fit w-screen pt-20">
-                    <img
-                        src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Galeria_Bg.svg"
-                        alt="humboldt_rutas"
-                        className="object-cover w-full md:h-120"
-                    />
-                    <p className="relative md:bottom-14 bottom-5 left-0 md:text-3xl text-sm text-teal-600">
-                        Recuerdos del Ávila
-                    </p>
-                    <h1 className="md:text-9xl text-4xl font-bold">
-                        <span className="text-teal-600">Galería</span>{' '}
-                        <span className="text-[#D76411]">Unimetrail</span>
-                    </h1>
-                </div>
-            </div>
+        <div className="w-full min-h-screen bg-white">
 
-            {/* Versión para móviles */}
-            <div className="md:hidden flex flex-col gap-4 p-10 w-full">
-                <div className="relative">
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="hidden"
-                        id="image-upload"
-                        disabled={uploading}
-                    />
-                    <label htmlFor="image-upload">
-                        <BotonPrimario
-                            text={uploading ? 'Subiendo...' : 'Subir Imagen'}
-                            onClick={() => document.getElementById('image-upload').click()}
-                            disabled={uploading}
-                        />
-                    </label>
-                </div>
-                {images.map((image, index) => (
-                    <div
-                        key={index}
-                        className={`${
-                            index % 2 === 0 ? 'h-120' : 'h-60'
-                        } w-full relative group`}
-                    >
+            <div className="relative w-full bg-[#F7F7F8] overflow-hidden">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
+                    <div className="relative">
                         <img
-                            src={image.url}
-                            alt={image.name}
-                            className="w-full h-full object-cover rounded-lg object-center"
-                            loading="lazy"
+                            src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Galeria_Bg.svg"
+                            alt="humboldt_rutas"
+                            className="w-full h-48 sm:h-64 md:h-96 object-cover rounded-lg shadow-lg"
                         />
-                        <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
-                            <BotonSecundario
-                                text="Eliminar"
-                                onClick={() => handleDeleteImage(image.path)}
-                                className="bg-red-600 hover:bg-red-700 text-white"
-                            />
+                        <div className="mt-6 sm:mt-8">
+                            <p className="text-teal-600 text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium">
+                                Recuerdos del Ávila
+                            </p>
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mt-2">
+                                <span className="text-teal-600">Galería</span>{' '}
+                                <span className="text-[#D76411]">Unimetrail</span>
+                            </h1>
                         </div>
                     </div>
-                ))}
+                </div>
             </div>
-
-            {/* Versión para pantallas md y superiores */}
-            <div className="hidden md:flex justify-center gap-4 p-10 w-full">
-                {columns.map((column, colIndex) => (
-                    <div key={colIndex} className="flex flex-col gap-4 flex-1">
-                        {column.map((item, index) => {
-                            if (item.isButton) {
-                                return (
-                                    <div key={`add-button-${colIndex}-${index}`} className="relative">
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={handleImageUpload}
-                                            className="hidden"
-                                            id={`image-upload-${colIndex}`}
-                                            disabled={uploading}
-                                        />
-                                        <label htmlFor={`image-upload-${colIndex}`}>
-                                            <BotonPrimario
-                                                text={uploading ? 'Subiendo...' : 'Subir Imagen'}
-                                                onClick={() => document.getElementById(`image-upload-${colIndex}`).click()}
-                                                disabled={uploading}
-                                            />
-                                        </label>
-                                    </div>
-                                );
-                            }
-                            return (
-                                <div
-                                    key={item.url}
-                                    className={`${
-                                        index % 2 === 0 ? 'h-120' : 'h-60'
-                                    } w-full relative group`}
-                                >
-                                    <img
-                                        src={item.url}
-                                        alt={item.name}
-                                        className="w-full h-full object-cover rounded-lg object-center"
-                                        loading="lazy"
-                                    />
-                                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
-                                        <BotonSecundario
-                                            text="Eliminar"
-                                            onClick={() => handleDeleteImage(item.path)}
-                                            className="bg-red-600 hover:bg-red-700 text-white"
-                                        />
-                                    </div>
-                                </div>
-                            );
-                        })}
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                {/* Versión para móviles */}
+                <div className="md:hidden space-y-4">
+                    <div className="mb-6">
+                        <AddImageButton onImageAdded={fetchImages} />
                     </div>
-                ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {images.map((image, index) => (
+                            <div
+                                key={index}
+                                className="aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
+                            >
+                                <img
+                                    src={image.src}
+                                    alt={image.alt}
+                                    className="w-full h-full object-cover"
+                                    loading="lazy"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="hidden md:block">
+                    <div className="grid grid-cols-3 gap-6">
+                        {columns.map((column, colIndex) => (
+                            <div key={colIndex} className="space-y-6">
+                                {column.map((item) => {
+                                    if (item.type === 'button') {
+                                        return (
+                                            <div key={item.key} className="aspect-square">
+                                                <AddImageButton onImageAdded={fetchImages} />
+                                            </div>
+                                        );
+                                    }
+                                    return (
+                                        <div
+                                            key={item.src}
+                                            className={`${
+                                                item.originalIndex % 2 === 0 ? 'aspect-square' : 'aspect-[3/4]'
+                                            } rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300`}
+                                        >
+                                            <img
+                                                src={item.src}
+                                                alt={item.alt}
+                                                className="w-full h-full object-cover"
+                                                loading="lazy"
+                                            />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );
