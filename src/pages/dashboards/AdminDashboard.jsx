@@ -156,14 +156,33 @@ function AdminUsuarios() {
     try {
       const usuariosRef = collection(db, 'usuarios');
       const querySnapshot = await getDocs(usuariosRef);
-      const usuariosData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
+      const usuariosData = await Promise.all(querySnapshot.docs.map(async (doc) => {
+        const usuarioData = doc.data();
+        if (usuarioData.role === 'guia') {
+          // Obtener las rutas asignadas al guía
+          const rutasRef = collection(db, 'Rutas');
+          const q = query(rutasRef, where('guia_id', '==', doc.id));
+          const rutasSnapshot = await getDocs(q);
+          const rutas = rutasSnapshot.docs.map(rutaDoc => ({
+            id: rutaDoc.id,
+            ...rutaDoc.data()
+          }));
+          return {
+            id: doc.id,
+            ...usuarioData,
+            rutasAsignadas: rutas
+          };
+        }
+        return {
+          id: doc.id,
+          ...usuarioData
+        };
       }));
       setUsuarios(usuariosData);
       setLoading(false);
     } catch (error) {
       console.error('Error al cargar usuarios:', error);
+      setError('Error al cargar los usuarios');
       setLoading(false);
     }
   };
@@ -249,7 +268,7 @@ function AdminUsuarios() {
                 Cambiar Rol
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Estado Evento
+                Estado Eventos
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Acciones
@@ -323,14 +342,21 @@ function AdminUsuarios() {
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {usuario.role === 'guia' && (
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      usuario.confirmacionEvento 
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {usuario.confirmacionEvento ? 'Confirmado' : 'No confirmado'}
-                    </span>
+                  {usuario.role === 'guia' && usuario.rutasAsignadas && (
+                    <div className="space-y-2">
+                      {usuario.rutasAsignadas.map(ruta => (
+                        <div key={ruta.id} className="flex items-center gap-2">
+                          <span className="text-sm text-gray-900">{ruta.name}:</span>
+                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            ruta.confirmacionEvento 
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-red-100 text-red-800'
+                          }`}>
+                            {ruta.confirmacionEvento ? 'Confirmado' : 'No confirmado'}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right">
