@@ -70,13 +70,13 @@ const Resenas = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
       
-      <main className="pt-24 pb-12">
+      <main className="flex-grow pt-40 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-[#00796B] mb-4">Reseñas de Unimetrail</h1>
+            <h1 className="text-4xl font-bold text-[#00796B] mb-4"><span>Reseñas de </span> <span className='text-orange-500'>Unimetrail</span></h1>
             <p className="text-lg text-gray-600">Descubre lo que opinan nuestros aventureros</p>
           </div>
 
@@ -146,6 +146,9 @@ const Resenas = () => {
           )}
         </div>
       </main>
+      <div className="w-full mt-6 flex justify-center items-center relative">
+                    <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Caracas.svg" alt="Avila Background" className="w-full h-auto object-contain" />
+      </div>
 
       <Footer />
     </div>
