@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getFirestore, doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, arrayUnion ,setDoc} from 'firebase/firestore';
 import { UserContext } from '../Context/UserContext';
 
 const Star = ({ filled }) => (
@@ -21,33 +21,41 @@ const StarRating = ({ totalStars = 5, rutaId, rutaNombre }) => {
             alert('Debes iniciar sesión para dejar una reseña');
             return;
         }
-
+    
         if (rating === 0) {
             alert('Por favor, selecciona una calificación');
             return;
         }
-
+    
+        if (!comentario) {
+            alert('Por favor, escribe un comentario');
+            return;
+        }
+    
         try {
-            const userRef = doc(db, 'usuarios', user.uid);
-            await updateDoc(userRef, {
-                reseñas: arrayUnion({
-                    rutaId: rutaId,
-                    rutaNombre: rutaNombre,
-                    calificación: rating,
-                    comentario: comentario,
-                    fecha: new Date().toISOString()
-                })
+            // Usar setDoc para crear un nuevo documento en la colección "resenas"
+            const resenaRef = doc(db, 'resenas', `${user.uid}-${rutaId}-${new Date().toISOString()}`);
+            console.log(user.uid, rutaId, rating, comentario, new Date().toISOString());
+    
+            await setDoc(resenaRef, {
+                rutaId: rutaId,
+                userId: user.uid,
+                calificación: rating,
+                comentario: comentario,
+                fecha: new Date().toISOString()
             });
-
+    
             // Limpiar el formulario
             setRating(0);
             setComentario('');
             alert('¡Gracias por tu reseña!');
         } catch (error) {
+            console.log(error)
             console.error('Error al guardar la reseña:', error);
             alert('Error al guardar la reseña. Por favor, intenta nuevamente.');
         }
     };
+    
 
     return (
         <div className="flex flex-col items-start">
