@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { getAuth } from 'firebase/auth';
 import { useNavigate } from 'react-router';
-import { getFirestore, collection, query, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
+import { getFirestore, collection, query, getDocs, updateDoc, doc, deleteDoc, getDoc } from 'firebase/firestore';
 import { supabase } from '../../../supabaseClient';
 import BotonPrimario from '../../components/BotonPrimario';
 import BotonSecundario from '../../components/BotonSecundario';
@@ -446,10 +446,276 @@ function AdminRutas({ rutas, onRefresh }) {
 }
 
 function AdminBlogs() {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [blogEditando, setBlogEditando] = useState(null);
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    image: ''
+  });
+  const db = getFirestore();
+
+  const formatearFecha = (fecha) => {
+    if (!fecha) return '';
+    
+    if (fecha.seconds) {
+      return new Date(fecha.seconds * 1000).toLocaleString('es-VE', {
+        timeZone: 'America/Caracas',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+    
+    return fecha;
+  };
+
+  const cargarBlogs = async () => {
+    try {
+      const blogsRef = collection(db, 'Blogs');
+      const querySnapshot = await getDocs(blogsRef);
+      const blogsList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setBlogs(blogsList);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al cargar blogs:', error);
+      setError('Error al cargar los blogs');
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    cargarBlogs();
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const iniciarEdicion = (blog) => {
+    setBlogEditando(blog);
+    setFormData({
+      title: blog.title,
+      description: blog.description,
+      image: blog.image
+    });
+  };
+
+  const cancelarEdicion = () => {
+    setBlogEditando(null);
+    setFormData({
+      title: '',
+      description: '',
+      image: ''
+    });
+  };
+
+  const guardarEdicion = async () => {
+    try {
+      if (!blogEditando) return;
+
+      // Validar que los campos requeridos no estén vacíos
+      if (!formData.title.trim() || !formData.description.trim()) {
+        alert('El título y la descripción son obligatorios');
+        return;
+      }
+
+      // Obtener la referencia al documento
+      const blogRef = doc(db, 'Blogs', blogEditando.id);
+
+      // Verificar si el documento existe antes de actualizar
+      const docSnap = await getDoc(blogRef);
+      if (!docSnap.exists()) {
+        alert('El blog no existe en la base de datos');
+        return;
+      }
+
+      // Crear el objeto con solo los campos que se van a actualizar
+      const datosActualizados = {
+        title: formData.title.trim(),
+        description: formData.description.trim(),
+        image: formData.image.trim() || blogEditando.image,
+        // Mantener los campos originales que no se modifican
+        user: blogEditando.user,
+        user_pp: blogEditando.user_pp,
+        created: blogEditando.created // Mantener la fecha original
+      };
+
+      // Actualizar en Firebase
+      await updateDoc(blogRef, datosActualizados);
+
+      // Actualizar el estado local manteniendo los campos originales
+      setBlogs(prevBlogs => 
+        prevBlogs.map(blog => 
+          blog.id === blogEditando.id 
+            ? { 
+                ...blog,
+                ...datosActualizados
+              }
+            : blog
+        )
+      );
+
+      // Limpiar el formulario y salir del modo edición
+      setBlogEditando(null);
+      setFormData({
+        title: '',
+        description: '',
+        image: ''
+      });
+
+      alert('Blog actualizado exitosamente');
+    } catch (error) {
+      console.error('Error al actualizar blog:', error);
+      alert('Error al actualizar el blog: ' + error.message);
+    }
+  };
+
+  const eliminarBlog = async (blogId) => {
+    if (window.confirm('¿Estás seguro de que deseas eliminar este blog?')) {
+      try {
+        // Obtener la referencia al documento
+        const blogRef = doc(db, 'Blogs', blogId);
+
+        // Verificar si el documento existe antes de eliminar
+        const docSnap = await getDoc(blogRef);
+        if (!docSnap.exists()) {
+          alert('El blog no existe en la base de datos');
+          return;
+        }
+
+        // Eliminar el documento de Firebase
+        await deleteDoc(blogRef);
+
+        // Actualizar el estado local eliminando el blog
+        setBlogs(prevBlogs => prevBlogs.filter(blog => blog.id !== blogId));
+
+        alert('Blog eliminado exitosamente');
+      } catch (error) {
+        console.error('Error al eliminar blog:', error);
+        alert('Error al eliminar el blog: ' + error.message);
+      }
+    }
+  };
+
+  if (loading) return (
+    <div className="flex justify-center items-center h-64">
+      <div className="text-teal-600">Cargando blogs...</div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="flex justify-center items-center h-64">
+      <div className="text-red-600">Error: {error}</div>
+    </div>
+  );
+
   return (
     <div className="bg-white shadow rounded-lg p-6">
-      <h2 className="text-xl font-semibold mb-4">Gestión de Blogs</h2>
-      {/* Implementa la gestión de blogs aquí */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-semibold text-gray-900">Gestión de Blogs</h2>
+      </div>
+
+      {blogEditando ? (
+        <div className="mb-6 p-4 border rounded-lg">
+          <h3 className="text-lg font-semibold mb-4">Editando Blog</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Título</label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Descripción</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                rows="4"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">URL de la imagen</label>
+              <input
+                type="text"
+                name="image"
+                value={formData.image}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+            <div className="flex justify-end space-x-2">
+              <BotonSecundario
+                text="Cancelar"
+                onClick={cancelarEdicion}
+              />
+              <BotonPrimario
+                text="Guardar"
+                onClick={guardarEdicion}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {blogs.map(blog => (
+            <div key={blog.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="relative h-48">
+                <img
+                  src={blog.image || '/placeholder-blog.jpg'}
+                  alt={blog.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{blog.title}</h3>
+                <div className="space-y-2 text-sm text-gray-600">
+                  <p className="flex items-center">
+                    <span className="font-medium mr-2">Autor:</span>
+                    {blog.user}
+                  </p>
+                  <p className="flex items-center">
+                    <span className="font-medium mr-2">Fecha:</span>
+                    {formatearFecha(blog.created)}
+                  </p>
+                  <p className="line-clamp-2 text-gray-500">
+                    {blog.description}
+                  </p>
+                </div>
+                <div className="mt-4 flex justify-end space-x-2">
+                  <BotonSecundario
+                    text="Editar"
+                    onClick={() => iniciarEdicion(blog)}
+                  />
+                  <button
+                    onClick={() => eliminarBlog(blog.id)}
+                    className="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

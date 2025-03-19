@@ -1,16 +1,40 @@
+import React from 'react';
+import { useNavigate } from 'react-router';
+import { UserContext } from '../Context/UserContext';
 import BotonFooter from "./BotonFooter";
 
-export default function Footer() {
+const Footer = () => {
+    const navigate = useNavigate();
+    const { user, logged } = React.useContext(UserContext);
+// Si es usuario a home, si es admin a dashboard, si es guia a dashboard
+    const handleInicioClick = () => {
+        if (!logged) {
+            navigate('/');
+        } else {
+            // Verificar el rol del usuario
+            const userRole = user?.role || 'cliente';
+            switch (userRole) {
+                case 'admin':
+                    navigate('/admin/dashboard');
+                    break;
+                case 'guia':
+                    navigate('/guia/dashboard');
+                    break;
+                default:
+                    navigate('/');
+            }
+        }
+    };
     const upperLinks = [
         { text: "Contáctanos", link: "/contacto" },
-        { text: "Inicio", link: "#" },
-        { text: "@UnimeTrail", link: "#" },
+        { text: "Inicio", onClick: handleInicioClick },
+        { text: "@UnimeTrail", link: "https://www.instagram.com/proyectoavila/" },
         { text: "support@unimetrail.com", link: "mailto:support@unimetrail.com" },
     ];
     const lowerLinks = [
-        { text: "Privacy Policy", link: "#" },
-        { text: "Terms of Service", link: "#" },
-        { text: "Cookies Settings", link: "#" },
+        { text: "Privacy Policy", link: "https://www.youtube.com/watch?v=iDLmYZ5HqgM" },
+        { text: "Terms of Service", link: "https://www.youtube.com/watch?v=iDLmYZ5HqgM" },
+        { text: "Cookies Settings", link: "https://www.youtube.com/watch?v=iDLmYZ5HqgM" },
     ];
 
     return (
@@ -49,4 +73,6 @@ export default function Footer() {
             </div>
         </footer>
     );
-}
+};
+
+export default Footer;

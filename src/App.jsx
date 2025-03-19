@@ -12,13 +12,13 @@ import EditUser from './pages/EditUser'
 import { AdminRoute, GuiaRoute, PublicRoute } from './components/ProtectedRoutes'
 import AdminDashboard from './pages/dashboards/AdminDashboard'
 import GuiaDashboard from './pages/dashboards/GuiaDashboard'
-import ClienteRutasAdquiridas from './pages/dashboards/ClienteRutasAdquiridas'
+
 import Contacto from './pages/Contacto'
 import Blogs from './pages/Blogs'
 import AgregarBlog from './pages/AgregarBlog'
 import DetalleBlog from './components/DetalleBlog'
 import Resenas from './pages/Resenas'
-
+import RutasAdquiridasCliente from './pages/RutasAdquiridasCliente'
 export default function App() {
 
   return (
@@ -45,7 +45,7 @@ export default function App() {
         <Route path="*" element={< NotFound />} />
         <Route path="galeria" element={< Galeria />} />
         <Route path="edit-user" element={< EditUser />} />
-        <Route path="VerRutasAd" element={< ClienteRutasAdquiridas />} />
+        <Route path="rutas-adquiridas" element={< RutasAdquiridasCliente />} />
         <Route path="contacto" element={< Contacto />} />
         <Route path="blogs" element={< Blogs />} />
         <Route path="resenas" element={< Resenas />} />
