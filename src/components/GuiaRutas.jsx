@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { UserContext } from '../Context/UserContext';
 import { app } from '../../credentials';
-import RutasAsignadas from './RutasAsignadas';
 
 const GuiaRutas = () => {
   const [rutas, setRutas] = useState([]);
@@ -14,25 +13,18 @@ const GuiaRutas = () => {
     const obtenerRutasAsignadas = async () => {
       try {
         setLoading(true);
-        const rutasRef = collection(db, 'RutasAsignadas');
-        const q = query(rutasRef, where('guiaId', '==', user.uid));
+        const rutasRef = collection(db, 'Rutas');
+        const q = query(rutasRef, where('guia_id', '==', user.uid));
         const querySnapshot = await getDocs(q);
         
-        const rutasData = [];
-        for (const doc of querySnapshot.docs) {
-          const rutaAsignada = doc.data();
-          // Obtener los detalles de la ruta
-          const rutaRef = await getDocs(collection(db, 'Rutas'));
-          const rutaDoc = rutaRef.docs.find(d => d.id === rutaAsignada.rutaId);
-          
-          if (rutaDoc) {
-            rutasData.push({
-              id: doc.id,
-              ...rutaAsignada,
-              ...rutaDoc.data()
-            });
-          }
-        }
+        const rutasData = querySnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            date: data.date?.seconds ? new Date(data.date.seconds * 1000) : new Date()
+          };
+        });
         
         setRutas(rutasData);
       } catch (error) {
@@ -46,6 +38,25 @@ const GuiaRutas = () => {
       obtenerRutasAsignadas();
     }
   }, [user]);
+
+  const toggleConfirmacionAsistencia = async (rutaId, confirmacionActual) => {
+    try {
+      const rutaRef = doc(db, 'Rutas', rutaId);
+      await updateDoc(rutaRef, {
+        confirmacionEvento: !confirmacionActual
+      });
+
+      setRutas(prevRutas => 
+        prevRutas.map(ruta => 
+          ruta.id === rutaId 
+            ? { ...ruta, confirmacionEvento: !confirmacionActual }
+            : ruta
+        )
+      );
+    } catch (error) {
+      console.error('Error al actualizar confirmación:', error);
+    }
+  };
 
   if (loading) {
     return (
@@ -63,7 +74,83 @@ const GuiaRutas = () => {
           <p>No tienes rutas asignadas actualmente.</p>
         </div>
       ) : (
-        <RutasAsignadas rutas={rutas} />
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white rounded-lg overflow-hidden">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Ruta
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Fecha
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Punto de inicio
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Cupos
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Confirmar Asistencia
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {rutas.map(ruta => (
+                <tr key={ruta.id}>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-10 w-10">
+                        <img
+                          className="h-10 w-10 rounded-full object-cover"
+                          src={ruta.image || '/placeholder-ruta.jpg'}
+                          alt=""
+                        />
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-gray-900">
+                          {ruta.name}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {ruta.difficulty} • {ruta.distance}km • {ruta.duration}h
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">
+                      {ruta.date.toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">{ruta.start_point}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">{ruta.quotas}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => toggleConfirmacionAsistencia(ruta.id, ruta.confirmacionEvento)}
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        ruta.confirmacionEvento
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}
+                    >
+                      {ruta.confirmacionEvento ? 'Confirmado' : 'Pendiente'}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

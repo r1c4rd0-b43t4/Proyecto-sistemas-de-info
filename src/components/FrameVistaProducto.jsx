@@ -18,20 +18,16 @@ const FrameVistaProducto = () => {
       const querySnapshot = await getDocs(q);
       const productoData = querySnapshot.docs.map(doc => {
         const data = doc.data();
-
-        // Convertir timestamp a fecha si existe
-        const formattedDate = data.date && data.date.seconds
-          ? new Date(data.date.seconds * 1000).toLocaleDateString("es-ES", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })
-          : "Fecha no disponible";
-
         return {
           id: doc.id,
           ...data,
-          date: formattedDate, // Reemplazamos el timestamp con la fecha formateada
+          date: data.date?.seconds ? new Date(data.date.seconds * 1000).toLocaleDateString("es-ES", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+          }) : "Fecha no disponible"
         };
       })[0];
 
