@@ -78,9 +78,7 @@ export default function GuiaGaleria() {
                             className="w-full h-48 sm:h-64 md:h-96 object-cover rounded-lg shadow-lg"
                         />
                         <div className="mt-6 sm:mt-8">
-                            <p className="text-teal-600 text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium">
-                                Recuerdos del Ávila
-                            </p>
+
                             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mt-2">
                                 <span className="text-teal-600">Galería</span>{' '}
                                 <span className="text-[#D76411]">Unimetrail</span>
