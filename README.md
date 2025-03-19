@@ -67,20 +67,11 @@ La aplicación está configurada para desplegarse en Vercel. Para realizar el de
 npm run build
 vercel --prod
 
-Contribución
-Haz un fork del repositorio
-Crea una rama para tu característica (git checkout -b feature/nueva-caracteristica)
-Realiza tus cambios y haz commit (git commit -m 'Añadir nueva característica')
-Sube tus cambios (git push origin feature/nueva-caracteristica)
-Abre un Pull Request
 Autores
-Rene Barillas
-Gustavo Hernández
-Sebastián Puertas
-Daniel Hernández
-Tomás Hernández
-Licencia
-Este proyecto está bajo la Licencia MIT - consulta el archivo LICENSE.md para más detalles.
+Ricardo Baeta
+Aida Cárdenas
+René Chamorro
+
 
 React + Vite
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
