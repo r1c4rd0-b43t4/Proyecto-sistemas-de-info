@@ -24,13 +24,13 @@ const CrearBlog = () => {
         const file = e.target.files[0];
         if (!file) return;
 
-        // Validar tipo de archivo
+
         if (!file.type.startsWith('image/')) {
             setError('Solo se permiten archivos de imagen (JPEG, PNG, etc.)');
             return;
         }
 
-        // Validar tamaño (máximo 5MB)
+
         if (file.size > 5 * 1024 * 1024) {
             setError('La imagen no debe superar los 5MB');
             return;
@@ -38,7 +38,7 @@ const CrearBlog = () => {
 
         setImage(file);
         setError('');
-        // Crear preview de la imagen
+
         const reader = new FileReader();
         reader.onloadend = () => {
             setImagePreview(reader.result);
@@ -52,7 +52,7 @@ const CrearBlog = () => {
             const fileExt = file.name.split('.').pop();
             const fileName = `${timestamp}.${fileExt}`;
             
-            // Cambiar 'imagenes-galeria' por 'blogs' para mantener mejor organización
+
             const { data, error: uploadError } = await supabase.storage
                 .from('blogs')
                 .upload(fileName, file);
@@ -62,7 +62,7 @@ const CrearBlog = () => {
                 throw new Error('Error al subir la imagen: ' + uploadError.message);
             }
 
-            // Obtener la URL pública
+
             const { data: { publicUrl } } = supabase.storage
                 .from('blogs')
                 .getPublicUrl(fileName);
@@ -109,7 +109,7 @@ const CrearBlog = () => {
                 })
             };
 
-            // Cambiar 'blogs' por 'Blogs' para mantener consistencia con tu colección
+
             await addDoc(collection(db, 'Blogs'), blogData);
 
             setTitle('');

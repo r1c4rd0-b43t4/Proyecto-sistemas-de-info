@@ -86,7 +86,7 @@ export default function Frame_Galeria() {
           </div>
         </div>
 
-      {/* Versión para móviles */}
+
       <div className="md:hidden flex flex-col gap-4 p-10 w-full">
         <AddImageButton onImageAdded={fetchImages} />
         {images.map((image, index) => (
@@ -106,7 +106,7 @@ export default function Frame_Galeria() {
         ))}
       </div>
 
-      {/* Versión para pantallas md y superiores */}
+
       <div className="hidden md:flex justify-center gap-4 p-10 w-full">
         {columns.map((column, colIndex) => (
           <div key={colIndex} className="flex flex-col gap-4 flex-1">

@@ -33,7 +33,7 @@ const StarRating = ({ totalStars = 5, rutaId, rutaNombre }) => {
         }
     
         try {
-            // Usar setDoc para crear un nuevo documento en la colección "resenas"
+
             const resenaRef = doc(db, 'resenas', `${user.uid}-${rutaId}-${new Date().toISOString()}`);
             console.log(user.uid, rutaId, rating, comentario, new Date().toISOString());
     
@@ -45,7 +45,7 @@ const StarRating = ({ totalStars = 5, rutaId, rutaNombre }) => {
                 fecha: new Date().toISOString()
             });
     
-            // Limpiar el formulario
+
             setRating(0);
             setComentario('');
             alert('¡Gracias por tu reseña!');

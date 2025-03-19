@@ -1,70 +1,111 @@
-import React, { useState } from 'react';
-import { getFirestore, doc, updateDoc, arrayUnion, getDoc, setDoc } from 'firebase/firestore';
+import React, { useState, useEffect } from 'react';
+import { getFirestore, doc, updateDoc, arrayUnion, getDoc, setDoc, runTransaction } from 'firebase/firestore';
 import { UserContext } from '../Context/UserContext';
 import DatosRuta from './DatosRuta';
 import BotonPaypal from './BotonPaypal';
 
-const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = [], nombreRuta, precio, cupos, reviews, inicio, fecha, descripcion }) => {
+const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = [], nombreRuta, precio, cupos: cuposIniciales, reviews, inicio, fecha, descripcion }) => {
   const [loading, setLoading] = useState(false);
+  const [cuposActuales, setCuposActuales] = useState(cuposIniciales);
   const { user, logged } = React.useContext(UserContext);
   const db = getFirestore();
+
+
+  useEffect(() => {
+    const fetchCupos = async () => {
+      try {
+        if (id) {
+          const rutaRef = doc(db, 'Rutas', id); 
+          const rutaDoc = await getDoc(rutaRef);
+          
+          if (rutaDoc.exists()) {
+            const cupos = rutaDoc.data().cupos;
+            setCuposActuales(cupos);
+          } else {
+            console.error('La ruta no existe al cargar cupos. ID:', id);
+          }
+        }
+      } catch (error) {
+        console.error("Error al cargar los cupos:", error);
+      }
+    };
+
+    fetchCupos();
+  }, [db, id]);
 
   const handleCompraExitosa = async () => {
     if (!logged) {
       alert('Debes iniciar sesión para comprar una ruta');
       return;
     }
-
+  
     try {
       setLoading(true);
       
-      // Verificar si el documento del usuario existe
-      const userRef = doc(db, 'usuarios', user.uid);
-      const userDoc = await getDoc(userRef);
-      
-      if (!userDoc.exists()) {
-        // Si el documento no existe, crearlo
-        await setDoc(userRef, {
-          email: user.email,
-          role: 'cliente',
-          createdAt: new Date().toISOString(),
-          rutasCompradas: [{
-            rutaId: id,
-            nombre: nombreRuta,
-            precio: precio,
-            fechaCompra: new Date().toISOString(),
-            imagen: icono
-          }],
-          reseñas: [] // Inicializar el array de reseñas vacío
-        });
-      } else {
-        // Si el documento existe, actualizarlo
-        await updateDoc(userRef, {
-          rutasCompradas: arrayUnion({
-            rutaId: id,
-            nombre: nombreRuta,
-            precio: precio,
-            fechaCompra: new Date().toISOString(),
-            imagen: icono
-          })
-        });
-      }
 
-      const rutaRef = doc(db, 'Rutas', id);
-      const rutaDoc = await getDoc(rutaRef);
-      if (rutaDoc.exists()) {
-        const rutaData = rutaDoc.data();
-        if (rutaData.quotas > 0) {
-          await updateDoc(rutaRef, {
-            cupos: rutaData.quotas - 1
+      await runTransaction(db, async (transaction) => {
+        const rutaRef = doc(db, 'Rutas', id);
+        const rutaDoc = await transaction.get(rutaRef);
+        
+        if (!rutaDoc.exists()) {
+          console.error('La ruta no existe en la colección Rutas. ID:', id);
+          throw new Error('La ruta no existe');
+        }
+        
+        const cuposActuales = rutaDoc.data().cupos;
+        
+        if (cuposActuales <= 0) {
+          throw new Error('No hay cupos disponibles para esta ruta');
+        }
+        
+
+        const userRef = doc(db, 'usuarios', user.uid);
+        const userDoc = await transaction.get(userRef);
+        
+
+
+        transaction.update(rutaRef, {
+          cupos: cuposActuales - 1
+        });
+
+        if (!userDoc.exists()) {
+
+          transaction.set(userRef, {
+            email: user.email,
+            role: 'cliente',
+            createdAt: new Date().toISOString(),
+            rutasCompradas: [{
+              rutaId: id,
+              nombre: nombreRuta,
+              precio: precio,
+              fechaCompra: new Date().toISOString(),
+              imagen: icono
+            }],
+            reseñas: []
+          });
+        } else {
+
+          const userData = userDoc.data();
+          const rutasCompradas = userData.rutasCompradas || [];
+          
+          transaction.update(userRef, {
+            rutasCompradas: [...rutasCompradas, {
+              rutaId: id,
+              nombre: nombreRuta,
+              precio: precio,
+              fechaCompra: new Date().toISOString(),
+              imagen: icono
+            }]
           });
         }
-      }
+      });
+  
 
+      setCuposActuales(prev => prev - 1);
       alert('¡Compra exitosa! La ruta ha sido agregada a tu cuenta.');
     } catch (error) {
       console.error('Error al procesar la compra:', error);
-      alert('Error al procesar la compra. Por favor, intenta nuevamente.');
+      alert(`Error: ${error.message || 'Error al procesar la compra. Por favor, intenta nuevamente.'}`);
     } finally {
       setLoading(false);
     }
@@ -98,11 +139,17 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
           <div className="mt-4 text-left">
             <h3 className="text-lg sm:text-xl lg:text-2xl font-bold break-words">Descripción</h3>
             <p className="text-base sm:text-lg lg:text-xl break-words">{descripcion}</p>
-            <p className="text-base sm:text-lg lg:text-xl text-green-500 break-words"><span className="font-bold text-green-700">{cupos}</span> cupos disponibles</p>
+            <p className="text-base sm:text-lg lg:text-xl text-green-500 break-words">
+              <span className="font-bold text-green-700">{cuposActuales}</span> cupos disponibles
+            </p>
           </div>
           <div className="mt-4 flex justify-end">
             {logged ? (
-              <BotonPaypal precio={precio} onSuccess={handleCompraExitosa} />
+              <BotonPaypal 
+                precio={precio} 
+                onSuccess={handleCompraExitosa} 
+                disabled={loading || cuposActuales <= 0} 
+              />
             ) : (
               <p className="text-gray-600">Inicia sesión para comprar esta ruta</p>
             )}
@@ -114,4 +161,3 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
 };
 
 export default VistaDeProducto;
-

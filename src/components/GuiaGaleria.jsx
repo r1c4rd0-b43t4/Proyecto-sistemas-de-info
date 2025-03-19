@@ -88,7 +88,7 @@ export default function GuiaGaleria() {
                 </div>
             </div>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-                {/* Versión para móviles */}
+
                 <div className="md:hidden space-y-4">
                     <div className="mb-6">
                         <AddImageButton onImageAdded={fetchImages} />

@@ -65,7 +65,7 @@ export default function ClienteRutasAdquiridas() {
         })
       });
 
-      // Actualizar el estado local
+
       setRutasCompradas(rutasCompradas.map(ruta => {
         if (ruta.uniqueId === rutaId) {
           return {
@@ -103,7 +103,7 @@ export default function ClienteRutasAdquiridas() {
       </div>
     );
   }
-  console.log(rutasCompradas[0].rutaId );
+
   return (
     <div className="min-h-screen py-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -118,7 +118,7 @@ export default function ClienteRutasAdquiridas() {
             {rutasCompradas.map((ruta,index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Información principal */}
+
                   <div>
                     <h2 className="text-2xl font-semibold text-gray-900 mb-4">{ruta.name}</h2>
                     <div className="space-y-3">
@@ -154,7 +154,7 @@ export default function ClienteRutasAdquiridas() {
                         }) : 'Fecha no disponible'}
                       </p>
                       
-                      {/* Galería de imágenes */}
+
                       {ruta.images && ruta.images.length > 0 && (
                         <div className="mt-4">
                           <p className="font-medium mb-2">Galería de imágenes:</p>
@@ -171,7 +171,7 @@ export default function ClienteRutasAdquiridas() {
                         </div>
                       )}
 
-                      {/* Imagen principal si existe */}
+
                       {ruta.image && (
                         <div className="mt-4">
                           <p className="font-medium mb-2">Imagen principal:</p>
@@ -184,7 +184,7 @@ export default function ClienteRutasAdquiridas() {
                       )}
                     </div>
 
-                    {/* Botón de WhatsApp */}
+
                     {ruta.whatsapp && (
                       <div className="mt-4">
                         <a
@@ -202,7 +202,7 @@ export default function ClienteRutasAdquiridas() {
                     )}
                   </div>
 
-                  {/* Sección de Reseñas */}
+
                   <div className="border-l pl-6">
                     <h3 className="text-xl font-semibold text-gray-900 mb-4">Tu Reseña</h3>
                     {ruta.reseña ? (

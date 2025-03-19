@@ -22,7 +22,7 @@ export default function Frame_1_Home() {
     const [error, setError] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
 
-    // Agregar función de validación
+
     const isValidUnimetEmail = (email) => {
         return email.endsWith('@correo.unimet.edu.ve');
     };
@@ -50,7 +50,7 @@ export default function Frame_1_Home() {
         try {        
             setLoading(true);
             
-            // Verificar si el correo ya existe en Firestore
+
             const emailExists = await checkEmailExists(email);
             if (emailExists) {
                 setError("¡Ups! Parece que ya tienes una cuenta registrada con este correo. ¿Por qué no intentas iniciar sesión? 😊");
@@ -59,7 +59,7 @@ export default function Frame_1_Home() {
 
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-            // Crear documento de usuario en Firestore
+
             await setDoc(doc(db, 'usuarios', userCredential.user.uid), {
                 email: email,
                 role: 'cliente',
@@ -97,7 +97,7 @@ export default function Frame_1_Home() {
 
             const result = await signInWithPopup(auth, provider);
             
-            // Validar el correo antes de proceder
+
             if (!isValidUnimetEmail(result.user.email)) {
                 await auth.signOut();
                 await result.user.delete();
@@ -105,7 +105,7 @@ export default function Frame_1_Home() {
                 return;
             }
 
-            // Verificar si el correo ya existe en Firestore
+
             const emailExists = await checkEmailExists(result.user.email);
             if (emailExists) {
                 await auth.signOut();
@@ -114,7 +114,7 @@ export default function Frame_1_Home() {
                 return;
             }
 
-            // Crear documento de usuario en Firestore
+
             await setDoc(doc(db, 'usuarios', result.user.uid), {
                 email: result.user.email,
                 role: 'cliente',

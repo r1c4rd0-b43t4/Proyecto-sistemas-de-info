@@ -45,7 +45,7 @@ export default function Frame_5_Home() {
   );
 }
 
-// Componente 'Feature' que nada mas se usa aqui entonces no lo exporto jeje
+
 function Feature({ icon, title, description }) {
   return (
     <div className="flex items-start gap-4 w-full">

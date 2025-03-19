@@ -100,7 +100,7 @@ const ContactForm = () => {
           </button>
         </div>
 
-        {/* Sección de información de contacto */}
+
         <div className="flex-1 flex flex-col">
           <div className="h-48 md:h-56 lg:h-64 bg-teal-600 rounded-t-2xl flex items-center justify-center text-center px-6">
             <h2 className="text-neutral-50 text-2xl md:text-3xl lg:text-4xl font-semibold">

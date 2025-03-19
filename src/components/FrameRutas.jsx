@@ -40,12 +40,12 @@ const FrameRutas = () => {
   useEffect(() => {
     let rutasFiltradas = [...rutas];
     
-    // Filtrar por dificultad
+
     if (dificultadSeleccionada !== 'todas') {
       rutasFiltradas = rutasFiltradas.filter(ruta => ruta.difficulty === dificultadSeleccionada);
     }
     
-    // Filtrar por término de búsqueda
+
     if (terminoBusqueda.trim() !== '') {
       const busqueda = terminoBusqueda.toLowerCase();
       rutasFiltradas = rutasFiltradas.filter(ruta => 

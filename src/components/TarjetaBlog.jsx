@@ -8,10 +8,10 @@ const TarjetaBlog = ({ id, imagen, titulo, descripcion, perfilImagen, nombreUsua
         navigate(`/blog/${id}`);
     };
 
-    // formatear la fecha
+
     const formatearFecha = (fecha) => {
         if (fecha && fecha.seconds) {
-            // Si es un timestamp de Firebase
+
             return new Date(fecha.seconds * 1000).toLocaleString('es-VE', {
                 timeZone: 'America/Caracas',
                 year: 'numeric',

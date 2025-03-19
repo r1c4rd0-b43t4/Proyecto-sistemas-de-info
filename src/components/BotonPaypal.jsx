@@ -1,7 +1,7 @@
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router";
 
-const PaypalButtonComponent = ({ precio, onSuccess }) => {
+const PaypalButtonComponent = ({ precio, onSuccess, disabled }) => {
     const navigate = useNavigate();
 
     const initialOptions = {
@@ -49,6 +49,22 @@ const PaypalButtonComponent = ({ precio, onSuccess }) => {
         navigate('/exitosa');
     };
 
+    if (disabled) {
+        return (
+            <div className="flex flex-col items-center">
+                <button
+                    disabled
+                    className="bg-gray-400 text-white font-bold py-2 px-4 rounded cursor-not-allowed opacity-70"
+                >
+                    No disponible
+                </button>
+                <p className="text-sm text-red-500 mt-2">
+                    No hay cupos disponibles para esta ruta
+                </p>
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-col gap-4">
             <div className="flex flex-col items-center">
@@ -77,11 +93,11 @@ const PaypalButtonComponent = ({ precio, onSuccess }) => {
     );
 };
 
-export default function BotonPaypal({ precio, onSuccess }) {
+export default function BotonPaypal({ precio, onSuccess, disabled }) {
     if (precio === undefined || precio === null || isNaN(precio)) {
         console.error("⚠️ Error: No se pasó un precio válido a BotonPaypal");
         return <p style={{ color: "red" }}>⚠️ Error: Precio inválido</p>;
     }
 
-    return <PaypalButtonComponent precio={precio} onSuccess={onSuccess} />;
+    return <PaypalButtonComponent precio={precio} onSuccess={onSuccess} disabled={disabled} />;
 }

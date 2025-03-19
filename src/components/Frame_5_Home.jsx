@@ -19,32 +19,31 @@ export default function Frame_5_Home() {
                 </div>
             </div>
 
-            {/* Tarjetas de guías */}
+
             <div className="w-full flex-grow flex flex-col justify-center items-center px-4 md:px-[101px]">
                 <div className="w-full max-w-[1440px] flex justify-center items-center gap-4 md:gap-[100px] flex-wrap">
-                    {/* La idea es hacer que estas tarjetas se vinculen despues con los guias que esten disponibles */}
-                    {/* Tarjeta 1 */}
+
                     <TarjetaGuia
                         imagen="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Miguel_Moreno.png"
                         nombre="Miguel Moreno"
                         rol="Experto en senderismo"
                     />
 
-                    {/* Tarjeta 2 */}
+
                     <TarjetaGuia
                         imagen="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Nohemi_Rangel.png"
                         nombre="Nohemi Rangel"
                         rol="Amante de la naturaleza"
                     />
 
-                    {/* Tarjeta 3 */}
+
                     <TarjetaGuia
                         imagen="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Javier_Tovar.png"
                         nombre="Javier Tovar"
                         rol="Experto en supervivencia"
                     />
 
-                    {/* Tarjeta 4 */}
+
                     <TarjetaGuia
                         imagen="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Elena_Sanchez.png"
                         nombre="Elena Sanchez"

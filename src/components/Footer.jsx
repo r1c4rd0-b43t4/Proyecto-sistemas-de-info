@@ -6,12 +6,12 @@ import BotonFooter from "./BotonFooter";
 const Footer = () => {
     const navigate = useNavigate();
     const { user, logged } = React.useContext(UserContext);
-// Si es usuario a home, si es admin a dashboard, si es guia a dashboard
+
     const handleInicioClick = () => {
         if (!logged) {
             navigate('/');
         } else {
-            // Verificar el rol del usuario
+
             const userRole = user?.role || 'cliente';
             switch (userRole) {
                 case 'admin':

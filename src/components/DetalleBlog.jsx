@@ -20,7 +20,7 @@ const DetalleBlog = () => {
     const parseDate = (dateString) => {
         if (!dateString) return '';
         
-        // Si es un timestamp de Firebase (tiene seconds)
+
         if (dateString.seconds) {
             return new Date(dateString.seconds * 1000).toLocaleString('es-VE', {
                 timeZone: 'America/Caracas',
@@ -32,7 +32,7 @@ const DetalleBlog = () => {
             });
         }
         
-        // Si ya es una cadena de texto, la devolvemos tal cual
+
         return dateString;
     };
 
@@ -49,9 +49,9 @@ const DetalleBlog = () => {
                         created: parseDate(blogData.created)
                     });
 
-                    // Obtener otros blogs
+
                     const blogsRef = collection(db, 'Blogs');
-                    const q = query(blogsRef, limit(3)); // Pedimos 3 por si uno es el actual
+                    const q = query(blogsRef, limit(3)); 
                     const querySnapshot = await getDocs(q);
                     
                     const blogsArray = querySnapshot.docs
@@ -60,8 +60,8 @@ const DetalleBlog = () => {
                             ...doc.data(),
                             created: parseDate(doc.data().created)
                         }))
-                        .filter(b => b.id !== id) // Excluimos el blog actual
-                        .slice(0, 2); // Tomamos solo 2 blogs
+                        .filter(b => b.id !== id) 
+                        .slice(0, 2); 
 
                     setOtrosBlogs(blogsArray);
                 } else {

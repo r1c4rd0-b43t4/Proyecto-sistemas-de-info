@@ -57,7 +57,7 @@ export default function GuiaDashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {/* Tabs de navegación */}
+
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8">
             <button
@@ -93,7 +93,7 @@ export default function GuiaDashboard() {
           </nav>
         </div>
 
-        {/* Contenido basado en el tab activo */}
+
         <div className="mt-6">
           {activeTab === 'galeria' && <GuiaGaleria />}
           {activeTab === 'blogs' && <GuiaBlogs />}

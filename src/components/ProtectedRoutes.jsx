@@ -12,7 +12,7 @@ export function PublicRoute({ children }) {
   }
 
   if (logged) {
-    // Si está autenticado, redirigir según el rol
+
     if (profile?.role === 'guia') {
       return <Navigate to="/guia/dashboard" />;
     } else if (profile?.role === 'admin') {

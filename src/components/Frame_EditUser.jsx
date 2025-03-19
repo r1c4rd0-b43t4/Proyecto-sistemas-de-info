@@ -65,7 +65,7 @@ export default function Frame_EditUser() {
             fotoURL: datos.fotoURL || ''
           });
         } else {
-          // Si el documento no existe, crear uno nuevo con datos básicos
+
           const datosIniciales = {
             nombre: '',
             apellido: '',
@@ -95,19 +95,19 @@ export default function Frame_EditUser() {
     const { name, value } = e.target;
     setUsuario(prevState => ({
       ...prevState,
-      [name]: value || '' // Asegurar que nunca sea undefined
+      [name]: value || '' 
     }));
   };
 
   const subirImagen = async (archivo) => {
     if (!archivo) return null;
     try {
-      // nombre imagen supabase
+
       const fileExt = archivo.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2)}${Date.now().toString()}.${fileExt}`;
       const filePath = `perfiles/${fileName}`;
 
-      // subir imagen a supabase
+
       const { data, error } = await supabase.storage
         .from('imagenes')
         .upload(filePath, archivo, {
@@ -120,7 +120,7 @@ export default function Frame_EditUser() {
         throw error;
       }
 
-      // url imagen
+
       const { data: { publicUrl } } = supabase.storage
         .from('imagenes')
         .getPublicUrl(filePath);
@@ -179,7 +179,7 @@ export default function Frame_EditUser() {
 
     setCargando(true);
     try {
-      // subir imagen
+
       let nuevaFotoURL = usuario.fotoURL;
       if (archivo) {
         nuevaFotoURL = await subirImagen(archivo);
@@ -187,7 +187,7 @@ export default function Frame_EditUser() {
           throw new Error('No se pudo subir la imagen');
         }
 
-        // borrar url imagen anterior 
+
         if (usuario.fotoURL) {
           try {
             const oldFilePath = usuario.fotoURL.split('/').pop();
@@ -205,7 +205,7 @@ export default function Frame_EditUser() {
         });
       }
 
-      // actualizar info usuario en firebase
+
       const userRef = doc(db, 'usuarios', auth.currentUser.uid);
       const datosActualizados = {
         nombre: usuario.nombre || '',
@@ -216,7 +216,7 @@ export default function Frame_EditUser() {
         ultimaActualizacion: new Date().toISOString()
       };
 
-      // Asegurarse de que ningún campo sea undefined
+
       Object.keys(datosActualizados).forEach(key => {
         if (datosActualizados[key] === undefined) {
           datosActualizados[key] = '';
@@ -225,18 +225,18 @@ export default function Frame_EditUser() {
 
       await updateDoc(userRef, datosActualizados);
 
-      // Si el email ha cambiado, lo actualizamos
+
       if (usuario.email !== auth.currentUser.email) {
         await actualizarEmail();
       }
 
-      // Mostrar mensaje de éxito
+
       mostrarMensaje('success', '¡Tu información se ha guardado exitosamente!');
       
-      // Recargamos los datos del usuario
+
       await cargarDatosUsuario();
       
-      // Limpiamos el estado del archivo
+
       setArchivo(null);
       setVistaPrevia(null);
 
@@ -252,7 +252,7 @@ export default function Frame_EditUser() {
     <div className="w-screen p-50">
       <form onSubmit={guardarCambios} className="bg-white rounded-lg shadow-lg p-6">
         <div className="space-y-8">
-          {/* Mensaje de estado */}
+
           {mensaje.texto && (
             <div className={`p-4 rounded-md ${
               mensaje.tipo === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
@@ -261,7 +261,6 @@ export default function Frame_EditUser() {
             </div>
           )}
 
-          {/* Sección de Foto */}
           <div className="border-b border-gray-200 pb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Foto de Perfil</h2>
             <div className="flex items-center gap-6">
@@ -298,7 +297,7 @@ export default function Frame_EditUser() {
             </div>
           </div>
 
-          {/* Información Personal */}
+
           <div className="border-b border-gray-200 pb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Información Personal</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -331,7 +330,7 @@ export default function Frame_EditUser() {
             </div>
           </div>
 
-          {/* Información de Contacto */}
+
           <div className="border-b border-gray-200 pb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Información de Contacto</h2>
             <div className="space-y-6">
@@ -364,7 +363,7 @@ export default function Frame_EditUser() {
             </div>
           </div>
 
-          {/* Cambiar Contraseña */}
+
           <div className="border-b border-gray-200 pb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Seguridad</h2>
             <div className="space-y-4">
@@ -390,7 +389,7 @@ export default function Frame_EditUser() {
             </div>
           </div>
 
-          {/* Sobre Mí */}
+
           <div className="border-b border-gray-200 pb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Sobre Mí</h2>
             <textarea
@@ -403,7 +402,7 @@ export default function Frame_EditUser() {
             />
           </div>
 
-          {/* Botones */}
+
           <div className="flex justify-end gap-4">
             <BotonSecundario
               text="Cancelar"
