@@ -92,10 +92,6 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
             <p className="text-xl sm:text-2xl lg:text-3xl ml-2 break-words" style={{ color: '#77878F' }}>/reserva</p>
           </div>
           <div className="flex items-center mb-4">
-            <StarRating 
-              rutaId={id}
-              rutaNombre={nombreRuta}
-            />
             <p className="text-sm sm:text-base lg:text-lg ml-2 break-words" style={{ color: '#77878F' }}>{reviews}</p>
           </div>
           <hr className="w-full border-t-2 border-gray-300 mt-4" />
