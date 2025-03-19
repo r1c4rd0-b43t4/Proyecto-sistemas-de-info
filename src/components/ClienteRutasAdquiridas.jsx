@@ -223,7 +223,7 @@ export default function ClienteRutasAdquiridas() {
                     ) : (
                       <div>
                     
-                        <p>(Selecciona para colocar la reseñá)</p>
+                        <p>(Selecciona para colocar la reseña)</p>
                         <StarRating 
                           totalStars={5} 
                           rutaId={ruta.rutaId} 
