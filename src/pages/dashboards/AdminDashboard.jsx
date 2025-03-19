@@ -381,7 +381,6 @@ function AdminUsuarios() {
   );
 }
 
-// Componente AdminRutas mejorado
 function AdminRutas({ rutas, onRefresh }) {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [rutaEditando, setRutaEditando] = useState(null);
@@ -497,7 +496,7 @@ function AdminRutas({ rutas, onRefresh }) {
 
   const guardarEdicion = async () => {
     try {
-      // Validaciones básicas
+
       if (!formData.name.trim()) {
         alert('El nombre de la ruta es obligatorio');
         return;
@@ -533,11 +532,11 @@ function AdminRutas({ rutas, onRefresh }) {
       };
 
       if (rutaEditando.id === 'nueva') {
-        // Crear nueva ruta
+
         const rutasRef = collection(db, 'Rutas');
         await addDoc(rutasRef, datosActualizados);
       } else {
-        // Actualizar ruta existente
+
         const rutaRef = doc(db, 'Rutas', rutaEditando.id);
         const docSnap = await getDoc(rutaRef);
         
@@ -899,37 +898,37 @@ function AdminBlogs() {
     try {
       if (!blogEditando) return;
 
-      // Validar que los campos requeridos no estén vacíos
+
       if (!formData.title.trim() || !formData.description.trim()) {
         alert('El título y la descripción son obligatorios');
         return;
       }
 
-      // Obtener la referencia al documento
+
       const blogRef = doc(db, 'Blogs', blogEditando.id);
 
-      // Verificar si el documento existe antes de actualizar
+
       const docSnap = await getDoc(blogRef);
       if (!docSnap.exists()) {
         alert('El blog no existe en la base de datos');
         return;
       }
 
-      // Crear el objeto con solo los campos que se van a actualizar
+
       const datosActualizados = {
         title: formData.title.trim(),
         description: formData.description.trim(),
         image: formData.image.trim() || blogEditando.image,
-        // Mantener los campos originales que no se modifican
+
         user: blogEditando.user,
         user_pp: blogEditando.user_pp,
-        created: blogEditando.created // Mantener la fecha original
+        created: blogEditando.created 
       };
 
-      // Actualizar en Firebase
+
       await updateDoc(blogRef, datosActualizados);
 
-      // Actualizar el estado local manteniendo los campos originales
+
       setBlogs(prevBlogs => 
         prevBlogs.map(blog => 
           blog.id === blogEditando.id 
@@ -941,7 +940,7 @@ function AdminBlogs() {
         )
       );
 
-      // Limpiar el formulario y salir del modo edición
+
       setBlogEditando(null);
       setFormData({
         title: '',
@@ -959,20 +958,20 @@ function AdminBlogs() {
   const eliminarBlog = async (blogId) => {
     if (window.confirm('¿Estás seguro de que deseas eliminar este blog?')) {
       try {
-        // Obtener la referencia al documento
+
         const blogRef = doc(db, 'Blogs', blogId);
 
-        // Verificar si el documento existe antes de eliminar
+
         const docSnap = await getDoc(blogRef);
         if (!docSnap.exists()) {
           alert('El blog no existe en la base de datos');
           return;
         }
 
-        // Eliminar el documento de Firebase
+
         await deleteDoc(blogRef);
 
-        // Actualizar el estado local eliminando el blog
+
         setBlogs(prevBlogs => prevBlogs.filter(blog => blog.id !== blogId));
 
         alert('Blog eliminado exitosamente');
@@ -1155,7 +1154,7 @@ function AdminGaleria() {
           return;
         }
 
-        // Si no hay error, actualizar la interfaz
+
         setImages(prevImages => prevImages.filter(img => img.name !== image.name));
         console.log('Imagen eliminada exitosamente');
         
@@ -1180,21 +1179,20 @@ function AdminGaleria() {
 
   return (
     <div className="bg-white shadow rounded-lg p-6">
-      {/* Header mejorado */}
+
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-xl font-semibold text-gray-900">Gestión de Galería</h2>
       </div>
 
-      {/* Contenedor de la galería con botón de agregar */}
       <div className="space-y-6">
-        {/* Grid de imágenes - Vista de escritorio */}
+
         <div className="hidden md:grid grid-cols-3 gap-4">
-          {/* Botón de agregar como primera celda */}
+
           <div className="aspect-square rounded-lg flex items-center justify-center">
             <AddImageButton onImageAdded={fetchImages} />
           </div>
           
-          {/* Resto de las imágenes */}
+
           {images.map((image) => (
             <div
               key={image.src}
@@ -1206,7 +1204,7 @@ function AdminGaleria() {
                 className="w-full h-full object-cover rounded-lg"
                 loading="lazy"
               />
-              {/* Overlay con botón de eliminar */}
+
               <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
                 <button
                   onClick={() => handleDeleteImage(image)}
@@ -1222,14 +1220,14 @@ function AdminGaleria() {
           ))}
         </div>
 
-        {/* Vista móvil - Grid de 2 columnas */}
+
         <div className="md:hidden space-y-4">
-          {/* Botón de agregar en móvil */}
+
           <div className="border-2 border-dashed border-teal-600 rounded-lg p-4 flex items-center justify-center">
             <AddImageButton onImageAdded={fetchImages} />
           </div>
           
-          {/* Grid de imágenes en móvil */}
+
           <div className="grid grid-cols-2 gap-4">
             {images.map((image) => (
               <div
@@ -1242,7 +1240,7 @@ function AdminGaleria() {
                   className="w-full h-full object-cover rounded-lg"
                   loading="lazy"
                 />
-                {/* Overlay con botón de eliminar para móvil */}
+
                 <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
                   <button
                     onClick={() => handleDeleteImage(image)}
