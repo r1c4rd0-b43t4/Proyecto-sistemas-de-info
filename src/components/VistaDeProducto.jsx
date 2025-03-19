@@ -10,7 +10,6 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
   const { user, logged } = React.useContext(UserContext);
   const db = getFirestore();
 
-
   useEffect(() => {
     const fetchCupos = async () => {
       try {
@@ -42,7 +41,6 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
     try {
       setLoading(true);
       
-
       await runTransaction(db, async (transaction) => {
         const rutaRef = doc(db, 'Rutas', id);
         const rutaDoc = await transaction.get(rutaRef);
@@ -58,18 +56,14 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
           throw new Error('No hay cupos disponibles para esta ruta');
         }
         
-
         const userRef = doc(db, 'usuarios', user.uid);
         const userDoc = await transaction.get(userRef);
         
-
-
         transaction.update(rutaRef, {
           cupos: cuposActuales - 1
         });
 
         if (!userDoc.exists()) {
-
           transaction.set(userRef, {
             email: user.email,
             role: 'cliente',
@@ -84,7 +78,6 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
             reseñas: []
           });
         } else {
-
           const userData = userDoc.data();
           const rutasCompradas = userData.rutasCompradas || [];
           
@@ -100,7 +93,6 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
         }
       });
   
-
       setCuposActuales(prev => prev - 1);
       alert('¡Compra exitosa! La ruta ha sido agregada a tu cuenta.');
     } catch (error) {
@@ -112,9 +104,10 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
   };
 
   return (
-    <div className="flex relative w-11/12 p-4 bg-[#F5F5F5] shadow-lg rounded-2xl overflow-hidden h-screen my-30 ">
+    <div className="flex relative w-11/12 p-4 bg-[#F5F5F5] shadow-lg rounded-2xl overflow-hidden h-[85vh] my-8">
       <div className="grid gap-5 w-full" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
-        <div className="bg-gray-200 flex flex-col items-center justify-center">
+        {/* Primera columna - Imágenes */}
+        <div className="bg-gray-200 flex flex-col items-center justify-center overflow-auto">
           <img src={icono} alt="Producto" className="w-3/4 mb-4" />
           <div className="grid grid-cols-4 gap-1 w-3/4 justify-items-center mb-4">
             {imagenes.map((imagen, index) => (
@@ -122,7 +115,8 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
             ))}
           </div>
         </div>
-        <div className="bg-white p-4 flex flex-col justify-start">
+        
+        <div className="bg-white p-4 flex flex-col justify-start overflow-y-auto max-h-[85vh]">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-0 break-words">{nombreRuta}</h1>
           <div className="w-3/4 mb-0 mt-0">
             <DatosRuta tiempo={tiempo} distancia={distancia} dificultad={dificultad} fondo={"#ffffff"} />
@@ -135,7 +129,7 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
             <p className="text-sm sm:text-base lg:text-lg ml-2 break-words" style={{ color: '#77878F' }}>{reviews}</p>
           </div>
           <hr className="w-full border-t-2 border-gray-300 mt-4" />
-          <p className="text-center font-semibold mt-4 text-xs sm:text-sm lg:text-base">fecha:{fecha}</p>
+          <p className="text-center font-semibold mt-4 text-xs sm:text-sm lg:text-base">fecha: {fecha}</p>
           <div className="mt-4 text-left">
             <h3 className="text-lg sm:text-xl lg:text-2xl font-bold break-words">Descripción</h3>
             <p className="text-base sm:text-lg lg:text-xl break-words">{descripcion}</p>
@@ -143,7 +137,7 @@ const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = 
               <span className="font-bold text-green-700">{cuposActuales}</span> cupos disponibles
             </p>
           </div>
-          <div className="mt-4 flex justify-end">
+          <div className="mt-4 mb-6 flex justify-end">
             {logged ? (
               <BotonPaypal 
                 precio={precio} 
