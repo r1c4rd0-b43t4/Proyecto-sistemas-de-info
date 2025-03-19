@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { getFirestore, doc, updateDoc, arrayUnion, getDoc, setDoc } from 'firebase/firestore';
 import { UserContext } from '../Context/UserContext';
 import DatosRuta from './DatosRuta';
-import StarRating from './StarRating';
 import BotonPaypal from './BotonPaypal';
 
 const VistaDeProducto = ({ id, icono, dificultad, distancia, tiempo, imagenes = [], nombreRuta, precio, cupos, reviews, inicio, fecha, descripcion }) => {
