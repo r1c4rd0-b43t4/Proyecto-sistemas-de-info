@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import Navbar from '../components/Header_NoSession';
 import Footer from '../components/Footer';
 import { app } from '../../credentials';
@@ -15,12 +15,28 @@ const Resenas = () => {
       try {
         const resenasRef = collection(db, 'resenas');
         const resenasSnap = await getDocs(resenasRef);
-        const resenasData = resenasSnap.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        
+        const resenasData = [];
+
+  
+        for (const docSnap of resenasSnap.docs) {
+          const resena = docSnap.data();
+          const rutaRef = doc(db, 'Rutas', resena.rutaId);
+          const usuarioRef = doc(db, 'usuarios', resena.userId);
+
+          const rutaSnap = await getDoc(rutaRef);
+          const usuarioSnap = await getDoc(usuarioRef);
+
+          resenasData.push({
+            id: docSnap.id,
+            ...resena,
+            ruta_nombre: rutaSnap.exists() ? rutaSnap.data().name : 'Ruta no disponible',
+            usuario_email: usuarioSnap.exists() ? usuarioSnap.data().email : 'Usuario no disponible'
+          });
+        }
+
         setResenas(resenasData);
+        console.log(resenasData);
+        console.log('Reseñas cargadas:', resenasData);
       } catch (error) {
         console.error('Error al cargar reseñas:', error);
       } finally {
@@ -33,7 +49,7 @@ const Resenas = () => {
 
   const resenasFiltradas = resenas.filter(resena => {
     if (filtro === 'todas') return true;
-    return resena.rating === parseInt(filtro);
+    return resena.calificación === parseInt(filtro);
   });
 
   const renderEstrellas = (cantidad) => {
@@ -104,7 +120,7 @@ const Resenas = () => {
                 <div key={index} className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex gap-1">
-                      {renderEstrellas(resena.rating)}
+                      {renderEstrellas(resena.calificación)}
                     </div>
                     <div className="text-sm text-gray-500">
                       {resena.usuario_email || 'Usuario anónimo'}
@@ -116,7 +132,7 @@ const Resenas = () => {
                   </h3>
                   
                   <p className="text-gray-600 mb-4">
-                    {resena.texto}
+                    {resena.comentario}
                   </p>
                   
                   {resena.fecha_creacion && (
@@ -136,4 +152,4 @@ const Resenas = () => {
   );
 };
 
-export default Resenas; 
+export default Resenas;

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { getAuth } from 'firebase/auth';
 import { useNavigate } from 'react-router';
-import { getFirestore, collection, query, getDocs, updateDoc, doc, deleteDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, query, getDocs, updateDoc, doc, deleteDoc, getDoc, where, addDoc } from 'firebase/firestore';
 import { supabase } from '../../../supabaseClient';
 import BotonPrimario from '../../components/BotonPrimario';
 import BotonSecundario from '../../components/BotonSecundario';
@@ -358,7 +358,179 @@ function AdminUsuarios() {
 // Componente AdminRutas mejorado
 function AdminRutas({ rutas, onRefresh }) {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [rutaEditando, setRutaEditando] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    difficulty: '',
+    distance: '',
+    duration: '',
+    guia_id: '',
+    image: '',
+    price: '',
+    quotas: '',
+    start_point: '',
+    whatsapp: '',
+    date: ''
+  });
+  const [guias, setGuias] = useState([]);
+  const [additionalImages, setAdditionalImages] = useState(['', '', '', '']);
   const db = getFirestore();
+
+  useEffect(() => {
+    cargarGuias();
+  }, []);
+
+  const cargarGuias = async () => {
+    try {
+      const guiasRef = collection(db, 'usuarios');
+      const q = query(guiasRef, where("role", "==", "guia"));
+      const querySnapshot = await getDocs(q);
+      const guiasList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setGuias(guiasList);
+    } catch (error) {
+      console.error('Error al cargar guías:', error);
+    }
+  };
+
+  const handleInputChange = (e, index = null) => {
+    const { name, value } = e.target;
+    if (name === 'additionalImage') {
+      setAdditionalImages(prev => {
+        const newImages = [...prev];
+        newImages[index] = value;
+        return newImages;
+      });
+    } else {
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    }
+  };
+
+  const iniciarEdicion = (ruta) => {
+    setRutaEditando(ruta);
+    setFormData({
+      name: ruta.name,
+      description: ruta.description,
+      difficulty: ruta.difficulty,
+      distance: ruta.distance,
+      duration: ruta.duration,
+      guia_id: ruta.guia_id,
+      image: ruta.image,
+      price: ruta.price,
+      quotas: ruta.quotas,
+      start_point: ruta.start_point,
+      whatsapp: ruta.whatsapp,
+      date: ruta.date
+    });
+    setAdditionalImages(ruta.images || ['', '', '', '']);
+  };
+
+  const cancelarEdicion = () => {
+    setRutaEditando(null);
+    setFormData({
+      name: '',
+      description: '',
+      difficulty: '',
+      distance: '',
+      duration: '',
+      guia_id: '',
+      image: '',
+      price: '',
+      quotas: '',
+      start_point: '',
+      whatsapp: '',
+      date: ''
+    });
+    setAdditionalImages(['', '', '', '']);
+  };
+
+  const iniciarNuevaRuta = () => {
+    setRutaEditando({ id: 'nueva' });
+      setFormData({
+      name: '',
+      description: '',
+      difficulty: '',
+      distance: '',
+      duration: '',
+      guia_id: '',
+      image: '',
+      price: '',
+      quotas: '',
+      start_point: '',
+      whatsapp: '',
+      date: ''
+    });
+    setAdditionalImages(['', '', '', '']);
+  };
+
+  const guardarEdicion = async () => {
+    try {
+      // Validaciones básicas
+      if (!formData.name.trim()) {
+        alert('El nombre de la ruta es obligatorio');
+        return;
+      }
+      if (!formData.description.trim()) {
+        alert('La descripción es obligatoria');
+        return;
+      }
+      if (!formData.guia_id) {
+        alert('Debe seleccionar un guía');
+        return;
+      }
+      if (!formData.date) {
+        alert('La fecha es obligatoria');
+        return;
+      }
+
+      const datosActualizados = {
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        difficulty: formData.difficulty,
+        distance: Number(formData.distance),
+        duration: Number(formData.duration),
+        guia_id: formData.guia_id,
+        image: formData.image.trim(),
+        price: formData.price,
+        quotas: Number(formData.quotas),
+        start_point: formData.start_point.trim(),
+        whatsapp: formData.whatsapp.trim(),
+        date: formData.date,
+        images: additionalImages.filter(img => img.trim() !== ''),
+        reviews: rutaEditando.reviews || []
+      };
+
+      if (rutaEditando.id === 'nueva') {
+        // Crear nueva ruta
+        const rutasRef = collection(db, 'Rutas');
+        await addDoc(rutasRef, datosActualizados);
+      } else {
+        // Actualizar ruta existente
+        const rutaRef = doc(db, 'Rutas', rutaEditando.id);
+        const docSnap = await getDoc(rutaRef);
+        
+        if (!docSnap.exists()) {
+          alert('La ruta no existe en la base de datos');
+          return;
+        }
+        
+        await updateDoc(rutaRef, datosActualizados);
+      }
+
+      onRefresh(); // Recargar las rutas
+      cancelarEdicion();
+      alert(rutaEditando.id === 'nueva' ? 'Ruta creada exitosamente' : 'Ruta actualizada exitosamente');
+    } catch (error) {
+      console.error('Error al guardar ruta:', error);
+      alert('Error al guardar la ruta: ' + error.message);
+    }
+  };
 
   const eliminarRuta = async (rutaId) => {
     if (window.confirm('¿Estás seguro de que deseas eliminar esta ruta?')) {
@@ -377,11 +549,187 @@ function AdminRutas({ rutas, onRefresh }) {
         <h2 className="text-xl font-semibold text-gray-900">Gestión de Rutas</h2>
         <BotonPrimario
           text="Agregar Ruta"
-          onClick={() => setMostrarFormulario(true)}
+          onClick={iniciarNuevaRuta}
         />
       </div>
 
-      {mostrarFormulario ? (
+      {rutaEditando ? (
+        <div className="mb-6 p-4 border rounded-lg">
+          <h3 className="text-lg font-semibold mb-4">Editando Ruta</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Nombre</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Punto de inicio</label>
+              <input
+                type="text"
+                name="start_point"
+                value={formData.start_point}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Precio</label>
+              <input
+                type="text"
+                name="price"
+                value={formData.price}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Cupos</label>
+              <input
+                type="number"
+                name="quotas"
+                value={formData.quotas}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Distancia (km)</label>
+              <input
+                type="number"
+                name="distance"
+                value={formData.distance}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Duración (horas)</label>
+              <input
+                type="number"
+                name="duration"
+                value={formData.duration}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Dificultad</label>
+              <select
+                name="difficulty"
+                value={formData.difficulty}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              >
+                <option value="">Seleccionar dificultad</option>
+                <option value="Baja">Baja</option>
+                <option value="Media">Media</option>
+                <option value="Alta">Alta</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Guía</label>
+              <select
+                name="guia_id"
+                value={formData.guia_id}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              >
+                <option value="">Seleccionar guía</option>
+                {guias.map(guia => (
+                  <option key={guia.id} value={guia.id}>
+                    {guia.nombre} {guia.apellido}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Fecha</label>
+              <input
+                type="datetime-local"
+                name="date"
+                value={formData.date}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Link de WhatsApp</label>
+              <input
+                type="text"
+                name="whatsapp"
+                value={formData.whatsapp}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">URL de la imagen principal</label>
+              <input
+                type="text"
+                name="image"
+                value={formData.image}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700">Imágenes adicionales (máximo 4)</label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                {additionalImages.map((img, index) => (
+                  <div key={index}>
+                    <input
+                      type="text"
+                      name="additionalImage"
+                      value={img}
+                      onChange={(e) => handleInputChange(e, index)}
+                      placeholder={`URL de la imagen ${index + 1}`}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700">Descripción</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                rows="4"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+
+            <div className="col-span-2 flex justify-end space-x-2">
+              <BotonSecundario
+                text="Cancelar"
+                onClick={cancelarEdicion}
+              />
+              <BotonPrimario
+                text="Guardar"
+                onClick={guardarEdicion}
+              />
+            </div>
+          </div>
+        </div>
+      ) : mostrarFormulario ? (
         <CrearRuta onClose={() => setMostrarFormulario(false)} />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -427,7 +775,7 @@ function AdminRutas({ rutas, onRefresh }) {
                 <div className="mt-4 flex justify-end space-x-2">
                   <BotonSecundario
                     text="Editar"
-                    onClick={() => {/* Implementar edición */}}
+                    onClick={() => iniciarEdicion(ruta)}
                   />
                   <button
                     onClick={() => eliminarRuta(ruta.id)}

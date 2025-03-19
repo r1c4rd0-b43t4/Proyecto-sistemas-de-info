@@ -107,7 +107,7 @@ export default function ClienteRutasAdquiridas() {
   return (
     <div className="min-h-screen py-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Mis Rutas Compradas 🍆🍆</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Mis Rutas Compradas</h1>
         
         {rutasCompradas.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-6 text-center">
@@ -204,7 +204,7 @@ export default function ClienteRutasAdquiridas() {
 
                   {/* Sección de Reseñas */}
                   <div className="border-l pl-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">Tu Reseñaa</h3>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4">Tu Reseña</h3>
                     {ruta.reseña ? (
                       <div>
                      
@@ -223,7 +223,7 @@ export default function ClienteRutasAdquiridas() {
                     ) : (
                       <div>
                     
-                        <p>Hola</p>
+                        <p>(Selecciona para colocar la reseñá)</p>
                         <StarRating 
                           totalStars={5} 
                           rutaId={ruta.rutaId} 
