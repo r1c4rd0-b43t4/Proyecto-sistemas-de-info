@@ -19,6 +19,7 @@ const CrearRuta = () => {
     const [whatsappLink, setWhatsappLink] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [fecha, setFecha] = useState('');
 
     const db = getFirestore();
     const navigate = useNavigate();
@@ -72,14 +73,16 @@ const CrearRuta = () => {
             }
 
             const rutaData = {
-                nombre,
-                precio: parseFloat(precio),
-                inicio,
-                tiempo,
-                distancia: parseFloat(distancia),
-                dificultad,
-                imagen: imageUrl,
+                name: nombre,
+                price: parseFloat(precio),
+                start_point: inicio,
+                duration: tiempo,
+                distance: parseFloat(distancia),
+                difficulty: dificultad,
+                image: imageUrl,
                 whatsappLink,
+                date: new Date(fecha),
+                quotas: 10,
                 createdAt: new Date().toISOString()
             };
 
@@ -94,6 +97,7 @@ const CrearRuta = () => {
             setImagen(null);
             setImagenPreview(null);
             setWhatsappLink('');
+            setFecha('');
             
             navigate('/admin/dashboard');
         } catch (error) {
@@ -157,26 +161,27 @@ const CrearRuta = () => {
                                 onChange={(e) => setDistancia(e.target.value)}
                                 required
                             />
-                            <div className="flex flex-col gap-2">
-                                <label className="text-gray-700">Dificultad</label>
-                                <select
-                                    value={dificultad}
-                                    onChange={(e) => setDificultad(e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                                    required
-                                >
-                                    <option value="Baja">Baja</option>
-                                    <option value="Media">Media</option>
-                                    <option value="Alta">Alta</option>
-                                    <option value="Extrema">Extrema</option>
-                                </select>
-                            </div>
                             <Input
-                                label="Enlace del grupo de WhatsApp"
-                                type="url"
+                                label="Fecha y hora"
+                                type="datetime-local"
+                                value={fecha}
+                                onChange={(e) => setFecha(e.target.value)}
+                                required
+                            />
+                            <select
+                                value={dificultad}
+                                onChange={(e) => setDificultad(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            >
+                                <option value="Baja">Baja</option>
+                                <option value="Media">Media</option>
+                                <option value="Alta">Alta</option>
+                            </select>
+                            <Input
+                                label="Link de WhatsApp"
+                                type="text"
                                 value={whatsappLink}
                                 onChange={(e) => setWhatsappLink(e.target.value)}
-                                placeholder="https://chat.whatsapp.com/..."
                             />
                             <div className="flex flex-col gap-2">
                                 <label className="text-gray-700">Imagen de la ruta</label>

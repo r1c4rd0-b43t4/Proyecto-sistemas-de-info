@@ -17,10 +17,14 @@ const GuiaRutas = () => {
         const q = query(rutasRef, where('guia_id', '==', user.uid));
         const querySnapshot = await getDocs(q);
         
-        const rutasData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
+        const rutasData = querySnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            date: data.date?.seconds ? new Date(data.date.seconds * 1000) : new Date()
+          };
+        });
         
         setRutas(rutasData);
       } catch (error) {
@@ -42,7 +46,6 @@ const GuiaRutas = () => {
         confirmacionEvento: !confirmacionActual
       });
 
-      // Actualizar el estado local
       setRutas(prevRutas => 
         prevRutas.map(ruta => 
           ruta.id === rutaId 
@@ -116,7 +119,7 @@ const GuiaRutas = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">
-                      {new Date(ruta.date).toLocaleDateString('es-ES', {
+                      {ruta.date.toLocaleDateString('es-ES', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',
@@ -132,28 +135,16 @@ const GuiaRutas = () => {
                     <div className="text-sm text-gray-900">{ruta.quotas}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <label className="flex items-center cursor-pointer">
-                      <div className="relative">
-                        <input
-                          type="checkbox"
-                          className="sr-only"
-                          checked={ruta.confirmacionEvento || false}
-                          onChange={() => toggleConfirmacionAsistencia(ruta.id, ruta.confirmacionEvento)}
-                        />
-                        <div className={`w-11 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${
-                          ruta.confirmacionEvento ? 'bg-teal-600' : 'bg-gray-200'
-                        }`}>
-                          <div
-                            className={`absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full transition-transform duration-200 ease-in-out transform ${
-                              ruta.confirmacionEvento ? 'translate-x-5' : 'translate-x-0'
-                            }`}
-                          ></div>
-                        </div>
-                      </div>
-                      <span className="ml-3 text-sm text-gray-700">
-                        {ruta.confirmacionEvento ? 'Confirmado' : 'No confirmado'}
-                      </span>
-                    </label>
+                    <button
+                      onClick={() => toggleConfirmacionAsistencia(ruta.id, ruta.confirmacionEvento)}
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        ruta.confirmacionEvento
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}
+                    >
+                      {ruta.confirmacionEvento ? 'Confirmado' : 'Pendiente'}
+                    </button>
                   </td>
                 </tr>
               ))}
