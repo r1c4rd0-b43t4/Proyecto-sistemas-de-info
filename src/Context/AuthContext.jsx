@@ -18,14 +18,14 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // Obtener datos adicionales del usuario de Firestore
+        
         const userDoc = await getDoc(doc(db, 'usuarios', user.uid));
         const userData = userDoc.data();
         
         setUser(user);
         setRole(userData?.role || 'cliente');
         
-        // Redirección basada en rol
+        
         if (window.location.pathname === '/login' || window.location.pathname === '/register') {
           if (userData?.role === 'admin') {
             navigate('/admin/dashboard');
