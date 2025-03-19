@@ -19,6 +19,7 @@ import AgregarBlog from './pages/AgregarBlog'
 import DetalleBlog from './components/DetalleBlog'
 import Resenas from './pages/Resenas'
 import RutasAdquiridasCliente from './pages/RutasAdquiridasCliente'
+import PagoFallido from './pages/PagoFallido'
 export default function App() {
 
   return (
@@ -53,6 +54,7 @@ export default function App() {
         <Route path="/blog/:id" element={<DetalleBlog />} />
         <Route path="producto/:nombreRuta" element={< VistaProducto />} />
         <Route path="exitosa" element={<PagoExitoso />} />
+        <Route path="fallida" element={<PagoFallido />} />
         <Route 
           path="/admin/*" 
           element={

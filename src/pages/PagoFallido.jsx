@@ -1,14 +1,14 @@
 import React from 'react';
 import Header_NoSession from '../components/Header_NoSession';
 import Footer from '../components/Footer';
-import PaypalExitoso from '../components/PaypalExitoso';
+import PaypalFallido from '../components/PaypalFallido';
 
 
-export default function PagoExitoso() {
+export default function PagoFallido() {
   return (
     <div className='container'>
       <Header_NoSession/>
-      <PaypalExitoso/>
+      <PaypalFallido/>
       <Footer/>
     </div>
   );

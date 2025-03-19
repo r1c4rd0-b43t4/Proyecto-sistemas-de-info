@@ -13,6 +13,7 @@ const PaypalButtonComponent = ({ precio, onSuccess, disabled }) => {
     const createOrder = (data, actions) => {
         if (precio === undefined || precio === null || isNaN(precio)) {
             console.error("⚠️ Error: precio inválido", precio);
+            navigate('/fallida');
             return Promise.reject(new Error("Precio inválido"));
         }
 
@@ -29,24 +30,44 @@ const PaypalButtonComponent = ({ precio, onSuccess, disabled }) => {
     };
 
     const onApprove = (data, actions) => {
-        return actions.order.capture().then(function (details) {
-            const name = details.payer.name.given_name;
-            console.log(`Gracias por tu compra, ${name}!`);
-            
-            if (onSuccess) {
-                onSuccess();
-            }
-            
-            navigate('/exitosa');
-        });
+        return actions.order.capture()
+            .then(function (details) {
+                const name = details.payer.name.given_name;
+                console.log(`Gracias por tu compra, ${name}!`);
+                
+                if (onSuccess) {
+                    onSuccess();
+                }
+                
+                navigate('/exitosa');
+            })
+            .catch(error => {
+                console.error("Error en la captura del pago:", error);
+                navigate('/fallida');
+            });
+    };
+
+    const onError = (err) => {
+        console.error("Error en PayPal:", err);
+        navigate('/fallida');
     };
 
     const simularCompraExitosa = () => {
         console.log("Simulando compra exitosa");
-        if (onSuccess) {
-            onSuccess();
+        try {
+            if (onSuccess) {
+                onSuccess();
+            }
+            navigate('/exitosa');
+        } catch (error) {
+            console.error("Error al procesar la compra simulada:", error);
+            navigate('/fallida');
         }
-        navigate('/exitosa');
+    };
+
+    const simularCompraFallida = () => {
+        console.log("Simulando compra fallida");
+        navigate('/fallida');
     };
 
     if (disabled) {
@@ -72,21 +93,31 @@ const PaypalButtonComponent = ({ precio, onSuccess, disabled }) => {
                     <PayPalButtons 
                         createOrder={createOrder} 
                         onApprove={onApprove}
+                        onError={onError}
                         style={{ layout: "vertical" }}
                     />
                 </PayPalScriptProvider>
             </div>
             
             <div className="flex flex-col items-center">
-                <button
-                    onClick={simularCompraExitosa}
-                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                >
-                    Comprar Ruta (Modo Prueba)
-                </button>
+                <div className="flex gap-2">
+                    <button
+                        onClick={simularCompraExitosa}
+                        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                    >
+                        Compra Exitosa (Prueba)
+                    </button>
+                    
+                    <button
+                        onClick={simularCompraFallida}
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                    >
+                        Compra Fallida (Prueba)
+                    </button>
+                </div>
                 
                 <p className="text-sm text-gray-500 mt-2">
-                    Usa el botón de prueba si hay problemas con PayPal
+                    Usa los botones de prueba si hay problemas con PayPal
                 </p>
             </div>
         </div>
@@ -94,9 +125,12 @@ const PaypalButtonComponent = ({ precio, onSuccess, disabled }) => {
 };
 
 export default function BotonPaypal({ precio, onSuccess, disabled }) {
+    const navigate = useNavigate();
+    
     if (precio === undefined || precio === null || isNaN(precio)) {
         console.error("⚠️ Error: No se pasó un precio válido a BotonPaypal");
-        return <p style={{ color: "red" }}>⚠️ Error: Precio inválido</p>;
+        setTimeout(() => navigate('/fallida'), 1000);
+        return <p style={{ color: "red" }}>⚠️ Error: Precio inválido. Redirigiendo...</p>;
     }
 
     return <PaypalButtonComponent precio={precio} onSuccess={onSuccess} disabled={disabled} />;
