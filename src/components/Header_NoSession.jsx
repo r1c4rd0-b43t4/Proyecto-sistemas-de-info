@@ -54,11 +54,11 @@ export default function Header_NoSession() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <LogoResponsive className="w-[120px] sm:w-[150px] md:w-[202px]" />
-            <NavLinks className="ml-4 hidden md:flex" />
+            <NavLinks className="ml-4 hidden lg:flex" />
           </div>
 
           {!logged && (
-            <div className="hidden md:flex items-center gap-4">
+            <div className="hidden lg:flex items-center gap-4">
               <BotonPrimario text="Iniciar Sesión" to="/login" />
               <BotonSecundario text="Registrarse" to="/register" />
             </div>
@@ -121,7 +121,7 @@ export default function Header_NoSession() {
           )}
 
           <button 
-            className="md:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none" 
+            className="lg:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none" 
             onClick={() => setMenuOpen(true)}
             aria-label="Abrir menú"
           >
@@ -136,7 +136,8 @@ export default function Header_NoSession() {
         }`}
       >
         <div className="flex flex-col h-full">
-          <div className="flex justify-end p-4">
+          <div className="flex justify-between items-center p-4">
+            <LogoResponsive className="w-[120px] sm:w-[150px]" />
             <button 
               className="p-2 rounded-md hover:bg-gray-100 focus:outline-none"
               onClick={() => setMenuOpen(false)}
@@ -172,11 +173,11 @@ function NavLinks({ className }) {
   return (
     <div className={`flex items-center gap-2 text-[#00796b] ${className}`}>
       <Link to='/rutas' className="hover:text-teal-600 active:text-teal-800 text-lg">Rutas</Link>
-      <span className="border-l border-gray-300 h-5 mx-2"></span>
+      <span className="border-l border-gray-300 h-5 mx-2 hidden lg:block"></span>
       <Link to="/galeria" className="hover:text-teal-600 active:text-teal-800 text-lg">Galería</Link>
-      <span className="border-l border-gray-300 h-5 mx-2"></span>
+      <span className="border-l border-gray-300 h-5 mx-2 hidden lg:block"></span>
       <Link to="/resenas" className="hover:text-teal-600 active:text-teal-800 text-lg">Reseñas</Link>
-      <span className="border-l border-gray-300 h-5 mx-2"></span>
+      <span className="border-l border-gray-300 h-5 mx-2 hidden lg:block"></span>
       <Link to="/blogs" className="hover:text-teal-600 active:text-teal-800 text-lg">Blogs</Link>
     </div>
   );

@@ -80,43 +80,86 @@ export default function Frame_1_Home() {
     }
 
     return (
-        <div className='relative w-screen h-screen flex pt-5'>
+        <div className='min-h-screen flex flex-col lg:flex-row relative pt-16 lg:pt-0'>
             {loading && <Loader/>}
 
-            <div className="flex justify-center items-center h-full w-full lg:w-1/2">
-                <div className="flex justify-center items-center flex-col space-y-8 px-5">
-                    {error && <div className="text-black">Error: {error}</div>}
-                    <form onSubmit={handleLogin} className="flex justify-center items-center flex-col space-y-8 ">
-                        <h1 className="md:text-4xl font-bold text-2xl">
-                            <span className="text-[#00796B]">Iniciar sesión en </span><span className="text-[#D76411]">Unimetrail</span>
-                        </h1>
-                        <div className='md:w-full w-1/2'>
-                            <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Underline_1.svg" alt="Underline" className=""/>
+            <div className="flex-1 flex justify-center items-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0">
+                <div className="w-full max-w-md space-y-8">
+                    {error && (
+                        <div className="bg-red-50 text-red-700 p-3 rounded-md text-sm">
+                            Error: {error}
                         </div>
-                        <div className='space-y-4 w-full'>
-                            <Input titulo="Correo" placeholder="Ingresa tu correo unimet" type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                            <Input titulo="Contraseña" placeholder="Ingresa tu contraseña" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    )}
+                    
+                    <form onSubmit={handleLogin} className="space-y-6">
+                        <div className="text-center">
+                            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+                                <span className="text-[#00796B]">Iniciar sesión en </span>
+                                <span className="text-[#D76411]">Unimetrail</span>
+                            </h1>
+                            <div className='w-full max-w-xs mx-auto mt-2'>
+                                <img 
+                                    src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Underline_1.svg" 
+                                    alt="Underline" 
+                                    className="w-full"
+                                />
+                            </div>
                         </div>
-                        <BotonPrimario text="Iniciar sesión" type="submit" className="mt-4 w-full" /> 
-                        
-                    </form>
 
-                    <BotonGoogle
-                        text="Iniciar sesión con Google"
-                        onClick={registerWithGoogle}
-                    />
-                    <p>
-                        <span className="text-[#00796B]">¿No tienes una cuenta? </span><span className="text-[#005147]"><Link to="/register">Registrarse </Link></span>
-                    </p>
-                </div>
-                <div className='hidden md:block'>
-                    <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Imagen_Avila.svg" alt="Fondo montaña" className="absolute bottom-0 right-0 w-1/2 h-full object-cover"/>
-                </div>
-                <div className="md:hidden absolute w-full flex justify-center items-center bottom-0 ">
-                    <img src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Caracas.svg" alt="Avila Background" className="w-full h-auto object-contain" />
+                        <div className='space-y-4'>
+                            <Input 
+                                titulo="Correo" 
+                                placeholder="Ingresa tu correo unimet" 
+                                type="email" 
+                                name="email" 
+                                value={email} 
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <Input 
+                                titulo="Contraseña" 
+                                placeholder="Ingresa tu contraseña" 
+                                type="password" 
+                                name="password" 
+                                value={password} 
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="space-y-4">
+                            <BotonPrimario text="Iniciar sesión" type="submit" className="w-full" />
+                            <BotonGoogle
+                                text="Iniciar sesión con Google"
+                                onClick={registerWithGoogle}
+                                className="w-full"
+                            />
+                        </div>
+
+                        <p className="text-center">
+                            <span className="text-[#00796B]">¿No tienes una cuenta? </span>
+                            <Link to="/register" className="text-[#005147] hover:underline">
+                                Registrarse
+                            </Link>
+                        </p>
+                    </form>
                 </div>
             </div>
+
+            <div className='hidden lg:block lg:w-1/2 relative'>
+                <img 
+                    src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Imagen_Avila.svg" 
+                    alt="Fondo montaña" 
+                    className="h-full w-full object-cover"
+                />
+            </div>
+
+            <div className="sm:hidden fixed bottom-0 left-0 right-0">
+                <img 
+                    src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Caracas.svg" 
+                    alt="Avila Background" 
+                    className="w-full h-auto"
+                />
+            </div>
         </div>
-    )
+    );
 }
 
