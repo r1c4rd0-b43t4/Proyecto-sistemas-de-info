@@ -67,89 +67,152 @@ const GuiaRutas = () => {
   }
 
   return (
-    <div className="bg-white shadow rounded-lg p-6">
-      <h2 className="text-xl font-semibold mb-6">Mis Rutas Asignadas</h2>
+    <div className="bg-white shadow rounded-lg p-4 sm:p-6">
+      <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Mis Rutas Asignadas</h2>
       {rutas.length === 0 ? (
         <div className="text-center text-gray-500">
           <p>No tienes rutas asignadas actualmente.</p>
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white rounded-lg overflow-hidden">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Ruta
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Fecha
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Punto de inicio
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Cupos
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Confirmar Asistencia
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+          <div className="min-w-full divide-y divide-gray-200">
+            <div className="hidden sm:block">
+              <table className="min-w-full bg-white">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Ruta
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Fecha
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Punto de inicio
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Cupos
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Confirmar Asistencia
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {rutas.map(ruta => (
+                    <tr key={ruta.id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 h-10 w-10">
+                            <img
+                              className="h-10 w-10 rounded-full object-cover"
+                              src={ruta.image || '/placeholder-ruta.jpg'}
+                              alt=""
+                            />
+                          </div>
+                          <div className="ml-4">
+                            <div className="text-sm font-medium text-gray-900">
+                              {ruta.name}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {ruta.difficulty} • {ruta.distance}km • {ruta.duration}h
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">
+                          {ruta.date.toLocaleDateString('es-ES', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{ruta.start_point}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{ruta.quotas}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <button
+                          onClick={() => toggleConfirmacionAsistencia(ruta.id, ruta.confirmacionEvento)}
+                          className={`px-3 py-1 rounded-full text-sm font-medium ${
+                            ruta.confirmacionEvento
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}
+                        >
+                          {ruta.confirmacionEvento ? 'Confirmado' : 'Pendiente'}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="sm:hidden">
               {rutas.map(ruta => (
-                <tr key={ruta.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10">
-                        <img
-                          className="h-10 w-10 rounded-full object-cover"
-                          src={ruta.image || '/placeholder-ruta.jpg'}
-                          alt=""
-                        />
+                <div key={ruta.id} className="py-4 border-b border-gray-200">
+                  <div className="flex items-center mb-3">
+                    <div className="flex-shrink-0 h-12 w-12">
+                      <img
+                        className="h-12 w-12 rounded-full object-cover"
+                        src={ruta.image || '/placeholder-ruta.jpg'}
+                        alt=""
+                      />
+                    </div>
+                    <div className="ml-4">
+                      <div className="text-base font-medium text-gray-900">
+                        {ruta.name}
                       </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">
-                          {ruta.name}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {ruta.difficulty} • {ruta.distance}km • {ruta.duration}h
-                        </div>
+                      <div className="text-sm text-gray-500">
+                        {ruta.difficulty} • {ruta.distance}km • {ruta.duration}h
                       </div>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">
-                      {ruta.date.toLocaleDateString('es-ES', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-500">Fecha:</span>
+                      <span className="text-sm text-gray-900">
+                        {ruta.date.toLocaleDateString('es-ES', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{ruta.start_point}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{ruta.quotas}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <button
-                      onClick={() => toggleConfirmacionAsistencia(ruta.id, ruta.confirmacionEvento)}
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        ruta.confirmacionEvento
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}
-                    >
-                      {ruta.confirmacionEvento ? 'Confirmado' : 'Pendiente'}
-                    </button>
-                  </td>
-                </tr>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-500">Punto de inicio:</span>
+                      <span className="text-sm text-gray-900">{ruta.start_point}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-500">Cupos:</span>
+                      <span className="text-sm text-gray-900">{ruta.quotas}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-500">Estado:</span>
+                      <button
+                        onClick={() => toggleConfirmacionAsistencia(ruta.id, ruta.confirmacionEvento)}
+                        className={`px-3 py-1 rounded-full text-sm font-medium ${
+                          ruta.confirmacionEvento
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-yellow-100 text-yellow-800'
+                        }`}
+                      >
+                        {ruta.confirmacionEvento ? 'Confirmado' : 'Pendiente'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
       )}
     </div>
