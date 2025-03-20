@@ -249,7 +249,7 @@ export default function Frame_EditUser() {
   };
 
   return (
-    <div className="w-screen p-50">
+    <div className="w-screen md:p-40">
       <form onSubmit={guardarCambios} className="bg-white rounded-lg shadow-lg p-6">
         <div className="space-y-8">
 

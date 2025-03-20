@@ -55,7 +55,7 @@ const AddImageButton = ({ onImageAdded }) => {
   return (
     <>
       <div 
-        className="w-full h-full bg-white rounded-lg cursor-pointer hover:opacity-80 transition-opacity flex items-center justify-center relative overflow-hidden"
+        className="w-full h-120 bg-white rounded-lg cursor-pointer hover:opacity-80 transition-opacity flex items-center justify-center relative overflow-hidden"
         style={{ 
           backgroundSize: 'cover',
           backgroundPosition: 'center',

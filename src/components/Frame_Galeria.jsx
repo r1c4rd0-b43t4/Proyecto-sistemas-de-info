@@ -40,7 +40,7 @@ export default function Frame_Galeria() {
   const createColumns = () => {
     const columnCount = 3;
     const items = [
-      { type: 'button', key: 'add-button' },
+      { type: 'button', key: 'add-button' }, // Añade el botón al inicio
       ...images.map(img => ({ type: 'image', ...img }))
     ];
     const rows = Math.ceil(items.length / columnCount);
@@ -67,25 +67,22 @@ export default function Frame_Galeria() {
     );
 
   return (
-
-      <div className='w-screen h-full'>
-        <div className='md:px-20 px-5 flex align-middle items-center bg-[#F7F7F8] w-screen md:h-screen'>
-          <div className='md:w-full w-screen relative'>
-            <div className='relative w-full h-full'>
-              <img 
-                src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Galeria_Bg.svg" 
-                alt="foto_galeria" 
-                className='w-full h-full object-cover'
-              />
-  
-            </div>
-            <h1 className='md:text-9xl text-5xl font-bold'> 
-                  <span className='text-teal-600'>Galería </span> 
-                  <span className='text-[#D76411]'>Unimetrail</span>
-                </h1>
+    <div className='w-screen h-full'>
+      <div className='md:px-20 px-5 flex align-middle items-center bg-[#F7F7F8] w-screen md:h-screen'>
+        <div className='md:w-full w-screen relative'>
+          <div className='relative w-full h-full'>
+            <img 
+              src="https://llpzcyzmcfvjivsnjqbk.supabase.co/storage/v1/object/public/imagenes//Galeria_Bg.svg" 
+              alt="foto_galeria" 
+              className='w-full h-full object-cover'
+            />
           </div>
+          <h1 className='md:text-9xl text-5xl font-bold'> 
+            <span className='text-teal-600'>Galería </span> 
+            <span className='text-[#D76411]'>Unimetrail</span>
+          </h1>
         </div>
-
+      </div>
 
       <div className="md:hidden flex flex-col gap-4 p-10 w-full">
         <AddImageButton onImageAdded={fetchImages} />
@@ -105,7 +102,6 @@ export default function Frame_Galeria() {
           </div>
         ))}
       </div>
-
 
       <div className="hidden md:flex justify-center gap-4 p-10 w-full">
         {columns.map((column, colIndex) => (

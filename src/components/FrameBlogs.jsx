@@ -23,7 +23,7 @@ const FrameBlogs = () => {
   }, []);
 
   return (
-    <div className="w-full min-h-screen py-8 px-4 md:px-8 lg:px-12">
+    <div className="w-full min-h-screen py-8  md:px-8 ">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 md:mb-12">
           <h1 className="text-3xl md:text-5xl font-bold">

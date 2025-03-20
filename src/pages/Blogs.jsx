@@ -7,7 +7,7 @@ export default function Blog() {
   return (
     <div className='container'>
       <Header_NoSession/>
-      <div className='w-screen p-40'>
+      <div className='w-screen py-40'>
       <FrameBlogs/>
       </div>
       <Footer/>
