@@ -17,6 +17,22 @@ Almacenamiento: Supabase Storage
 Pagos: PayPal API
 Despliegue: Vercel
 
+Cuenta administrador:
+admin@unimetrail.com
+Admin123!
+
+Cuenta guía:
+nohemi.rangel@correo.unimet.edu.ve
+nohemi.rangel.123
+
+Cuenta cliente:
+createla con google bro
+
+Cuenta paypal sandbox:
+sb-3ujtg38836315@personal.example.com
+}m#p3IHa
+
+
 Instalación y Configuración
 Clonar el repositorio:
 git clone https://github.com/tu-usuario/Proyecto-sistemas-de-info.git
@@ -60,6 +76,8 @@ Guía: Puede gestionar sus propias rutas y confirmar eventos.
 Administrador: Tiene acceso completo para gestionar usuarios, rutas, blogs y contenido.
 Integración con PayPal
 La aplicación utiliza la API de PayPal para procesar pagos de manera segura. Para pruebas, se incluyen botones que simulan transacciones exitosas y fallidas.
+
+
 
 Despliegue
 La aplicación está configurada para desplegarse en Vercel. Para realizar el despliegue:
